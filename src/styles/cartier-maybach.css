@@ -1,0 +1,510 @@
+body.cmRoute{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.cmPage{
+  min-height: 100dvh;
+  background: #050505;
+  color: rgba(247,244,238,0.94);
+  padding: 18px clamp(16px, 4vw, 56px) 56px;
+  position: relative;
+  overflow-x: hidden;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.cmPage::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 520px at 20% 12%, rgba(205,167,100,0.10), rgba(205,167,100,0)),
+    radial-gradient(760px 480px at 78% 18%, rgba(255,255,255,0.05), rgba(255,255,255,0)),
+    radial-gradient(1200px 700px at 50% 95%, rgba(0,0,0,0), rgba(0,0,0,0.62));
+}
+
+.cmHeader{
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0 16px;
+  font-size: 13px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.cmHeader nav{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cmHeader a{
+  color: rgba(247,244,238,0.82);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: rgba(255,255,255,0.03);
+}
+
+.cmHeader a:hover{
+  color: rgba(228,192,125,0.96);
+  border-color: rgba(228,192,125,0.62);
+}
+
+.cmHero{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) auto;
+  gap: 20px;
+  min-height: clamp(560px, 74vh, 860px);
+  align-content: start;
+  padding: clamp(42px, 6.5vw, 86px) 0 clamp(10px, 1.6vw, 20px);
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+}
+
+.cmHeroContent h1{
+  margin: 0 0 14px;
+  font-size: clamp(40px, 8vw, 86px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: rgba(253,250,246,0.98);
+}
+
+.cmSubtitle{
+  margin: 0 0 16px;
+  color: rgba(232,198,132,0.88);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.cmHeroContent p{
+  max-width: 74ch;
+  line-height: 1.72;
+  color: rgba(247,244,238,0.8);
+}
+
+.cmLead{
+  margin: 0 0 14px;
+  max-width: 78ch;
+  color: rgba(247,244,238,0.78);
+  line-height: 1.72;
+}
+
+.cmMeta{
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cmMeta span{
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(247,244,238,0.72);
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.02);
+}
+
+.cmChips{
+  align-self: start;
+  display: grid;
+  gap: 8px;
+}
+
+.cmChips span{
+  color: rgba(232,198,132,0.95);
+  border: 1px solid rgba(232,198,132,0.42);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.cmModelSection{
+  position: relative;
+  z-index: 1;
+  padding: clamp(10px, 1.8vw, 18px) 0 clamp(16px, 3vw, 28px);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  display: grid;
+  gap: 8px;
+}
+
+.cmToolbarWrap{
+  width: min(1280px, 96vw);
+  margin: 0 auto;
+}
+
+.cmModelStage{
+  position: relative;
+  height: clamp(520px, 92vh, 980px);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(7,7,9,0.94) 0%, rgba(4,4,5,0.99) 100%),
+    radial-gradient(1000px 300px at 50% 92%, rgba(255,255,255,0.08), rgba(255,255,255,0));
+}
+
+.cmModelStage::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(56% 32% at 50% 80%, rgba(236, 219, 184, 0.16), rgba(236, 219, 184, 0)),
+    radial-gradient(42% 22% at 52% 86%, rgba(214, 190, 138, 0.12), rgba(214, 190, 138, 0)),
+    linear-gradient(180deg, rgba(9, 9, 10, 0) 58%, rgba(6, 6, 7, 0.38) 100%);
+}
+
+.cmModelStage::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  width: min(62vw, 760px);
+  height: clamp(82px, 12vw, 136px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(closest-side, rgba(228, 208, 170, 0.14), rgba(228, 208, 170, 0));
+}
+
+.cmModelStage canvas{
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+  z-index: 2;
+}
+
+.cmDragHint{
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(247,244,238,0.74);
+  border-bottom: 1px solid rgba(200,163,90,0.55);
+  padding-bottom: 3px;
+}
+
+.cmControlsTray{
+  margin-top: 0;
+  width: 100%;
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.03);
+}
+
+.cmControlGroup{
+  display: grid;
+  gap: 8px;
+}
+
+.cmControlTitle{
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(247,244,238,0.72);
+}
+
+.cmSwatchGrid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cmSwatch{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.02);
+  color: rgba(247,244,238,0.84);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 10px;
+}
+
+.cmSwatch.is-active{
+  border-color: rgba(200,163,90,0.72);
+  box-shadow: 0 0 0 1px rgba(200,163,90,0.2) inset;
+}
+
+.cmSwatchDot{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.36);
+}
+
+.cmControlRow{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cmToggleRow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cmLightToggle{
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(247,244,238,0.86);
+  background: rgba(255,255,255,0.03);
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  transition: transform 120ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.cmBulbIcon{
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cmLightToggle.is-on{
+  color: rgba(232,198,132,0.96);
+  border-color: rgba(232,198,132,0.62);
+  box-shadow: 0 0 0 1px rgba(232,198,132,0.16) inset, 0 0 12px rgba(232,198,132,0.16);
+}
+
+.cmLightToggle.is-on .cmBulbIcon{
+  animation: cmBulbPulse 1.6s ease-in-out infinite;
+}
+
+.cmLightToggle:active{
+  transform: scale(0.98);
+}
+
+.cmResetBtn{
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,198,132,0.48);
+  color: rgba(247,244,238,0.88);
+  background: rgba(255,255,255,0.04);
+  padding: 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+@keyframes cmBulbPulse{
+  0%, 100%{ opacity: 0.86; }
+  50%{ opacity: 1; }
+}
+
+.cmSection{
+  position: relative;
+  z-index: 1;
+  padding: clamp(34px, 6vw, 72px) 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.cmFilmSection{
+  position: relative;
+  z-index: 1;
+  padding: clamp(14px, 2.2vw, 24px) 0 clamp(30px, 4.6vw, 50px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.cmFilmSection h2{
+  margin: 0 0 8px;
+  font-size: clamp(22px, 3vw, 34px);
+  color: rgba(253,250,246,0.98);
+  letter-spacing: -0.01em;
+}
+
+.cmFilmSubtitle{
+  margin: 0 0 8px;
+  color: rgba(232,198,132,0.86);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+}
+
+.cmFilmLead{
+  margin: 0 0 14px;
+  color: rgba(247,244,238,0.8);
+  line-height: 1.7;
+  max-width: 78ch;
+}
+
+.cmFilmFrame{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(232,198,132,0.34);
+  box-shadow: 0 18px 42px rgba(0,0,0,0.36), 0 0 0 1px rgba(232,198,132,0.08) inset;
+  background: rgba(12,12,12,0.92);
+}
+
+.cmFilmFrame iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.cmFilmLink{
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: rgba(247,244,238,0.9);
+  border: 1px solid rgba(232,198,132,0.54);
+  border-radius: 999px;
+  padding: 8px 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 11px;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.cmFilmLink:hover{
+  color: rgba(232,198,132,0.96);
+  border-color: rgba(232,198,132,0.72);
+  background: rgba(232,198,132,0.06);
+}
+
+.cmSection h2{
+  margin: 0 0 16px;
+  font-size: clamp(22px, 3vw, 34px);
+  color: rgba(253,250,246,0.98);
+  letter-spacing: -0.01em;
+}
+
+.cmGrid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.cmCard{
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.02);
+  padding: 16px 16px 14px;
+}
+
+.cmCard h3{
+  margin: 0 0 10px;
+  color: rgba(232,198,132,0.92);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cmCard p{
+  margin: 0;
+  color: rgba(247,244,238,0.78);
+  line-height: 1.68;
+}
+
+.cmCard ul{
+  margin: 0;
+  padding-left: 16px;
+  color: rgba(247,244,238,0.78);
+  line-height: 1.62;
+}
+
+.cmFooter{
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 12px;
+  padding-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cmFooter a{
+  text-decoration: none;
+  color: rgba(247,244,238,0.9);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.cmFooter a:hover{
+  color: rgba(232,198,132,0.95);
+  border-color: rgba(232,198,132,0.56);
+}
+
+@media (max-width: 980px){
+  .cmHero{
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .cmChips{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+    max-width: 420px;
+  }
+
+  .cmGrid{
+    grid-template-columns: 1fr;
+  }
+
+  .cmModelSection{
+    width: auto;
+    margin: 0;
+  }
+
+  .cmToolbarWrap{
+    width: 100%;
+  }
+
+  .cmModelStage{
+    height: clamp(340px, 58vh, 620px);
+  }
+
+  .cmSwatchGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

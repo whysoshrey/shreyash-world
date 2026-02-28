@@ -1,0 +1,491 @@
+{
+  "site": {
+    "name": "Shreyash Ojha",
+    "positioning": "Fashion Operations & Applied AI",
+    "valueProp": "I build measurable operating systems across merchandising, process, and analytics.",
+    "cta": "ENTER",
+    "links": [
+      {
+        "label": "CV",
+        "href": "https://drive.google.com/file/d/1dW_gqVkLbSkhseqeis1Y-J-59wqUX_g4/view?usp=share_link"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/shreyash-ojha-3ba93b332/"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/whysoshrey"
+      }
+    ]
+  },
+  "doors": [
+    {
+      "key": "ops",
+      "title": "Operational Systems",
+      "thesis": "Automation. Instrumentation. Throughput."
+    },
+    {
+      "key": "merch",
+      "title": "Merchandising Execution",
+      "thesis": "Planning cadence. Retail performance. Decisions."
+    },
+    {
+      "key": "brand",
+      "title": "Brand & Product Experiences",
+      "thesis": "Narrative, interface, experiential craft."
+    },
+    {
+      "key": "cred",
+      "title": "Credentials",
+      "thesis": "R\u00e9sum\u00e9, endorsements, awards."
+    }
+  ],
+  "exhibits": {
+    "ops": [
+      {
+        "id": "ops-1",
+        "title": "Autonomous WIP Movement Robot",
+        "context": "Shahi Exports \u2014 Industry 4.0 Fellowship",
+        "proof": "Reduced aggregate WIP movement by 22%.",
+        "problem": "production floor WIP transport created delays, fatigue, and variability.",
+        "approach": [
+          "mapped movement hotspots and constraints.",
+          "designed robot routing + control logic.",
+          "piloted and iterated with operators."
+        ],
+        "impact": [
+          "22% reduction in aggregate movement.",
+          "improved throughput stability."
+        ],
+        "skills": "Systems design, experimentation, stakeholder ops.",
+        "artifacts": [
+          {
+            "label": "R&D Files",
+            "url": "https://drive.google.com/drive/folders/1SZzDFrsrTxFyBJGu6FtnUU6okATvaoGv?usp=share_link"
+          },
+          {
+            "label": "Presentation at Bharat Tex 2024 (Min. of Textiles, Government of India)",
+            "url": "https://drive.google.com/file/d/1QU_vI47lLPdXV8sfeGPbfxwZ-jTlaZ04/view?usp=share_link"
+          },
+          {
+            "label": "One-pager",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "id": "ops-2",
+        "title": "IoT Needle Time-Tracker",
+        "context": "Inzex Textiles - Process Automation",
+        "proof": "Improved output efficiency by 25%.",
+        "problem": "worker efficiency tracking mechanisms absent in company; slowing decisions. Implemented cost-effective system and embedded in back-end dashboarding for Management.",
+        "approach": [
+          "defined signal taxonomy + instrumentation plan.",
+          "built Power BI dashboards + operating cadence.",
+          "trained team on weekly review rhythm."
+        ],
+        "impact": [
+          "25% output efficiency improvement.",
+          "reduced rework and variance."
+        ],
+        "skills": "IoT thinking, analytics, operating cadence.",
+        "artifacts": [
+          {
+            "label": "Project Report",
+            "url": "https://drive.google.com/file/d/1H8QWQmG2oHzkgHFiMSYlpR1_NYcWy47e/view?usp=share_link"
+          }
+        ]
+      },
+      {
+        "id": "ops-3",
+        "title": "Industrial Waste Elimination",
+        "context": "Welspun India \u2014 Textile Engineering",
+        "proof": "Eliminated 300 kg/day hard waste.",
+        "problem": "At Welspun Vapi’s Terry Towels weaving unit, our project tackled a high-volume, structurally recurring waste problem in dobby loom production: mock-selvage trimming was generating ~2 kg of hard waste per loom per day, which scaled to nearly 300 kg/day across 168 looms (about 9,000 kg/month and 109,500 kg/year), much of it difficult to recycle because it was a mixed-fibre (polyester-cotton) waste stream.",
+        "approach": [
+          "identified root cause in loom setup.",
+          "redesigned trimming workflow.",
+          "documented SOP + checks."
+        ],
+        "impact": [
+          "300 kg/day waste eliminated.",
+          "annualized savings documented."
+        ],
+        "skills": "Process engineering, SOPs, measurement.",
+        "artifacts": [
+          {
+            "label": "Project Report",
+            "url": "https://drive.google.com/file/d/13PafLYhEn-VKUBVwZdt0lItAmQY5tA5K/view?usp=share_link"
+          },
+          {
+            "label": "Presentation",
+            "url": "https://drive.google.com/file/d/1xgA_lNMUeaRim0_djSCL3IEdb70Lnrjb/view?usp=sharing"
+          }
+        ]
+      },
+      {
+        "id": "inzex-dashboards",
+        "title": "INZEX Dashboards + Backend",
+        "subtitle": "Ops analytics & reporting",
+        "href": "https://drive.google.com/file/d/12kj0qrUYZLpH9fwickkwS6nJx9yBX2KV/view?usp=share_link",
+        "context": "Ops analytics & reporting",
+        "proof": "Dashboard and backend evidence folder.",
+        "problem": "Inzex’s reporting workflow relied on fragmented spreadsheets and manual tracking, making it difficult to get a clear, timely view of campaign performance, operational KPIs, and decision-critical trends.",
+        "approach": [
+          "Designed and deployed a centralized dashboarding workflow that consolidated fragmented operational and marketing data into a structured reporting system, using Excel-based data cleaning, KPI mapping, and visual summaries to make performance tracking faster, clearer, and more decision-ready."
+        ],
+        "impact": [
+          "Reporting and analytics outcomes are documented in the linked folder."
+        ],
+        "skills": "Analytics, reporting, backend operations.",
+        "artifacts": [
+          {
+            "label": "Project Report",
+            "url": "https://drive.google.com/file/d/164g-WcUvor7bEyI03UW91vOhc5aBXNs5/view?usp=share_link"
+          },
+          {
+            "label": "Presentation",
+            "url": "https://drive.google.com/file/d/15TQBIFJWAZmWEVpdmxsUZ_AUCwMg6Su5/view?usp=sharing"
+          }
+        ]
+      }
+    ],
+    "merch": [
+      {
+        "id": "merch-1",
+        "title": "Nava Collective - MPS Capstone",
+        "context": "Parsons \u2014 Capstone",
+        "proof": "Centralized marketplace model with GTM + insights.",
+        "problem": "fragmented supply and low discovery for vendors.",
+        "approach": [
+          "consumer insights + vendor interviews.",
+          "assortment logic + onboarding flow.",
+          "GTM + metrics plan."
+        ],
+        "impact": [
+          "consolidated plan and prototype artifacts."
+        ],
+        "skills": "Merch strategy, research, product thinking.",
+        "artifacts": [
+          {
+            "label": "Deck",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "id": "merch-2",
+        "title": "Retail Clienteling - Bloomingdales, 59th Street",
+        "context": "Bloomingdale\u2019s 59th Street + event-floor retail execution",
+        "proof": "Proof-led clienteling, fit resolution, and trust-forward service under live floor conditions.",
+        "problem": "customer needs weren\u2019t systematically captured.",
+        "approach": [
+          "logged VOC patterns by fit/color/occasion.",
+          "created recap cadence.",
+          "aligned with floor priorities."
+        ],
+        "impact": [
+          "improved clienteling consistency."
+        ],
+        "skills": "Clienteling, retail ops, structured notes.",
+        "artifacts": [
+          {
+            "label": "Open Feedback Proof",
+            "url": "/assets/cartier-rogue/merch/Bloomingdales_Customer_Feedback_Crop.jpeg"
+          }
+        ]
+      }
+    ],
+    "brand": [
+      {
+        "id": "brand-1",
+        "title": "Genesis 2.2: Growth + Ops",
+        "context": "Event Ops \u2014 Marketing",
+        "proof": "Early-bird sellout in 30 seconds; 150+ attendees.",
+        "problem": "need repeatable event growth and ops plan.",
+        "approach": [
+          "structured launch timeline.",
+          "channel + content planning.",
+          "on-ground execution playbook."
+        ],
+        "impact": [
+          "exceeded targets.",
+          "improved ops repeatability."
+        ],
+        "skills": "Marketing ops, execution, stakeholder mgmt.",
+        "artifacts": [
+          {
+            "label": "Recap deck",
+            "url": "https://drive.google.com/file/d/1bpRSvDW00SDUsLKmv6uJjo7WDp0UYo27/view?usp=share_link"
+          }
+        ]
+      },
+      {
+        "id": "brand-3",
+        "title": "E-Com UX Benchmark of two major Indian companies (12 Parameters)",
+        "context": "NIFT \u2014 Research",
+        "proof": "Compared high-end vs low-end e-comm across 12 parameters.",
+        "problem": "define what \u201cpremium\u201d UX does differently.",
+        "approach": [
+          "created evaluation rubric.",
+          "compared platforms.",
+          "summarized patterns."
+        ],
+        "impact": [
+          "actionable UX design principles."
+        ],
+        "skills": "UX analysis, research, writing.",
+        "artifacts": [
+          {
+            "label": "Analysis Report",
+            "url": "https://drive.google.com/file/d/1_8vGaya523hiNWITaCBW5B0OP-F5cfhP/view?usp=sharing"
+          }
+        ]
+      },
+      {
+        "id": "offwhite-human",
+        "title": "Off-White HUMAN",
+        "subtitle": "Campaign concepts folder",
+        "href": "https://drive.google.com/drive/folders/1FyCvnSjlEt29aOEAv7ySClw-y66rjbSL?usp=share_link",
+        "context": "Campaign concepts folder",
+        "proof": "Campaign concepts in linked folder.",
+        "problem": "Detailed concept notes are in the linked folder.",
+        "approach": [
+          "See linked folder for campaign concept artifacts."
+        ],
+        "impact": [
+          "Concept outcomes and references are documented in the linked folder."
+        ],
+        "skills": "Brand strategy, campaign design.",
+        "artifacts": [
+          {
+            "label": "Open folder",
+            "url": "https://drive.google.com/drive/folders/1FyCvnSjlEt29aOEAv7ySClw-y66rjbSL?usp=share_link"
+          },
+          {
+            "label": "YouTube Thumbnail",
+            "url": "https://drive.google.com/drive/folders/1FyCvnSjlEt29aOEAv7ySClw-y66rjbSL?usp=share_link"
+          }
+        ]
+      },
+      {
+        "id": "cartier-gtm-redirection",
+        "title": "Cartier GTM Redirection",
+        "context": "Brand & Product Experiences",
+        "proof": "GTM redirection concept and execution direction.",
+        "problem": "Needed a clearer go-to-market direction aligned to brand positioning and campaign outcomes.",
+        "approach": [
+          "Reframed GTM narrative and channel priorities.",
+          "Aligned content direction with campaign objectives.",
+          "Structured execution flow for launch readiness."
+        ],
+        "impact": [
+          "Clearer strategic direction for GTM execution.",
+          "Improved decision readiness across campaign stakeholders."
+        ],
+        "skills": "GTM strategy, brand direction, campaign planning.",
+        "artifacts": [
+          {
+            "label": "Cartier x Maybach",
+            "url": "#",
+            "actionId": "cartier_maybach_route"
+          },
+          {
+            "label": "Cartier Rogue",
+            "url": "#",
+            "actionId": "cartier_rogue_route"
+          }
+        ]
+      }
+    ],
+    "cred": [
+      {
+        "id": "cred-1",
+        "title": "R\u00e9sum\u00e9",
+        "context": "One-page PDF",
+        "proof": "Download the current r\u00e9sum\u00e9 (PDF).",
+        "problem": "\u2014",
+        "approach": [
+          "\u2014"
+        ],
+        "impact": [
+          "\u2014"
+        ],
+        "skills": "\u2014",
+        "artifacts": [
+          {
+            "label": "Open CV",
+            "url": "./cv.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-2",
+        "title": "Prof. Pritika Bawa",
+        "context": "Joint Director, NIFT Delhi",
+        "proof": "Prof. Pritika Bawa\u2019s endorsement carries exceptional weight because of her leadership role at NIFT Delhi and her deep experience in fashion education.",
+        "problem": "Her recommendation reflects direct academic evaluation of my performance, discipline, and ability to develop ideas with both design sensitivity and professional clarity.",
+        "approach": [
+          "What her endorsement validates:",
+          "Strong concept development and presentation quality",
+          "Design judgment with strategic thinking",
+          "Consistent execution in academic and project settings"
+        ],
+        "impact": [
+          "Faculty-backed validation from an institutional leadership perspective."
+        ],
+        "skills": "Endorsement scope: concept development, design strategy, and execution discipline.",
+        "artifacts": [
+          {
+            "label": "View full letter",
+            "url": "/assets/Credentials/Pritika%20Ma%27am%20LOR.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-3",
+        "title": "Dr. Deepak Panghal",
+        "context": "Senior Faculty, NIFT Delhi (Fashion Technology / academic leadership)",
+        "proof": "Dr. Deepak Panghal\u2019s endorsement is especially meaningful because it comes from a senior academic perspective rooted in technical rigor and industry-facing fashion education.",
+        "problem": "His recommendation validates my ability to approach fashion problems with systems thinking, structure, and practical execution.",
+        "approach": [
+          "What his endorsement validates:",
+          "Technical and process-oriented thinking",
+          "Ability to connect fashion workflows with measurable systems",
+          "Clear articulation of complex project work"
+        ],
+        "impact": [
+          "Faculty-backed validation from a technical and industry-facing academic lens."
+        ],
+        "skills": "Endorsement scope: systems thinking, workflow translation, and technical communication.",
+        "artifacts": [
+          {
+            "label": "View full letter",
+            "url": "/assets/Credentials/Dr.%20Deepak%20Panghal%20%28LOR%29.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-4",
+        "title": "Most Commercially Viable Project",
+        "context": "NIFT Delhi",
+        "proof": "Awarded for developing a project with strong real-world application and market relevance.",
+        "problem": "This recognition highlights the ability to move beyond concept and build solutions that can be evaluated for feasibility, scalability, and industry use.",
+        "approach": [
+          "Recognition type: Academic Award"
+        ],
+        "impact": [
+          "Validation of commercial thinking and execution relevance."
+        ],
+        "skills": "Award focus: market relevance, feasibility, and applied project outcomes.",
+        "artifacts": [
+          {
+            "label": "View Award",
+            "url": "/assets/NIFT%20Awards/Most%20Commercially%20Viable%20Proj.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-6",
+        "title": "Most Innovative Project",
+        "context": "NIFT Delhi",
+        "proof": "Awarded for originality in problem-solving, concept development, and execution.",
+        "problem": "This recognition reflects a strong innovation lens\u2014valuing new thinking, experimentation, and differentiated outcomes in a competitive academic setting.",
+        "approach": [
+          "Recognition type: Academic Award"
+        ],
+        "impact": [
+          "Validation of innovation capability and differentiated project thinking."
+        ],
+        "skills": "Award focus: originality, experimentation, and concept-to-execution strength.",
+        "artifacts": [
+          {
+            "label": "View Award",
+            "url": "/assets/NIFT%20Awards/Most%20Innovative%20Project%20.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-7",
+        "title": "Best Graduation Project",
+        "context": "NIFT Delhi",
+        "proof": "Awarded in recognition of overall graduation project excellence, combining research quality, execution strength, and presentation clarity.",
+        "problem": "It represents one of the highest forms of academic validation for final project work.",
+        "approach": [
+          "Recognition type: Academic Award"
+        ],
+        "impact": [
+          "Validation of end-to-end academic and project excellence."
+        ],
+        "skills": "Award focus: research rigor, execution quality, and presentation standards.",
+        "artifacts": [
+          {
+            "label": "View Award",
+            "url": "/assets/NIFT%20Awards/Best%20Grad%20Proj.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-8",
+        "title": "MANGO Scholarship Award",
+        "context": "Parsons School of Design",
+        "proof": "Part of the MANGO\u2013Parsons scholarship initiative supporting emerging talent in design and retail-oriented education.",
+        "problem": "This recognition reflects academic merit and potential within a globally connected fashion-learning ecosystem.",
+        "approach": [
+          "Recognition type: Scholarship"
+        ],
+        "impact": [
+          "Validation of academic merit and growth potential."
+        ],
+        "skills": "Recognition focus: scholarship distinction and education-to-industry trajectory.",
+        "artifacts": [
+          {
+            "label": "View Letter",
+            "url": "/assets/NIFT%20Awards/Parsons_Offer_Letter_Redacted.pdf"
+          }
+        ]
+      },
+      {
+        "id": "cred-9",
+        "title": "Featured on Parsons Student Work Website",
+        "context": "Parsons School of Design",
+        "proof": "Selected for institutional student-work visibility, recognizing the project\u2019s quality, clarity, and relevance within Parsons\u2019 broader academic and creative community.",
+        "problem": "This feature serves as both academic recognition and public-facing validation.",
+        "approach": [
+          "Recognition type: Institutional Feature"
+        ],
+        "impact": [
+          "Validation through institutional visibility and curated publication."
+        ],
+        "skills": "Recognition focus: project clarity, communication quality, and public presentation.",
+        "artifacts": [
+          {
+            "label": "View Letter",
+            "url": "#"
+          }
+        ]
+      },
+      {
+        "id": "cred-5",
+        "title": "Tools & Certifications",
+        "context": "Ops + ML",
+        "proof": "Business analysis/process + ML coursework.",
+        "problem": "\u2014",
+        "approach": [
+          "Curated list only; no clutter."
+        ],
+        "impact": [
+          "\u2014"
+        ],
+        "skills": "Excel, Power BI, MATLAB, Python.",
+        "artifacts": [
+          {
+            "label": "Cert list",
+            "url": "#"
+          }
+        ]
+      }
+    ]
+  }
+}
