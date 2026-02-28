@@ -1,6 +1,6 @@
-import { Suspense } from "react";
+import { Component, Suspense, type ReactNode } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, OrbitControls } from "@react-three/drei";
+import { ContactShadows, Html, OrbitControls } from "@react-three/drei";
 import { MaybachModel } from "./MaybachModel";
 
 type Props = {
@@ -9,14 +9,33 @@ type Props = {
   heroLightOn: boolean;
 };
 
+class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode; fallback: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  override componentDidCatch() {
+    // Intentionally empty: UI fallback is enough for this context.
+  }
+
+  override render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+
 export function MaybachViewer({ bodyColor, accentColor, heroLightOn }: Props) {
   return (
-    <Canvas dpr={[1, 1.5]} camera={{ position: [4.8, 1.42, 4.9], fov: 30 }} gl={{ antialias: true, alpha: true }}>
-      <ambientLight intensity={heroLightOn ? 0.78 : 0.38} />
-      <directionalLight position={[8.5, 7, 3.5]} intensity={heroLightOn ? 3.65 : 0.35} color="#ffe4bb" />
-      <directionalLight position={[-6, 3.4, -6.3]} intensity={heroLightOn ? 1.7 : 0.72} color="#a8bfff" />
-      <directionalLight position={[0, 2.2, -8]} intensity={heroLightOn ? 1.28 : 0.34} color="#fff3de" />
-      <directionalLight position={[-2.6, 1.7, 5.6]} intensity={heroLightOn ? 1.02 : 0.34} color="#f5f2eb" />
+    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 1.5, 6], fov: 46 }} gl={{ antialias: true, alpha: true }}>
+      <ambientLight intensity={heroLightOn ? 1.0 : 0.72} />
+      <directionalLight position={[5, 6.2, 4.4]} intensity={heroLightOn ? 2.35 : 1.15} color="#ffe4bb" />
+      <directionalLight position={[-5.2, 3.8, -4.6]} intensity={heroLightOn ? 1.25 : 0.72} color="#b3c5ff" />
+      <directionalLight position={[0, 2.2, -8]} intensity={heroLightOn ? 1.15 : 0.62} color="#fff3de" />
 
       {heroLightOn ? (
         <>
@@ -37,12 +56,28 @@ export function MaybachViewer({ bodyColor, accentColor, heroLightOn }: Props) {
         </>
       ) : null}
 
-      <Suspense fallback={null}>
-        <group position={[0, -0.92, 0]} scale={0.88}>
-          <MaybachModel bodyColor={bodyColor} accentColor={accentColor} />
-        </group>
-        <ContactShadows position={[0, -1.5, 0]} opacity={heroLightOn ? 0.36 : 0.12} blur={2.15} scale={22} far={9} />
-      </Suspense>
+      <ModelErrorBoundary
+        fallback={
+          <Html center>
+            <div className="cmModelStatus cmModelStatus--error">
+              Model failed to load. Check that /public/models/maybach.glb exists.
+            </div>
+          </Html>
+        }
+      >
+        <Suspense
+          fallback={
+            <Html center>
+              <div className="cmModelStatus">Loading Maybach…</div>
+            </Html>
+          }
+        >
+          <group position={[0, -0.95, 0]} scale={1}>
+            <MaybachModel bodyColor={bodyColor} accentColor={accentColor} />
+          </group>
+          <ContactShadows position={[0, -1.5, 0]} opacity={heroLightOn ? 0.36 : 0.14} blur={2.15} scale={22} far={9} />
+        </Suspense>
+      </ModelErrorBoundary>
 
       <OrbitControls
         enablePan={false}

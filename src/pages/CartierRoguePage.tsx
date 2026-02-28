@@ -4,8 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
 import "../styles/cartier-rogue.css";
 
-const NEW_BASE = "/assets/cartier-rogue/new%20photos";
-const OLD_BASE = "/assets/cartier-rogue/old%20photos";
+const NEW_BASE = `${import.meta.env.BASE_URL}assets/cartier-rogue/new%20photos`;
+const OLD_BASE = `${import.meta.env.BASE_URL}assets/cartier-rogue/old%20photos`;
 const NNBSP = "\u202f";
 
 type SupportVisual = {

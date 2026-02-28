@@ -10,6 +10,7 @@ type Props = {
 
 const BODY_HINTS = ["body", "paint", "carpaint", "exterior", "bonnet", "hood", "door", "fender", "panel"];
 const ACCENT_HINTS = ["chrome", "trim", "rim", "wheel", "detail", "grill", "logo", "metal", "line"];
+const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
 
 function isMesh(obj: Object3D): obj is Mesh {
   return (obj as Mesh).isMesh === true;
@@ -20,7 +21,7 @@ function hasHint(name: string, hints: string[]) {
 }
 
 export function MaybachModel({ bodyColor, accentColor }: Props) {
-  const { scene } = useGLTF("/models/maybach.glb");
+  const { scene } = useGLTF(MAYBACH_GLB_URL);
 
   const cloned = useMemo(() => {
     const next = scene.clone(true);
@@ -66,4 +67,4 @@ export function MaybachModel({ bodyColor, accentColor }: Props) {
   return <primitive object={cloned} />;
 }
 
-useGLTF.preload("/models/maybach.glb");
+useGLTF.preload(MAYBACH_GLB_URL);

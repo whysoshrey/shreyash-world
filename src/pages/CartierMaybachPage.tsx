@@ -8,6 +8,7 @@ import "../styles/cartier-maybach.css";
 
 const DEFAULT_BODY = "#0A0A0A";
 const DEFAULT_ACCENT = "#C8A35A";
+const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
 
 export function CartierMaybachPage() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export function CartierMaybachPage() {
   const [showEntryLoader, setShowEntryLoader] = useState(Boolean((location.state as { fromMaybachLoader?: boolean } | null)?.fromMaybachLoader));
   const [showDragHint, setShowDragHint] = useState(true);
   const [dragHintText, setDragHintText] = useState("Click and Drag");
+  const [modelAvailability, setModelAvailability] = useState<"checking" | "ready" | "missing">("checking");
 
   useEffect(() => {
     if (!showEntryLoader) return;
@@ -36,6 +38,25 @@ export function CartierMaybachPage() {
     if (coarse) setDragHintText("Drag to Rotate");
     const t = window.setTimeout(() => setShowDragHint(false), 5000);
     return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    let canceled = false;
+
+    const checkModel = async () => {
+      try {
+        const res = await fetch(MAYBACH_GLB_URL, { method: "HEAD" });
+        if (canceled) return;
+        setModelAvailability(res.ok ? "ready" : "missing");
+      } catch {
+        if (!canceled) setModelAvailability("missing");
+      }
+    };
+
+    checkModel();
+    return () => {
+      canceled = true;
+    };
   }, []);
 
   return (
@@ -96,8 +117,16 @@ export function CartierMaybachPage() {
         </motion.div>
 
         <div className="cmModelStage">
-          <MaybachViewer bodyColor={bodyColor} accentColor={accentColor} heroLightOn={heroLightOn} />
-          {showDragHint ? (
+          {modelAvailability === "ready" ? (
+            <MaybachViewer bodyColor={bodyColor} accentColor={accentColor} heroLightOn={heroLightOn} />
+          ) : (
+            <div className={`cmModelFallback${modelAvailability === "missing" ? " is-error" : ""}`}>
+              {modelAvailability === "missing"
+                ? "Maybach model missing. Ensure public/models/maybach.glb exists."
+                : "Loading Maybach…"}
+            </div>
+          )}
+          {modelAvailability === "ready" && showDragHint ? (
             <motion.div className="cmDragHint" initial={{ opacity: 0 }} animate={{ opacity: [0.42, 0.95, 0.42], scale: [1, 1.03, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
               {dragHintText}
             </motion.div>

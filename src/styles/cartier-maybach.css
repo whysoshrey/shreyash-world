@@ -194,6 +194,55 @@ body.cmRoute{
   z-index: 2;
 }
 
+.cmModelFallback{
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px;
+  color: rgba(247,244,238,0.86);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, rgba(7,7,9,0.72), rgba(4,4,5,0.86));
+}
+
+.cmModelFallback.is-error{
+  color: rgba(244, 214, 194, 0.92);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 14px;
+}
+
+.cmModelStatus{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,198,132,0.55);
+  background: rgba(8,8,10,0.85);
+  color: rgba(247,244,238,0.92);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.cmModelStatus--error{
+  border-color: rgba(232,136,120,0.55);
+  color: rgba(244,214,194,0.94);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 13px;
+  max-width: min(90vw, 460px);
+  white-space: normal;
+  border-radius: 12px;
+}
+
 .cmDragHint{
   position: absolute;
   right: 22px;
