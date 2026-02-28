@@ -476,6 +476,33 @@ export function CartierRoguePage() {
             Open Cartier × Maybach Experience
           </button>
         </article>
+
+        <article className="crActivationCard">
+          <div>
+            <h3>Campaign Film</h3>
+          </div>
+          <div style={{ width: "100%" }}>
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                paddingTop: "56.25%",
+                overflow: "hidden",
+                borderRadius: "12px",
+              }}
+            >
+              <iframe
+                title="Cartier Rogue Campaign Film"
+                src="https://www.youtube.com/embed/IQGZCsvl9MM"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+              />
+            </div>
+          </div>
+        </article>
       </motion.section>
 
       <motion.section
