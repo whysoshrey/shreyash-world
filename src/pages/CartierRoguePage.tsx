@@ -271,12 +271,12 @@ export function CartierRoguePage() {
 
       <motion.section
         id="what"
-        className="crSection crSection--what"
+        className="crSection crSection--what crHero"
         initial="hidden"
         animate="show"
         variants={reveal}
       >
-        <div className="crWhatLayout">
+        <div className="crWhatLayout crBody">
           <div className="crWhatCopyCol">
             <div className="crCopyPanel">
               <p className="crKicker">Cartier Rogue</p>
@@ -300,7 +300,7 @@ export function CartierRoguePage() {
                 <span>Youth Luxury</span>
               </div>
             </div>
-            <div className="crWhatSupportPair">
+            <div className="crWhatSupportPair crCutaways">
               <SupportCard
                 visual={{
                   src: oldSupportImages.lookbook,
@@ -346,7 +346,7 @@ export function CartierRoguePage() {
           </figcaption>
         </figure>
 
-        <div className="crSupportGrid">
+        <div className="crSupportGrid crPortraitStrip">
           {campaignProofCards.map((card) => (
             <SupportCard key={`${card.caption}-${card.src}`} visual={card} className="crSupportGridCard" />
           ))}
@@ -385,7 +385,7 @@ export function CartierRoguePage() {
           </figure>
         </div>
 
-        <div className="crEvidenceStrip">
+        <div className="crEvidenceStrip crPortraitStrip">
           <SupportCard
             visual={{
               src: oldSupportImages.braceletB,
@@ -464,7 +464,7 @@ export function CartierRoguePage() {
           </div>
         </div>
 
-        <article className="crActivationCard">
+        <article className="crActivationCard crVideo">
           <div>
             <h3>Experiential Extension</h3>
             <p>
@@ -481,8 +481,9 @@ export function CartierRoguePage() {
           <div>
             <h3>Campaign Film</h3>
           </div>
-          <div style={{ width: "100%" }}>
+          <div className="crVideoWrap" style={{ width: "100%" }}>
             <div
+              className="crVideoFrame"
               style={{
                 position: "relative",
                 width: "100%",
@@ -492,6 +493,7 @@ export function CartierRoguePage() {
               }}
             >
               <iframe
+                className="crVideoIframe"
                 title="Cartier Rogue Campaign Film"
                 src="https://www.youtube.com/embed/IQGZCsvl9MM"
                 loading="lazy"
