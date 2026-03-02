@@ -14,6 +14,11 @@ export function ExhibitModal(props: {
   const { open, exhibit, onClose, onPrev, onNext, onArtifactAction } = props;
   const isRetailClientelingVignette = exhibit?.id === "merch-2";
   const [zoomedImageSrc, setZoomedImageSrc] = useState<string | null>(null);
+  const hasProblem = Boolean(exhibit?.problem?.trim());
+  const hasApproach = Boolean(exhibit?.approach?.some((a) => a.trim().length > 0));
+  const hasImpact = Boolean(exhibit?.impact?.some((a) => a.trim().length > 0));
+  const hasSkills = Boolean(exhibit?.skills?.trim());
+  const hasNarrativeSections = hasProblem || hasApproach || hasImpact || hasSkills;
 
   return (
     <AnimatePresence>
@@ -39,7 +44,7 @@ export function ExhibitModal(props: {
                 </button>
               </div>
 
-              <div className="modalBody">
+              <div className={`modalBody${!isRetailClientelingVignette && !hasNarrativeSections ? " modalBody--compact" : ""}`}>
                 {isRetailClientelingVignette ? (
                   <RetailClientelingVignette
                     exhibit={exhibit}
@@ -47,25 +52,41 @@ export function ExhibitModal(props: {
                   />
                 ) : (
                   <>
-                    <div className="blockTitle">Problem</div>
-                    <div>{exhibit.problem}</div>
+                    {hasProblem ? (
+                      <>
+                        <div className="blockTitle">Problem</div>
+                        <div>{exhibit.problem}</div>
+                      </>
+                    ) : null}
 
-                    <div className="blockTitle">Approach</div>
-                    <ul>
-                      {exhibit.approach.map((a, i) => (
-                        <li key={i}>{a}</li>
-                      ))}
-                    </ul>
+                    {hasApproach ? (
+                      <>
+                        <div className="blockTitle">Approach</div>
+                        <ul>
+                          {exhibit.approach.map((a, i) => (
+                            <li key={i}>{a}</li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
 
-                    <div className="blockTitle">Impact</div>
-                    <ul>
-                      {exhibit.impact.map((a, i) => (
-                        <li key={i}>{a}</li>
-                      ))}
-                    </ul>
+                    {hasImpact ? (
+                      <>
+                        <div className="blockTitle">Impact</div>
+                        <ul>
+                          {exhibit.impact.map((a, i) => (
+                            <li key={i}>{a}</li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
 
-                    <div className="blockTitle">Skills used</div>
-                    <div>{exhibit.skills}</div>
+                    {hasSkills ? (
+                      <>
+                        <div className="blockTitle">Skills used</div>
+                        <div>{exhibit.skills}</div>
+                      </>
+                    ) : null}
 
                     <div className="blockTitle">Artifacts</div>
                     <div className="artifacts">

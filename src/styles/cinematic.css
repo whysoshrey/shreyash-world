@@ -452,6 +452,11 @@ body{
   line-height: 1.65;
 }
 
+.modalBody--compact{
+  padding-top: 10px;
+  padding-bottom: 12px;
+}
+
 .blockTitle{
   font-size: 12px;
   letter-spacing: 0.20em;
