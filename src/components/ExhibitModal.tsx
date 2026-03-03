@@ -13,6 +13,7 @@ export function ExhibitModal(props: {
 }) {
   const { open, exhibit, onClose, onPrev, onNext, onArtifactAction } = props;
   const isRetailClientelingVignette = exhibit?.id === "merch-2";
+  const isCredentialsExhibit = Boolean(exhibit?.id?.startsWith("cred"));
   const [zoomedImageSrc, setZoomedImageSrc] = useState<string | null>(null);
   const hasProblem = Boolean(exhibit?.problem?.trim());
   const hasApproach = Boolean(exhibit?.approach?.some((a) => a.trim().length > 0));
@@ -54,14 +55,14 @@ export function ExhibitModal(props: {
                   <>
                     {hasProblem ? (
                       <>
-                        <div className="blockTitle">Problem</div>
+                        <div className="blockTitle">{isCredentialsExhibit ? "About" : "Problem"}</div>
                         <div>{exhibit.problem}</div>
                       </>
                     ) : null}
 
                     {hasApproach ? (
                       <>
-                        <div className="blockTitle">Approach</div>
+                        <div className="blockTitle">{isCredentialsExhibit ? "Details" : "Approach"}</div>
                         <ul>
                           {exhibit.approach.map((a, i) => (
                             <li key={i}>{a}</li>
@@ -72,7 +73,7 @@ export function ExhibitModal(props: {
 
                     {hasImpact ? (
                       <>
-                        <div className="blockTitle">Impact</div>
+                        <div className="blockTitle">{isCredentialsExhibit ? "Highlights" : "Impact"}</div>
                         <ul>
                           {exhibit.impact.map((a, i) => (
                             <li key={i}>{a}</li>
@@ -83,7 +84,7 @@ export function ExhibitModal(props: {
 
                     {hasSkills ? (
                       <>
-                        <div className="blockTitle">Skills used</div>
+                        <div className="blockTitle">{isCredentialsExhibit ? "Keywords" : "Skills used"}</div>
                         <div>{exhibit.skills}</div>
                       </>
                     ) : null}
