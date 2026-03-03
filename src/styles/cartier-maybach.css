@@ -46,16 +46,22 @@ body.cmRoute{
   flex-wrap: wrap;
 }
 
-.cmHeader a{
+.cmHeader a,
+.cmHeader button{
   color: rgba(247,244,238,0.82);
   text-decoration: none;
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 999px;
   padding: 7px 12px;
   background: rgba(255,255,255,0.03);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
 }
 
-.cmHeader a:hover{
+.cmHeader a:hover,
+.cmHeader button:hover{
   color: rgba(228,192,125,0.96);
   border-color: rgba(228,192,125,0.62);
 }

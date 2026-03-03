@@ -179,6 +179,11 @@ export default function App() {
               <div className="panel panel--hall">
                 <motion.div key="hall" variants={fadeUp} initial="hidden" animate="show" exit="exit">
                   <DoorHall content={content} onOpenDoor={openDoor} />
+                  <div style={{ padding: "14px 18px 0", display: "flex", justifyContent: "flex-end" }}>
+                    <button className="navBtn" type="button" onClick={goLanding}>
+                      Back to Landing
+                    </button>
+                  </div>
                 </motion.div>
               </div>
             ) : null}

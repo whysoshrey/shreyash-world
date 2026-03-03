@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
 import { MaybachViewer } from "../components/maybach/MaybachViewer";
 import { MaybachColorControls } from "../components/maybach/MaybachColorControls";
@@ -11,6 +11,7 @@ const DEFAULT_ACCENT = "#C8A35A";
 const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
 
 export function CartierMaybachPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [bodyColor, setBodyColor] = useState(DEFAULT_BODY);
   const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT);
@@ -64,6 +65,16 @@ export function CartierMaybachPage() {
       <header className="cmHeader">
         <div>Cartier × Maybach</div>
         <nav>
+          <button
+            type="button"
+            onClick={() =>
+              navigate("/", {
+                state: { returnTo: "cartier_gtm_redirection" },
+              })
+            }
+          >
+            Back to Cartier GTM
+          </button>
           <a href="#model">Model</a>
           <a href="#concept">Concept</a>
           <a href="#activation">Activation</a>
