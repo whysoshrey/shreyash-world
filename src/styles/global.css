@@ -18,8 +18,8 @@ body{
   margin:0;
   background: var(--bg0);
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  overflow-x:hidden;
+  font-family: "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
 }
 
 a{ color: inherit; }

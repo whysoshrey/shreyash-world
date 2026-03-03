@@ -274,10 +274,10 @@ body{
 
 @keyframes landingSubtitlePulse{
   0%, 100%{
-    font-weight: 400;
+    color: rgba(246, 239, 226, 0.34);
   }
   50%{
-    font-weight: 700;
+    color: #fff;
   }
 }
 
