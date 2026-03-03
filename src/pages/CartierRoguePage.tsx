@@ -265,6 +265,17 @@ export function CartierRoguePage() {
       <header className="crHeader">
         <div className="crBrand">Cartier Rogue</div>
         <nav>
+          <button
+            type="button"
+            className="crBtn"
+            onClick={() =>
+              navigate("/", {
+                state: { returnTo: "cartier_gtm_redirection" },
+              })
+            }
+          >
+            Back to Cartier GTM
+          </button>
           <Link to="/">Back to Portfolio</Link>
         </nav>
       </header>

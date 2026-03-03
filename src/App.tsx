@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./styles/global.css";
 import "./styles/cinematic.css";
 
@@ -19,6 +19,7 @@ type View = "landing" | "hall" | "section";
 
 export default function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [content, setContent] = useState<Content | null>(null);
   const [view, setView] = useState<View>("landing");
   const [activeDoor, setActiveDoor] = useState<DoorKey>("ops");
@@ -102,6 +103,18 @@ export default function App() {
       if (rogueTimerRef.current !== null) window.clearTimeout(rogueTimerRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    const state = location.state as { returnTo?: string } | null;
+    if (!content || state?.returnTo !== "cartier_gtm_redirection") return;
+
+    setActiveDoor("brand");
+    setView("section");
+    setActiveExhibitId("cartier-gtm-redirection");
+    setModalOpen(true);
+
+    navigate("/", { replace: true, state: null });
+  }, [content, location.state, navigate]);
 
   const prev = () => {
     if (!activeExhibitId || exhibits.length === 0) return;
