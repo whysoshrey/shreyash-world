@@ -461,26 +461,6 @@
             "url": "https://www.newschool.edu/parsons/profile/shreyash-ojha/"
           }
         ]
-      },
-      {
-        "id": "cred-5",
-        "title": "Tools & Certifications",
-        "context": "Ops + ML",
-        "proof": "Business analysis/process + ML coursework.",
-        "problem": "\u2014",
-        "approach": [
-          "Curated list only; no clutter."
-        ],
-        "impact": [
-          "\u2014"
-        ],
-        "skills": "Excel, Power BI, MATLAB, Python.",
-        "artifacts": [
-          {
-            "label": "Cert list",
-            "url": "#"
-          }
-        ]
       }
     ]
   }
