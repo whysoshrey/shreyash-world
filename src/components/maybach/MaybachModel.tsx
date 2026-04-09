@@ -66,5 +66,3 @@ export function MaybachModel({ bodyColor, accentColor }: Props) {
 
   return <primitive object={cloned} />;
 }
-
-useGLTF.preload(MAYBACH_GLB_URL);

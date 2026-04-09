@@ -678,6 +678,7 @@ h2 {
   }
 
   .crHeader {
+    top: env(safe-area-inset-top);
     padding-bottom: 10px;
   }
 
@@ -717,8 +718,22 @@ h2 {
 
   .crHeader {
     top: env(safe-area-inset-top);
+    flex-direction: column;
+    align-items: flex-start;
     padding: 8px 0 10px;
     margin-bottom: 10px;
+  }
+
+  .crHeader nav {
+    width: 100%;
+  }
+
+  .crHeader a,
+  .crBtn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .crSection {
@@ -869,6 +884,18 @@ h2 {
     height: 100%;
     border: 0;
     display: block;
+  }
+}
+
+@media (max-width: 560px) {
+  .crHeader nav {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .crHeader a,
+  .crBtn {
+    width: 100%;
   }
 }
 
