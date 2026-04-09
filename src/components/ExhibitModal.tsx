@@ -20,6 +20,10 @@ export function ExhibitModal(props: {
   const hasImpact = Boolean(exhibit?.impact?.some((a) => a.trim().length > 0));
   const hasSkills = Boolean(exhibit?.skills?.trim());
   const hasNarrativeSections = hasProblem || hasApproach || hasImpact || hasSkills;
+  const resolveArtifactUrl = (url: string) => {
+    if (!url.startsWith("/")) return url;
+    return `${import.meta.env.BASE_URL}${url.slice(1)}`;
+  };
 
   return (
     <AnimatePresence>
@@ -91,17 +95,20 @@ export function ExhibitModal(props: {
 
                     <div className="blockTitle">Artifacts</div>
                     <div className="artifacts">
-                      {exhibit.artifacts.map((a) =>
-                        a.actionId ? (
-                          <button key={a.label} className="artifact" type="button" onClick={() => onArtifactAction?.(a)}>
-                            {a.label}
-                          </button>
-                        ) : (
-                          <a key={a.label} className="artifact" href={a.url} target="_blank" rel="noreferrer">
-                            {a.label}
-                          </a>
-                        ),
-                      )}
+                      {exhibit.artifacts.map((a) => {
+                        const className = `artifact${a.variant === "hero" ? " artifact--hero" : ""}`;
+                        return (
+                          a.actionId ? (
+                            <button key={a.label} className={className} type="button" onClick={() => onArtifactAction?.(a)}>
+                              {a.label}
+                            </button>
+                          ) : (
+                            <a key={a.label} className={className} href={resolveArtifactUrl(a.url)} target="_blank" rel="noreferrer">
+                              {a.label}
+                            </a>
+                          )
+                        );
+                      })}
                     </div>
                   </>
                 )}

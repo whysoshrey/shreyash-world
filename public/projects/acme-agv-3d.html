@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACME AGV — Interactive 3D Model</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#06060f; color:#e0e0e0; font-family:'SF Mono','Fira Code',monospace; overflow:hidden; }
+  canvas { display:block; }
+
+  #title-bar {
+    position:fixed; top:20px; left:24px; z-index:20; pointer-events:none;
+  }
+  #title-bar h1 {
+    font-size:13px; font-weight:600; color:#a0a8ff; letter-spacing:.18em; text-transform:uppercase;
+  }
+  #title-bar p {
+    font-size:10px; color:#505070; letter-spacing:.08em; margin-top:3px;
+  }
+
+  #controls {
+    position:fixed; top:18px; right:20px; z-index:20;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .btn {
+    background:rgba(18,18,38,.92); border:1px solid rgba(90,90,180,.35);
+    color:#8890cc; padding:9px 15px; border-radius:7px; cursor:pointer;
+    font-family:inherit; font-size:11px; letter-spacing:.07em;
+    transition:all .18s; user-select:none; white-space:nowrap;
+  }
+  .btn:hover { background:rgba(40,40,90,.95); border-color:rgba(110,110,220,.7); color:#fff; }
+  .btn.on { background:rgba(60,50,130,.95); border-color:#7070e0; color:#d0d0ff; }
+
+  #info {
+    position:fixed; bottom:20px; left:20px; z-index:20;
+    background:rgba(8,8,20,.92); border:1px solid rgba(80,80,160,.3);
+    border-radius:10px; padding:15px 18px; width:310px;
+    backdrop-filter:blur(12px);
+    transition:border-color .2s;
+  }
+  #info.highlight { border-color:rgba(120,120,255,.7); }
+  #info-name {
+    font-size:11px; color:#9090e0; letter-spacing:.12em;
+    text-transform:uppercase; margin-bottom:6px; font-weight:600;
+  }
+  #info-desc {
+    font-size:10.5px; color:#9898b0; line-height:1.65;
+  }
+
+  #hover-tip {
+    position:fixed; pointer-events:none; z-index:30; display:none;
+    background:rgba(15,15,35,.95); border:1px solid rgba(100,100,220,.5);
+    color:#c0c0f0; padding:5px 11px; border-radius:5px; font-size:10px;
+    letter-spacing:.05em;
+  }
+
+  #legend {
+    position:fixed; bottom:20px; right:20px; z-index:20;
+    font-size:10px; color:#404060; line-height:1.9; letter-spacing:.05em;
+    text-align:right;
+  }
+</style>
+</head>
+<body>
+
+<div id="title-bar">
+  <h1>ACME AGV</h1>
+  <p>NIFT Delhi &nbsp;·&nbsp; Shreyash Ojha &amp; Charuvi Ranjan &nbsp;·&nbsp; 2024</p>
+</div>
+
+<div id="controls">
+  <button class="btn" id="btn-explode">⊕ &nbsp;EXPLODED VIEW</button>
+  <button class="btn" id="btn-acrylic">◻ &nbsp;TOGGLE ACRYLIC</button>
+  <button class="btn" id="btn-wire">≋ &nbsp;TOGGLE WIRING</button>
+  <button class="btn" id="btn-reset">↺ &nbsp;RESET CAMERA</button>
+</div>
+
+<div id="info">
+  <div id="info-name">ACME AGV &nbsp;—&nbsp; Interactive Model</div>
+  <div id="info-desc">Click any component to inspect it. Drag to orbit &nbsp;·&nbsp; scroll to zoom &nbsp;·&nbsp; right-drag to pan.<br><br>50 × 40 cm autonomous guided vehicle designed to transport cut fabric bundles between storage racks and sewing line stations.</div>
+</div>
+
+<div id="hover-tip"></div>
+
+<div id="legend">
+  DRAG &nbsp;ORBIT<br>
+  SCROLL &nbsp;ZOOM<br>
+  RIGHT-DRAG &nbsp;PAN<br>
+  CLICK &nbsp;INSPECT
+</div>
+
+<script type="module">
+import * as THREE from "../vendor/three.module.min.js";
+// ─────────────────────────────────────────────
+// RENDERER + SCENE
+// ─────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x06060f);
+scene.fog = new THREE.FogExp2(0x06060f, 0.0035);
+
+const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 1200);
+camera.position.set(68, 52, 85);
+
+// ─────────────────────────────────────────────
+// LIGHTS
+// ─────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x202035, 1.4));
+
+const key = new THREE.DirectionalLight(0xffffff, 1.1);
+key.position.set(60, 90, 60);
+key.castShadow = true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.camera.near = 1;
+key.shadow.camera.far = 300;
+key.shadow.camera.left = -80;
+key.shadow.camera.right = 80;
+key.shadow.camera.top = 80;
+key.shadow.camera.bottom = -80;
+key.shadow.bias = -0.001;
+scene.add(key);
+
+const fill = new THREE.DirectionalLight(0x6070ff, 0.45);
+fill.position.set(-50, 40, -50);
+scene.add(fill);
+
+const rim = new THREE.PointLight(0x4050cc, 1.2, 250);
+rim.position.set(0, 70, -70);
+scene.add(rim);
+
+const bot = new THREE.PointLight(0x203050, 0.6, 100);
+bot.position.set(0, -10, 0);
+scene.add(bot);
+
+// ─────────────────────────────────────────────
+// GROUND
+// ─────────────────────────────────────────────
+const floorGeo = new THREE.PlaneGeometry(600, 600);
+const floorMat = new THREE.MeshStandardMaterial({ color:0x080812, roughness:1, metalness:0 });
+const floor = new THREE.Mesh(floorGeo, floorMat);
+floor.rotation.x = -Math.PI/2;
+floor.position.y = -5.6;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const grid = new THREE.GridHelper(400, 40, 0x111130, 0x111130);
+grid.position.y = -5.5;
+scene.add(grid);
+
+// ─────────────────────────────────────────────
+// MATERIALS
+// ─────────────────────────────────────────────
+const M = {
+  alum:    new THREE.MeshStandardMaterial({ color:0xbcc4cc, metalness:.85, roughness:.25 }),
+  alumD:   new THREE.MeshStandardMaterial({ color:0x889099, metalness:.9,  roughness:.2  }),
+  steel:   new THREE.MeshStandardMaterial({ color:0xaaa8b0, metalness:.95, roughness:.15 }),
+  acr:     new THREE.MeshPhysicalMaterial({ color:0xc8ddf5, transparent:true, opacity:.14,
+             roughness:.04, metalness:0, side:THREE.DoubleSide, depthWrite:false }),
+  acrPink: new THREE.MeshStandardMaterial({ color:0xe8a0b8, transparent:true, opacity:.65, roughness:.12, side:THREE.DoubleSide }),
+  hubYel:  new THREE.MeshStandardMaterial({ color:0xf5a200, metalness:.35, roughness:.35 }),
+  roller:  new THREE.MeshStandardMaterial({ color:0x191919, roughness:.85 }),
+  motorBk: new THREE.MeshStandardMaterial({ color:0x252525, metalness:.6,  roughness:.45 }),
+  motorGy: new THREE.MeshStandardMaterial({ color:0x3a3a3a, metalness:.75, roughness:.3  }),
+  pcbGn:   new THREE.MeshStandardMaterial({ color:0x1a5c1a, roughness:.5  }),
+  pcbBl:   new THREE.MeshStandardMaterial({ color:0x0a1870, roughness:.5  }),
+  pcbRed:  new THREE.MeshStandardMaterial({ color:0x701010, roughness:.5  }),
+  lcdBk:   new THREE.MeshStandardMaterial({ color:0x080810, roughness:.2  }),
+  lcdScr:  new THREE.MeshStandardMaterial({ color:0x4da080, emissive:new THREE.Color(0x1a4030), emissiveIntensity:.7, roughness:.1 }),
+  usBody:  new THREE.MeshStandardMaterial({ color:0x1e1e1e, roughness:.65 }),
+  usEye:   new THREE.MeshStandardMaterial({ color:0x222244, emissive:new THREE.Color(0x0a0a22), emissiveIntensity:.4 }),
+  estop:   new THREE.MeshStandardMaterial({ color:0xdd1111, roughness:.25, metalness:.05 }),
+  white:   new THREE.MeshStandardMaterial({ color:0xf0f0f0, roughness:.5  }),
+  batt:    new THREE.MeshStandardMaterial({ color:0x2244bb, metalness:.3,  roughness:.45 }),
+  battTop: new THREE.MeshStandardMaterial({ color:0x6688ee, metalness:.5,  roughness:.3  }),
+  rfid:    new THREE.MeshStandardMaterial({ color:0x0a3a12, roughness:.5  }),
+  buck:    new THREE.MeshStandardMaterial({ color:0x503808, roughness:.45 }),
+  bolt:    new THREE.MeshStandardMaterial({ color:0x909090, metalness:.9,  roughness:.2  }),
+  castor:  new THREE.MeshStandardMaterial({ color:0x606060, metalness:.5,  roughness:.5  }),
+  wireR:   new THREE.MeshStandardMaterial({ color:0xdd2222, roughness:.9  }),
+  wireB:   new THREE.MeshStandardMaterial({ color:0x2222cc, roughness:.9  }),
+  wireK:   new THREE.MeshStandardMaterial({ color:0x111111, roughness:.9  }),
+  wireG:   new THREE.MeshStandardMaterial({ color:0x22aa22, roughness:.9  }),
+  wireY:   new THREE.MeshStandardMaterial({ color:0xddaa00, roughness:.9  }),
+  irBk:    new THREE.MeshStandardMaterial({ color:0x0a0a0a, roughness:.8  }),
+};
+
+// ─────────────────────────────────────────────
+// COMPONENT REGISTRY
+// ─────────────────────────────────────────────
+const clickable = [];
+function reg(mesh, name, desc) {
+  if (!mesh) return mesh;
+  mesh.userData.cName = name;
+  mesh.userData.cDesc = desc;
+  clickable.push(mesh);
+  return mesh;
+}
+
+// ─────────────────────────────────────────────
+// MAIN GROUP + LAYER GROUPS
+// ─────────────────────────────────────────────
+const ROOT = new THREE.Group();
+scene.add(ROOT);
+
+// Each layer group is a child of ROOT
+// All component positions are in ROOT space (1 unit = 1 cm)
+const G = {};
+['chassis','wheels','electronicsPlt','electronics','midDeck',
+ 'payloadPlt','acrylicWalls','exterior','wires'].forEach(k => {
+  G[k] = new THREE.Group();
+  ROOT.add(G[k]);
+});
+
+// Baseline group Y positions (all zero — positions set within)
+const BASE_POS = {};
+Object.keys(G).forEach(k => { BASE_POS[k] = G[k].position.clone(); });
+
+// Explode offsets (Y direction per layer)
+const EXPLODE = {
+  wheels:        new THREE.Vector3(0, -14, 0),
+  chassis:       new THREE.Vector3(0, 0, 0),
+  electronicsPlt:new THREE.Vector3(0, 10, 0),
+  electronics:   new THREE.Vector3(0, 20, 0),
+  midDeck:       new THREE.Vector3(0, 30, 0),
+  payloadPlt:    new THREE.Vector3(0, 40, 0),
+  acrylicWalls:  new THREE.Vector3(0, 50, 0),
+  exterior:      new THREE.Vector3(0, 60, 0),
+  wires:         new THREE.Vector3(0, 22, 0),
+};
+
+// ─────────────────────────────────────────────
+// HELPER FUNCTIONS
+// ─────────────────────────────────────────────
+function box(w,h,d, mat, px,py,pz, group, name, desc) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+  m.position.set(px,py,pz);
+  m.castShadow = true; m.receiveShadow = true;
+  group.add(m);
+  if (name) reg(m, name, desc);
+  return m;
+}
+function cyl(rt,rb,h,seg, mat, px,py,pz, rx,ry,rz, group, name, desc) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg), mat);
+  m.position.set(px,py,pz);
+  if (rx!==undefined) m.rotation.set(rx,ry,rz);
+  m.castShadow = true; m.receiveShadow = true;
+  group.add(m);
+  if (name) reg(m, name, desc);
+  return m;
+}
+function sph(r,seg, mat, px,py,pz, group, name, desc) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(r,seg,seg), mat);
+  m.position.set(px,py,pz);
+  m.castShadow = true; m.receiveShadow = true;
+  group.add(m);
+  if (name) reg(m, name, desc);
+  return m;
+}
+function tube(p0, p1, pc, r, col, group) {
+  const curve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(...p0),
+    new THREE.Vector3(...pc),
+    new THREE.Vector3(...p1)
+  );
+  const geo = new THREE.TubeGeometry(curve, 18, r, 6, false);
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({color:col, roughness:.9}));
+  group.add(m);
+  return m;
+}
+
+// Hex bolt helper
+function hexBolt(px,py,pz, group) {
+  const head = new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.6,6), M.bolt);
+  head.position.set(px,py,pz); head.castShadow=true; group.add(head);
+  const shank = new THREE.Mesh(new THREE.CylinderGeometry(.35,.35,1.5,8), M.bolt);
+  shank.position.set(px,py-.9,pz); shank.castShadow=true; group.add(shank);
+}
+
+// Mecanum wheel builder
+function buildMecanumWheel(group, cx,cy,cz, side) {
+  const wg = new THREE.Group();
+  wg.position.set(cx,cy,cz);
+  group.add(wg);
+
+  // Motor body (cylinder along X)
+  cyl(2.0,2.0,4.5,12, M.motorBk, side==='L'?2.8:-2.8, 0,0, 0,0,Math.PI/2, wg,
+    'High-Torque DC Gearbox Motor',
+    '12V DC geared motor. 4 motors total. Calculated τstall = 2.5 Nm per motor. Combined: 10 Nm stall torque to move 25 kg total mass (AGV + payload). Prioritised torque over speed; max ~1 m/s. Controlled via L298N motor driver on Arduino Mega pins 8–11.');
+  // Gearbox housing
+  box(3.2,3.2,3.6, M.motorGy, side==='L'?.7:-.7, 0,0, wg, null, null);
+  // Motor shaft stub
+  cyl(.4,.4,1.5,8, M.alumD, side==='L'?5.5:-5.5, 0,0, 0,0,Math.PI/2, wg, null, null);
+
+  // Hub (main disk, axis along X)
+  const hub = cyl(5,5,2.6,22, M.hubYel, 0,0,0, 0,0,Math.PI/2, wg,
+    `Mecanum (Omni) Wheel — ${side==='L'?'Left':'Right'} Side`,
+    'Wheel radius: 5 cm. Yellow anodised aluminium hub. 10 rubber barrel rollers angled at 45° around rim — left wheels use opposite chirality to right wheels. Holonomic motion: forward, lateral, diagonal, and rotation in place without steering. Tank-style 4-motor drivetrain with individual speed control per wheel.');
+  // Hub face detail ring
+  cyl(4.8,4.8,.2,22, M.alumD, side==='L'?1.3:-1.3, 0,0, 0,0,Math.PI/2, wg, null, null);
+  // Hub centre boss
+  cyl(1.1,1.1,3,12, M.alumD, 0,0,0, 0,0,Math.PI/2, wg, null, null);
+
+  // Mecanum rollers (10)
+  const nR = 10;
+  const rollerSign = side==='L' ? 1 : -1;
+  for (let i=0; i<nR; i++) {
+    const a = (i/nR)*Math.PI*2;
+    const ry = Math.cos(a)*5;
+    const rz = Math.sin(a)*5;
+    const rollerGeo = new THREE.CylinderGeometry(.62,.62,2.2,8);
+    const roller = new THREE.Mesh(rollerGeo, M.roller);
+    roller.position.set(0, ry, rz);
+    // Tangent direction at this angle on the wheel + 45° mecanum twist
+    const tangX = rollerSign * Math.sin(Math.PI/4);
+    const tangY = -Math.sin(a) * Math.cos(Math.PI/4);
+    const tangZ =  Math.cos(a) * Math.cos(Math.PI/4);
+    const axisVec = new THREE.Vector3(tangX, tangY, tangZ).normalize();
+    roller.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), axisVec);
+    roller.castShadow = true;
+    wg.add(roller);
+  }
+
+  // Spokes (5)
+  for (let i=0; i<5; i++) {
+    const sa = (i/5)*Math.PI*2;
+    const spoke = new THREE.Mesh(new THREE.BoxGeometry(.25,3.8,.25), M.hubYel);
+    spoke.rotation.z = Math.PI/2;
+    spoke.rotation.x = sa;
+    spoke.position.set(side==='L'?1.2:-1.2, 0, 0);
+    wg.add(spoke);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 0 — CHASSIS (4mm Aluminium Base Plate)
+// ═══════════════════════════════════════════════════════════
+// AGV spec: 50cm (Z) × 40cm (X), plate at Y=0 (wheel axle height ref)
+box(40,.4,50, M.alum, 0,0,0, G.chassis,
+  'Base Chassis Plate (4mm Aluminium)',
+  'CNC laser-cut 4mm aluminium plate. 50 × 40 cm as per vehicle specification (derived from 20 kg fabric carton dimensions). All four DC gearbox motors bolt directly to this plate at corners. Structural backbone of the robot. M8 bolts for main support, M2 for all other assemblies.');
+
+// Corner motor mount pads
+[[-17.5,.5,-18],[17.5,.5,-18],[-17.5,.5,18],[17.5,.5,18]].forEach(p => {
+  box(4,1,5, M.alumD, p[0],p[1],p[2], G.chassis, null, null);
+});
+
+// Centre support caster (critical — prevents motor shaft warping)
+const castG = new THREE.Group();
+castG.position.set(0,-2,0);
+G.chassis.add(castG);
+sph(1.5,12, M.castor, 0,0,0, castG,
+  'Centre Support Caster Wheel',
+  'Passive ball caster at chassis centre. Added after 8 motors (2 full sets) burned out during testing — excess transversal load on motor shafts caused coils to burn. Caster shifts weight off shafts. Alternative (ball bearings between shaft and hub) rejected due to insufficient space in the design.');
+cyl(.5,.5,2,8, M.alumD, 0,1.5,0, undefined,undefined,undefined, castG, null, null);
+box(2,.4,2, M.alumD, 0,2.5,0, castG, null, null);
+
+// Vertical standoffs (chassis → mid-deck)
+[[-16,3,-20],[16,3,-20],[-16,3,20],[16,3,20],[-16,3,0],[16,3,0]].forEach(p => {
+  cyl(.4,.4,6,8, M.alumD, p[0],p[1],p[2], undefined,undefined,undefined, G.chassis,
+    'M8 Support Standoff',
+    'M8 threaded aluminium standoff. Maintains precise vertical spacing between chassis layers. All grounds connected at these points to establish common low-potential reference line for the circuit.');
+});
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 1 — 4× MECANUM WHEELS + DC MOTORS
+// ═══════════════════════════════════════════════════════════
+buildMecanumWheel(G.wheels, -21,-2,-18, 'L'); // Front-Left
+buildMecanumWheel(G.wheels,  21,-2,-18, 'R'); // Front-Right
+buildMecanumWheel(G.wheels, -21,-2,  18, 'L'); // Rear-Left
+buildMecanumWheel(G.wheels,  21,-2,  18, 'R'); // Rear-Right
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 2 — 1mm STAINLESS STEEL ELECTRONICS PLATE
+// ═══════════════════════════════════════════════════════════
+box(38,.1,48, M.steel, 0,1.8,0, G.electronicsPlt,
+  'Electronics Plate (1mm Stainless Steel)',
+  'CNC laser-cut 1mm stainless steel plate. Supports all electronics components. Acts as common ground plane — all component grounds connected here to establish common low-potential line. Keep RFID module away from this plate to avoid signal interference (metal detunes RFID signals).');
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 3 — ELECTRONICS COMPONENTS
+// ═══════════════════════════════════════════════════════════
+
+// Arduino Mega 2560 (large green PCB ~10.6 × 5.3 cm)
+const ardu = new THREE.Group(); ardu.position.set(-8.5,3,4); G.electronics.add(ardu);
+box(10.5,.22,5.3, M.pcbGn, 0,0,0, ardu,
+  'Arduino Mega 2560 — Main MCU',
+  '54 digital I/O + 16 analog pins. Central brain for motor control and sensor fusion.\n\nPin map:\n· Pins 8-11 → L298N motor driver (IN1-IN4)\n· Pins 6,7 → HC-SR04 ultrasonic (Trig/Echo)\n· Pin 3 (PWM) → SG-90 servo\n· A0–A4 → 5-ch IR line sensor array\n· Pins 50-53 → RC522 RFID (SPI)\n· RX1/TX1 → ESP32 (SoftwareSerial)\n\nProgrammed in C++ via VS Code + PlatformIO.');
+// USB port
+box(1.5,.4,.8, M.alumD, -4.5,.3,-2.4, ardu, null, null);
+// Pins row
+for(let i=0;i<4;i++) box(9,.35,.25, M.motorBk, 0,.28,-2.1+i*.45, ardu, null, null);
+// Microchip
+box(1.5,.3,1.5, M.motorBk, 0,.28,0, ardu, null, null);
+// Power barrel jack
+cyl(.5,.5,.8,8, M.alumD, -4.5,.4,2.2, undefined,undefined,undefined, ardu, null, null);
+
+// ESP32 WiFi Module
+const esp = new THREE.Group(); esp.position.set(4.5,3,4); G.electronics.add(esp);
+box(5.4,.22,2.8, M.pcbGn, 0,0,0, esp,
+  'ESP32 WiFi Module',
+  'Dual-core WiFi + BT microcontroller. Acts as the AGV\'s wireless hub.\n\nFunctions:\n· Hosts WiFi access point (LAN) for operator UI\n· Serves responsive HTML web interface (app.html)\n· I2C master for LCD (SDA→D21, SCL→D22) and PN532 NFC reader\n· SoftwareSerial RX2/TX2 ↔ Arduino RX1/TX1\n· Sends movement commands (moveStraight/Left/Right/Stop) to Arduino based on RFID tag data');
+// Antenna
+box(.28,.7,1.8, M.alumD, 2.55,.46,0, esp, null, null);
+// RF shield can
+box(3,.3,2.2, M.alumD, 0,.28,0, esp, null, null);
+
+// L298N Motor Driver
+const md = new THREE.Group(); md.position.set(4.5,3.5,-9); G.electronics.add(md);
+box(6,.65,4.5, M.pcbBl, 0,0,0, md,
+  'L298N Motor Driver (Dual H-Bridge)',
+  'Controls all 4 DC motors via Arduino pins 8-11 (IN1-IN4).\n\n· IN1/IN2: Left motor pair (forward/reverse)\n· IN3/IN4: Right motor pair (forward/reverse)\n· 12V motor supply from battery\n· Logic 5V from Arduino\n\nTank-style differential drive logic: same speed both sides = straight; opposite speeds = rotate; asymmetric = arc. With mecanum wheels this also enables lateral sliding.');
+// Heatsink
+box(2.2,1.1,2.2, M.alumD, 0,.88,0, md, null, null);
+// Terminals
+for(let i=0;i<4;i++) box(.6,.5,.4, M.alumD, -2+i*1.2,.6,-2.45, md, null, null);
+
+// Buck Converter (12V → 5V step-down)
+box(3.5,.8,2.5, M.buck, -12,3,-8, G.electronics,
+  'Buck Converter (Step-Down 12V→5V)',
+  'Provides regulated 5V to Arduino Mega (VIN pin) from the 12V battery. Brown(+) wire → VIN, Black(-) → GND. Also routes 12V directly to L298N motor driver. DC components kept close together to minimise voltage drop over wire length.');
+cyl(.9,.9,.5,12, M.alumD, -12,3.7,-7.5, undefined,undefined,undefined, G.electronics, null, null); // pot
+
+// RC522 RFID Reader (SPI on Arduino, bottom-front area)
+box(3.2,.22,4.6, M.rfid, -8,3,-11, G.electronics,
+  'RC522 RFID Reader (SPI Bus)',
+  'SPI-connected to Arduino Mega: SCK→52, MOSI→51, MISO→50, RST→5, SS→53.\n\nReads unique 4-byte hex IDs from RFID tags embedded in the floor at decision junctions (e.g., "52-43-FC-1B"). The currentTag/finalTag pair drives the entire path-finding lookup tree. Physically spaced away from aluminium plates — metal detunes RFID signals causing missed reads.');
+// SPI header pins
+for(let i=0;i<5;i++) cyl(.12,.12,.5,6, M.alumD, -7+i*.4,3.3,-12.8, undefined,undefined,undefined, G.electronics, null, null);
+
+// PN532 NFC Reader (I2C on ESP32)
+box(4.5,.22,3.5, M.rfid, 1,3,-9, G.electronics,
+  'PN532 NFC Reader (I2C Bus)',
+  'Secondary NFC/RFID reader connected to ESP32 via I2C (SDA/SCL). Provides additional waypoint detection layer for the navigation system. Works in concert with RC522 for two-tier localisation: IR line sensors keep AGV on path; RFID/NFC tags identify exact decision junctions.');
+
+// Battery Pack (3× 18650 cells, 12V 5Ah system)
+const battG = new THREE.Group(); battG.position.set(11,3.5,9); G.electronics.add(battG);
+[-2.2,0,2.2].forEach(xo => {
+  cyl(.9,.9,6.5,12, M.batt, xo,0,0, Math.PI/2,0,0, battG,
+    '12V Battery Pack (18650 Li-Ion Cells)',
+    '12V battery system, minimum 5Ah capacity.\n\nCalcuation: Total power ≈ 20W (4 motors × 12V × 0.3A + 20-30% buffer). Operating time: 2–3 hours per charge. Autonomous home-base docking protocol: AGV returns to charging station when battery reaches threshold level and recharges without manual intervention.');
+  cyl(.6,.6,.3,12, M.battTop, xo,3.45,0, Math.PI/2,0,0, battG, null, null);
+  cyl(.6,.6,.3,12, M.alumD, xo,-3.45,0, Math.PI/2,0,0, battG, null, null);
+});
+
+// 5-Channel IR Line Sensor Array (bottom, front — A0 to A4)
+const irG = new THREE.Group(); irG.position.set(0,-.3,-22); G.electronics.add(irG);
+[-8,-4,0,4,8].forEach((xo,i) => {
+  box(1.2,.3,.8, M.irBk, xo,0,0, irG,
+    `5-Ch IR Sensor Array — Ch.${i+1} (Pin A${i})`,
+    `Channel ${i+1} of the Waveshare 5-channel IR line-following sensor array. Analog output on Arduino pin A${i}. Each channel detects reflected infrared intensity — low over black electrical tape, high over white floor. PID algorithm reads all 5 channels to steer AGV precisely on the 25mm black tape path. Combined with RFID tags for two-tier robust navigation.`);
+  sph(.22,8, M.usEye, xo,-.24,0, irG, null, null); // IR LED
+  sph(.18,8, M.alumD, xo,-.24,.4, irG, null, null); // phototransistor
+});
+box(9.5,.15,.5, M.pcbGn, 0,.2,0, irG, null, null); // board body
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 3.5 — WIRING HARNESS
+// ═══════════════════════════════════════════════════════════
+// Motor wires (R from motor driver to 4 motor positions)
+[[-17,-2,-18],[17,-2,-18],[-17,-2,18],[17,-2,18]].forEach(mp => {
+  tube([4.5,4,-9], mp, [(4.5+mp[0])*.5, 0, (mp[2]*.4)], .15, 0xdd2222, G.wires);
+  tube([4.5,4,-9], mp, [(4.5+mp[0])*.5, 0, (mp[2]*.4)], .12, 0x111111, G.wires);
+});
+// Power wires (battery to buck, motor driver)
+tube([11,4,9], [-12,4,-8], [-1,6,0], .18, 0xdd2222, G.wires);
+tube([11,4,9], [4.5,4,-9], [8,6,0], .18, 0xdd2222, G.wires);
+tube([11,4,9], [-12,4,-8], [-1,4,4], .16, 0x111111, G.wires);
+// Arduino to ESP serial
+tube([-8,3.5,4], [4.5,3.5,4], [0,5,4], .1, 0x22aa22, G.wires);
+tube([-8,3.5,4], [4.5,3.5,4], [0,5.5,4], .1, 0xddaa00, G.wires);
+// Arduino to motor driver
+tube([-8,3.5,4], [4.5,4,-9], [-2,6,-4], .1, 0x2244cc, G.wires);
+// Buck to Arduino
+tube([-12,4,-8], [-8,4,4], [-10,6,0], .1, 0x994400, G.wires);
+// ESP to LCD
+tube([4.5,3.5,4], [-12,8,-24], [-4,7,-15], .08, 0xdddddd, G.wires);
+tube([4.5,3.5,4], [-12,8,-24], [-4,7.5,-15], .08, 0xdddddd, G.wires);
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 4 — PINK ACRYLIC MID-DECK
+// ═══════════════════════════════════════════════════════════
+box(36,.4,46, M.acrPink, 0,5.8,0, G.midDeck,
+  'Pink Acrylic Mid-Deck',
+  'Acrylic intermediate structural plate, pink-tinted. Sits between the electronics layer and the aluminium payload plate. Provides electrical insulation between electronics and metal payload plate. Visible around all four edges of the aluminium plate when viewed from above.');
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 5 — ALUMINIUM PAYLOAD PLATE (2× 4mm = 8mm effective)
+// ═══════════════════════════════════════════════════════════
+box(32,.4,40, M.alum, 0,7.8,0, G.payloadPlt,
+  'Payload Platform (Dual 4mm Aluminium)',
+  '2× CNC laser-cut 4mm aluminium plates stacked = 8mm effective thickness. Rated for 20 kg fabric bundle payload capacity. Carton dimensions spec: L 0.6m × W 0.7m × H 0.4m (based on 100-150 GSM fabric, 70% packing efficiency). Fastened with 4× M8 hex bolts at corners through acrylic lid.');
+// Seam line (2-piece plate join)
+box(32,.05,.2, M.alumD, 0,8.2,0, G.payloadPlt, null, null);
+// M8 bolts × 4
+[[-13,8.5,-16],[13,8.5,-16],[-13,8.5,16],[13,8.5,16]].forEach(p => {
+  hexBolt(p[0],p[1],p[2], G.payloadPlt);
+});
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 6 — ACRYLIC ENCLOSURE (4 walls + lid + corners)
+// ═══════════════════════════════════════════════════════════
+const wallH = 11.5;
+const wallY = wallH/2 + .2;
+const wallT = .5;
+
+// Front
+box(41,wallH,wallT, M.acr, 0,wallY,-25.25, G.acrylicWalls,
+  'Acrylic Front Panel',
+  'Clear acrylic outer enclosure panel (front face). Laser-cut and edge-bonded. Houses LCD display cutout, ultrasonic sensor port, and emergency stop button mount. Transparent for visual inspection of internal electronics without disassembly.');
+// Rear
+box(41,wallH,wallT, M.acr, 0,wallY, 25.25, G.acrylicWalls,
+  'Acrylic Rear Panel',
+  'Clear acrylic outer enclosure panel (rear face). Mirror of front panel. Full transparency provides 360° visual diagnostics access. Part of protective outer shell.');
+// Left
+box(wallT,wallH,50.5, M.acr, -20.75,wallY,0, G.acrylicWalls,
+  'Acrylic Left Side Panel',
+  'Clear acrylic side panel. Left face shows motor gearbox housings, wheel axle alignment, and wiring harness routing. Edge-bonded construction.');
+// Right
+box(wallT,wallH,50.5, M.acr, 20.75,wallY,0, G.acrylicWalls,
+  'Acrylic Right Side Panel',
+  'Clear acrylic side panel. Right face shows 18650 battery pack, ESP32 module, and blue cylindrical battery cells. Edge-bonded construction.');
+// Top lid
+box(41,wallT,50.5, M.acr, 0,wallH+.5,0, G.acrylicWalls,
+  'Acrylic Top Lid',
+  'Clear acrylic top cover. Sits over aluminium payload plate. Removable for maintenance. Bolted through 4× M8 corner bolts. Provides sealed dust protection for electronics.');
+
+// Corner vertical brackets
+[[-20,.5,-25],[20,.5,-25],[-20,.5,25],[20,.5,25]].forEach(p => {
+  box(1.5,wallH,1.5, M.alumD, p[0],p[1]+wallH/2,p[2], G.acrylicWalls,
+    'Corner Bracket (Aluminium)',
+    'Aluminium L-bracket joining acrylic panels at 90°. Provides structural rigidity to the enclosure frame. Visible in all corner views.');
+});
+
+// Lid M8 corner bolts
+[[-18,12.3,-23],[18,12.3,-23],[-18,12.3,23],[18,12.3,23]].forEach(p => {
+  hexBolt(p[0],p[1],p[2], G.acrylicWalls);
+});
+
+// ═══════════════════════════════════════════════════════════
+// LAYER 7 — EXTERIOR MOUNTED COMPONENTS
+// ═══════════════════════════════════════════════════════════
+
+// SG-90 Servo + HC-SR04 Ultrasonic (front top centre)
+const usG = new THREE.Group(); usG.position.set(0,12,-25); G.exterior.add(usG);
+box(2.3,2,1.8, M.white, 0,-1,0, usG,
+  'SG-90 Servo Motor',
+  'Micro servo, PWM pin 3 on Arduino Mega. Rotates mounted HC-SR04 ultrasonic sensor through ~180° arc for wider obstacle detection coverage. Positioned at front-centre top of enclosure.');
+box(4.5,1.8,1.3, M.usBody, 0,.5,.1, usG,
+  'HC-SR04 Ultrasonic Sensor',
+  'Obstacle detection sensor on servo mount.\n\n· Trigger: Digital pin 6 (Arduino)\n· Echo: Digital pin 7 (Arduino)\n· Range: 2cm – 400cm via time-of-flight\n· Servo sweeps it for wide field detection\n\nOn obstacle detected: AGV stops, servo sweeps to find clear direction, reroutes or waits for path to clear. Physical emergency stop also available.');
+// Transducer eyes
+[-1.25,1.25].forEach(xo => cyl(.68,.68,.55,16, M.usEye, xo,.5,-.78, Math.PI/2,0,0, usG, null, null));
+// Sensor board detail
+box(4,.25,1, M.pcbGn, 0,.06,.2, usG, null, null);
+
+// 16×2 LCD Display (front panel, left, mid-height)
+const lcdG = new THREE.Group(); lcdG.position.set(-11,4.5,-25.7); G.exterior.add(lcdG);
+box(7.5,3,.85, M.lcdBk, 0,0,0, lcdG,
+  '16×2 LCD Display (I2C)',
+  'Alphanumeric LCD connected to ESP32 via I2C: SDA→D21, SCL→D22. Displays real-time AGV status: current RFID tag ID, navigation state (moving/stopped/turning), destination tag, and battery indicator. Accessible from front face for operator at-a-glance monitoring without needing the web interface.');
+box(6.5,2.2,.2, M.lcdScr, 0,0,-.45, lcdG,
+  'LCD Screen Matrix',
+  '16 characters × 2 rows. Backlit matrix display. Shows status messages like current junction tag, movement command, and system diagnostics.');
+// Character dots suggestion
+for(let r=0;r<2;r++) for(let c=0;c<8;c++)
+  box(.35,.35,.05, new THREE.MeshStandardMaterial({color:0x2a6048,emissive:new THREE.Color(0x0a2018),emissiveIntensity:.5}),
+    -3+c*.88, .6-r*.9, -.56, lcdG, null, null);
+
+// Emergency Stop Button (front, right side)
+const estG = new THREE.Group(); estG.position.set(12,4.5,-25.7); G.exterior.add(estG);
+cyl(1.5,1.5,.85,20, M.estop, 0,0,0, Math.PI/2,0,0, estG,
+  'Emergency Stop Button (E-Stop)',
+  'Physical mushroom-head e-stop on front acrylic face. Instantly cuts motor driver power on press.\n\nSafety hierarchy:\n1. Physical e-stop (this button)\n2. Remote stop via WiFi UI\n3. Automatic sensor-triggered stop\n\nFirst line of safety intervention per AGV protocol. Per regulations: operator training and clear pathway labelling are required.');
+cyl(1.8,1.8,.3,20, M.alumD, 0,0,.53, Math.PI/2,0,0, estG, null, null); // mounting flange
+// Indicator ring
+cyl(1.65,1.65,.15,20, new THREE.MeshStandardMaterial({color:0xff4444,emissive:new THREE.Color(0x881111),emissiveIntensity:.8}), 0,0,-.5, Math.PI/2,0,0, estG, null, null);
+
+// Small toggle switch (visible in back/top views)
+const tglG = new THREE.Group(); tglG.position.set(0,12,25); G.exterior.add(tglG);
+box(1.2,1.2,.8, M.alumD, 0,0,0, tglG, 'Toggle / Rocker Switch', 'Main power toggle or reset switch visible at rear-top of enclosure.');
+cyl(.3,.3,.8,8, M.motorBk, 0,.8,0, undefined,undefined,undefined, tglG, null, null);
+
+// ─────────────────────────────────────────────
+// STORE LAYER BASE POSITIONS (all at 0,0,0)
+// ─────────────────────────────────────────────
+Object.keys(G).forEach(k => { BASE_POS[k] = G[k].position.clone(); });
+
+// ─────────────────────────────────────────────
+// ORBIT (custom mouse)
+// ─────────────────────────────────────────────
+let phi = 0.72, theta = 0.52, rad = 130;
+let tPhi = phi, tTheta = theta, tRad = rad;
+let panX = 0, panY = 5, tPanX = 0, tPanY = 5;
+let dragging = false, rightDrag = false, mx = 0, my = 0;
+let movedSinceDown = false, downX = 0, downY = 0;
+
+renderer.domElement.addEventListener('contextmenu', e=>e.preventDefault());
+renderer.domElement.addEventListener('mousedown', e=>{
+  dragging=true; rightDrag=e.button===2; mx=e.clientX; my=e.clientY;
+  movedSinceDown=false; downX=e.clientX; downY=e.clientY;
+});
+window.addEventListener('mouseup', ()=>dragging=false);
+window.addEventListener('mousemove', e=>{
+  if(Math.abs(e.clientX-downX)>4||Math.abs(e.clientY-downY)>4) movedSinceDown=true;
+  if(!dragging) return;
+  const dx=(e.clientX-mx)*.005, dy=(e.clientY-my)*.005;
+  if(rightDrag){ tPanX-=dx*rad*.25; tPanY+=dy*rad*.25; }
+  else{ tPhi-=dx; tTheta=Math.max(.04,Math.min(Math.PI/2-.04,tTheta-dy)); }
+  mx=e.clientX; my=e.clientY;
+});
+renderer.domElement.addEventListener('wheel', e=>{
+  tRad*=(1+e.deltaY*.0008); tRad=Math.max(28,Math.min(350,tRad));
+});
+
+// Touch support
+let touches = null;
+renderer.domElement.addEventListener('touchstart', e=>{ e.preventDefault(); if(e.touches.length===1){ dragging=true; rightDrag=false; mx=e.touches[0].clientX; my=e.touches[0].clientY; movedSinceDown=false; downX=mx; downY=my; touches=null; } else if(e.touches.length===2){ dragging=false; touches=e.touches; } }, {passive:false});
+renderer.domElement.addEventListener('touchend', ()=>{ dragging=false; touches=null; });
+renderer.domElement.addEventListener('touchmove', e=>{ e.preventDefault();
+  if(e.touches.length===1&&dragging){ const dx=(e.touches[0].clientX-mx)*.006, dy=(e.touches[0].clientY-my)*.006; tPhi-=dx; tTheta=Math.max(.04,Math.min(Math.PI/2-.04,tTheta-dy)); mx=e.touches[0].clientX; my=e.touches[0].clientY; if(Math.abs(e.touches[0].clientX-downX)>6||Math.abs(e.touches[0].clientY-downY)>6) movedSinceDown=true; }
+}, {passive:false});
+
+// ─────────────────────────────────────────────
+// RAYCASTING
+// ─────────────────────────────────────────────
+const rc = new THREE.Raycaster();
+const mp2 = new THREE.Vector2();
+const tip = document.getElementById('hover-tip');
+const infoPanel = document.getElementById('info');
+const infoName = document.getElementById('info-name');
+const infoDesc = document.getElementById('info-desc');
+
+window.addEventListener('mousemove', e=>{
+  mp2.x=(e.clientX/innerWidth)*2-1;
+  mp2.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mp2,camera);
+  const hits=rc.intersectObjects(clickable,false);
+  if(hits.length&&hits[0].object.userData.cName){
+    tip.style.display='block';
+    tip.style.left=(e.clientX+14)+'px';
+    tip.style.top=(e.clientY-8)+'px';
+    tip.textContent=hits[0].object.userData.cName;
+    renderer.domElement.style.cursor='pointer';
+  } else {
+    tip.style.display='none';
+    renderer.domElement.style.cursor='default';
+  }
+});
+
+window.addEventListener('click', e=>{
+  if(movedSinceDown) return;
+  mp2.x=(e.clientX/innerWidth)*2-1;
+  mp2.y=-(e.clientY/innerHeight)*2+1;
+  rc.setFromCamera(mp2,camera);
+  const hits=rc.intersectObjects(clickable,false);
+  if(hits.length&&hits[0].object.userData.cName){
+    const obj=hits[0].object;
+    infoName.textContent=obj.userData.cName;
+    infoDesc.textContent=obj.userData.cDesc;
+    infoPanel.classList.add('highlight');
+    setTimeout(()=>infoPanel.classList.remove('highlight'),600);
+    // Highlight flash
+    const origMat=obj.material;
+    const flash=origMat.clone();
+    flash.emissive=new THREE.Color(0x4444aa);
+    flash.emissiveIntensity=.6;
+    obj.material=flash;
+    setTimeout(()=>{ obj.material=origMat; },350);
+  }
+});
+
+// ─────────────────────────────────────────────
+// EXPLODE / ACRYLIC / WIRE TOGGLES
+// ─────────────────────────────────────────────
+let exploded=false, explodeT=0, explodeTgt=0, explodeAnim=false;
+document.getElementById('btn-explode').addEventListener('click', ()=>{
+  exploded=!exploded; explodeTgt=exploded?1:0; explodeAnim=true;
+  const btn=document.getElementById('btn-explode');
+  btn.classList.toggle('on',exploded);
+  btn.textContent=exploded?'⊖  ASSEMBLED VIEW':'⊕  EXPLODED VIEW';
+  if(exploded){
+    infoName.textContent='Exploded View Active';
+    infoDesc.textContent='Each layer separated for inspection. Click any component to learn about it.\n\nLayers from bottom:\n1. Mecanum Wheels\n2. 4mm Al Chassis Plate\n3. 1mm SS Electronics Plate\n4. Electronics Bay\n5. Pink Acrylic Mid-Deck\n6. 8mm Al Payload Plate\n7. Acrylic Enclosure\n8. Exterior Components';
+  }
+});
+
+let acrylicOn=true;
+document.getElementById('btn-acrylic').addEventListener('click', ()=>{
+  acrylicOn=!acrylicOn;
+  G.acrylicWalls.traverse(c=>{ if(c.isMesh){ c.visible=acrylicOn; }});
+  const btn=document.getElementById('btn-acrylic');
+  btn.classList.toggle('on',!acrylicOn);
+  btn.textContent=acrylicOn?'◻  TOGGLE ACRYLIC':'◼  SHOW ACRYLIC';
+});
+
+let wiresOn=true;
+document.getElementById('btn-wire').addEventListener('click', ()=>{
+  wiresOn=!wiresOn;
+  G.wires.visible=wiresOn;
+  const btn=document.getElementById('btn-wire');
+  btn.classList.toggle('on',!wiresOn);
+  btn.textContent=wiresOn?'≋  TOGGLE WIRING':'≋  SHOW WIRING';
+});
+
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  tPhi=0.72; tTheta=0.52; tRad=130; tPanX=0; tPanY=5;
+});
+
+// ─────────────────────────────────────────────
+// ANIMATION LOOP
+// ─────────────────────────────────────────────
+const clock = new THREE.Clock();
+let autoRotate = true;
+
+renderer.domElement.addEventListener('mousedown', ()=>{ autoRotate=false; });
+// Resume auto-rotate after 8s idle
+let idleTimer;
+window.addEventListener('mouseup', ()=>{
+  clearTimeout(idleTimer);
+  idleTimer=setTimeout(()=>{ autoRotate=true; },8000);
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), .05);
+
+  // Smooth camera
+  const lp = .09;
+  phi += (tPhi-phi)*lp;
+  theta += (tTheta-theta)*lp;
+  rad += (tRad-rad)*lp;
+  panX += (tPanX-panX)*lp;
+  panY += (tPanY-panY)*lp;
+
+  if(autoRotate) tPhi += .0006;
+
+  camera.position.x = panX + rad*Math.sin(phi)*Math.cos(theta);
+  camera.position.y = panY + rad*Math.sin(theta);
+  camera.position.z =        rad*Math.cos(phi)*Math.cos(theta);
+  camera.lookAt(panX, panY, 0);
+
+  // Explode animation
+  if(explodeAnim) {
+    explodeT += (explodeTgt-explodeT)*0.055;
+    if(Math.abs(explodeT-explodeTgt)<.001){ explodeT=explodeTgt; explodeAnim=false; }
+    Object.keys(EXPLODE).forEach(k=>{
+      if(G[k]) G[k].position.copy(BASE_POS[k]).addScaledVector(EXPLODE[k], explodeT);
+    });
+  }
+
+  renderer.render(scene, camera);
+}
+animate();
+
+// ─────────────────────────────────────────────
+// RESIZE
+// ─────────────────────────────────────────────
+window.addEventListener('resize', ()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>

@@ -26,10 +26,12 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeExhibitId, setActiveExhibitId] = useState<string | null>(null);
   const [wallpaperEnabled, setWallpaperEnabled] = useState(true);
+  const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [isMaybachLoading, setIsMaybachLoading] = useState(false);
   const [isRogueLoading, setIsRogueLoading] = useState(false);
   const maybachTimerRef = useRef<number | null>(null);
   const rogueTimerRef = useRef<number | null>(null);
+  const acme3dHref = `${import.meta.env.BASE_URL}projects/acme-agv-3d.html`;
 
   useEffect(() => {
     loadContent().then(setContent).catch((e) => console.error(e));
@@ -64,36 +66,48 @@ export default function App() {
 
   const goHall = () => {
     setModalOpen(false);
+    setHighlightsOpen(false);
     setView("hall");
   };
 
   const goLanding = () => {
     setModalOpen(false);
+    setHighlightsOpen(false);
     setView("landing");
+  };
+
+  const startMaybachTransition = () => {
+    if (isMaybachLoading || isRogueLoading) return;
+    setModalOpen(false);
+    setHighlightsOpen(false);
+    setIsMaybachLoading(true);
+    maybachTimerRef.current = window.setTimeout(() => {
+      navigate("/cartier-maybach", { state: { fromMaybachLoader: true } });
+      setIsMaybachLoading(false);
+      maybachTimerRef.current = null;
+    }, 950);
+  };
+
+  const startRogueTransition = () => {
+    if (isMaybachLoading || isRogueLoading) return;
+    setModalOpen(false);
+    setHighlightsOpen(false);
+    setIsRogueLoading(true);
+    rogueTimerRef.current = window.setTimeout(() => {
+      navigate("/cartier-rogue", { state: { fromRogueTransition: true } });
+      setIsRogueLoading(false);
+      rogueTimerRef.current = null;
+    }, 840);
   };
 
   const handleArtifactAction = (artifact: Artifact) => {
     if (artifact.actionId === "cartier_maybach_route") {
-      if (isMaybachLoading || isRogueLoading) return;
-      setModalOpen(false);
-      setIsMaybachLoading(true);
-      maybachTimerRef.current = window.setTimeout(() => {
-        navigate("/cartier-maybach", { state: { fromMaybachLoader: true } });
-        setIsMaybachLoading(false);
-        maybachTimerRef.current = null;
-      }, 950);
+      startMaybachTransition();
       return;
     }
 
     if (artifact.actionId === "cartier_rogue_route") {
-      if (isMaybachLoading || isRogueLoading) return;
-      setModalOpen(false);
-      setIsRogueLoading(true);
-      rogueTimerRef.current = window.setTimeout(() => {
-        navigate("/cartier-rogue", { state: { fromRogueTransition: true } });
-        setIsRogueLoading(false);
-        rogueTimerRef.current = null;
-      }, 840);
+      startRogueTransition();
     }
   };
 
@@ -168,9 +182,60 @@ export default function App() {
                 <motion.div key="landing" className="landing" variants={fadeUp} initial="hidden" animate="show" exit="exit">
                   <h1 className="name">{content.site.name}</h1>
                   <p className="value">B.F.Tech, NIFT Delhi | MPS FM, Parsons School of Design, TNS.</p>
-                  <motion.button type="button" className="enter" onClick={() => setView("hall")} whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }} transition={{ duration: 0.25, ease }}>
-                    {content.site.cta}
-                  </motion.button>
+                  <div className="landingActions">
+                    <motion.button
+                      type="button"
+                      className="enter"
+                      onClick={goHall}
+                      whileHover={{ y: -1 }}
+                      whileTap={{ scale: 0.99 }}
+                      transition={{ duration: 0.25, ease }}
+                    >
+                      {content.site.cta}
+                    </motion.button>
+                    <motion.button
+                      type="button"
+                      className="enter enter--secondary"
+                      onClick={() => setHighlightsOpen((value) => !value)}
+                      aria-expanded={highlightsOpen}
+                      aria-controls="landingHighlights"
+                      whileHover={{ y: -1 }}
+                      whileTap={{ scale: 0.99 }}
+                      transition={{ duration: 0.25, ease }}
+                    >
+                      Highlights
+                    </motion.button>
+                  </div>
+                  <AnimatePresence>
+                    {highlightsOpen ? (
+                      <motion.div
+                        id="landingHighlights"
+                        className="landingHighlights"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.26, ease }}
+                      >
+                        <a className="landingHighlightCard" href={acme3dHref} target="_blank" rel="noreferrer" onClick={() => setHighlightsOpen(false)}>
+                          <span className="landingHighlightKicker">Operational Systems</span>
+                          <span className="landingHighlightTitle">ACME AGV 3D Reconstruction</span>
+                          <span className="landingHighlightMeta">Interactive robot breakdown and inspection view</span>
+                        </a>
+
+                        <button className="landingHighlightCard" type="button" onClick={startMaybachTransition}>
+                          <span className="landingHighlightKicker">Brand Experience</span>
+                          <span className="landingHighlightTitle">Cartier x Maybach</span>
+                          <span className="landingHighlightMeta">Luxury mobility concept with 3D vehicle staging</span>
+                        </button>
+
+                        <button className="landingHighlightCard" type="button" onClick={startRogueTransition}>
+                          <span className="landingHighlightKicker">Brand Campaign</span>
+                          <span className="landingHighlightTitle">Cartier Rogue</span>
+                          <span className="landingHighlightMeta">Editorial campaign world, rollout logic, and film</span>
+                        </button>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </motion.div>
               </div>
             ) : null}
