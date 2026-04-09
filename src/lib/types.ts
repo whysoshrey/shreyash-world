@@ -19,7 +19,12 @@ export type Door = {
   thesis: string;
 };
 
-export type Artifact = { label: string; url: string; actionId?: string };
+export type Artifact = {
+  label: string;
+  url: string;
+  actionId?: string;
+  variant?: "hero";
+};
 
 export type Exhibit = {
   id: string;

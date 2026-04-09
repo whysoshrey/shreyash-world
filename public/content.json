@@ -61,6 +61,11 @@
         "skills": "Systems design, experimentation, stakeholder ops.",
         "artifacts": [
           {
+            "label": "View 3D Reconstruction",
+            "url": "/projects/acme-agv-3d.html",
+            "variant": "hero"
+          },
+          {
             "label": "R&D Files",
             "url": "https://drive.google.com/drive/folders/1SZzDFrsrTxFyBJGu6FtnUU6okATvaoGv?usp=share_link"
           },
