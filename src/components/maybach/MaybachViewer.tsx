@@ -7,6 +7,7 @@ type Props = {
   bodyColor: string;
   accentColor: string;
   heroLightOn: boolean;
+  compactMode?: boolean;
 };
 
 class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { hasError: boolean }> {
@@ -29,30 +30,25 @@ class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: Reac
   }
 }
 
-export function MaybachViewer({ bodyColor, accentColor, heroLightOn }: Props) {
+export function MaybachViewer({ bodyColor, accentColor, heroLightOn, compactMode = false }: Props) {
   return (
-    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 1.5, 6], fov: 46 }} gl={{ antialias: true, alpha: true }}>
-      <ambientLight intensity={heroLightOn ? 1.0 : 0.72} />
-      <directionalLight position={[5, 6.2, 4.4]} intensity={heroLightOn ? 2.35 : 1.15} color="#ffe4bb" />
-      <directionalLight position={[-5.2, 3.8, -4.6]} intensity={heroLightOn ? 1.25 : 0.72} color="#b3c5ff" />
-      <directionalLight position={[0, 2.2, -8]} intensity={heroLightOn ? 1.15 : 0.62} color="#fff3de" />
+    <Canvas
+      dpr={compactMode ? [0.85, 1.1] : [1, 1.5]}
+      frameloop={compactMode ? "demand" : "always"}
+      camera={compactMode ? { position: [0, 1.22, 7.35], fov: 54 } : { position: [0, 1.5, 6], fov: 46 }}
+      gl={{ antialias: !compactMode, alpha: true, powerPreference: compactMode ? "low-power" : "high-performance" }}
+    >
+      <ambientLight intensity={compactMode ? (heroLightOn ? 0.9 : 0.68) : heroLightOn ? 1.0 : 0.72} />
+      <directionalLight position={[5, 6.2, 4.4]} intensity={compactMode ? (heroLightOn ? 1.75 : 0.9) : heroLightOn ? 2.35 : 1.15} color="#ffe4bb" />
+      <directionalLight position={[-5.2, 3.8, -4.6]} intensity={compactMode ? (heroLightOn ? 0.95 : 0.62) : heroLightOn ? 1.25 : 0.72} color="#b3c5ff" />
+      <directionalLight position={[0, 2.2, -8]} intensity={compactMode ? (heroLightOn ? 0.82 : 0.48) : heroLightOn ? 1.15 : 0.62} color="#fff3de" />
 
       {heroLightOn ? (
         <>
-          <pointLight
-            position={[2.95, -0.28, 2.55]}
-            distance={8}
-            decay={1.35}
-            intensity={1.68}
-            color="#f4efe2"
-          />
-          <pointLight
-            position={[-3.25, -0.2, -1.65]}
-            distance={8.5}
-            decay={1.3}
-            intensity={1.24}
-            color="#f2ead8"
-          />
+          <pointLight position={[2.95, -0.28, 2.55]} distance={compactMode ? 6.4 : 8} decay={1.35} intensity={compactMode ? 1.08 : 1.68} color="#f4efe2" />
+          {!compactMode ? (
+            <pointLight position={[-3.25, -0.2, -1.65]} distance={8.5} decay={1.3} intensity={1.24} color="#f2ead8" />
+          ) : null}
         </>
       ) : null}
 
@@ -72,22 +68,30 @@ export function MaybachViewer({ bodyColor, accentColor, heroLightOn }: Props) {
             </Html>
           }
         >
-          <group position={[0, -0.95, 0]} scale={1}>
+          <group position={compactMode ? [0, -1.02, 0] : [0, -0.95, 0]} scale={compactMode ? 0.92 : 1}>
             <MaybachModel bodyColor={bodyColor} accentColor={accentColor} />
           </group>
-          <ContactShadows position={[0, -1.5, 0]} opacity={heroLightOn ? 0.36 : 0.14} blur={2.15} scale={22} far={9} />
+          <ContactShadows
+            frames={1}
+            position={[0, -1.5, 0]}
+            opacity={compactMode ? (heroLightOn ? 0.22 : 0.1) : heroLightOn ? 0.36 : 0.14}
+            blur={compactMode ? 1.55 : 2.15}
+            scale={compactMode ? 18 : 22}
+            far={compactMode ? 7.2 : 9}
+          />
         </Suspense>
       </ModelErrorBoundary>
 
       <OrbitControls
         enablePan={false}
         enableZoom={false}
-        minDistance={4.2}
-        maxDistance={6.3}
-        minPolarAngle={Math.PI / 3.3}
-        maxPolarAngle={Math.PI / 2.08}
+        rotateSpeed={compactMode ? 0.82 : 1}
+        minDistance={compactMode ? 5.8 : 4.2}
+        maxDistance={compactMode ? 7.4 : 6.3}
+        minPolarAngle={compactMode ? Math.PI / 3.0 : Math.PI / 3.3}
+        maxPolarAngle={compactMode ? Math.PI / 1.98 : Math.PI / 2.08}
         enableDamping
-        dampingFactor={0.08}
+        dampingFactor={compactMode ? 0.11 : 0.08}
       />
     </Canvas>
   );

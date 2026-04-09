@@ -37,6 +37,9 @@ body.cmRoute{
   font-size: 13px;
   letter-spacing: 0.13em;
   text-transform: uppercase;
+  background: linear-gradient(180deg, rgba(5,5,5,0.94), rgba(5,5,5,0.62), rgba(5,5,5,0));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .cmHeader nav{
@@ -167,6 +170,11 @@ body.cmRoute{
     radial-gradient(1000px 300px at 50% 92%, rgba(255,255,255,0.08), rgba(255,255,255,0));
 }
 
+.cmModelStage.is-idle{
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
 .cmModelStage::before{
   content: "";
   position: absolute;
@@ -204,8 +212,11 @@ body.cmRoute{
   position: absolute;
   inset: 0;
   z-index: 4;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   text-align: center;
   padding: 20px;
   color: rgba(247,244,238,0.86);
@@ -247,6 +258,49 @@ body.cmRoute{
   max-width: min(90vw, 460px);
   white-space: normal;
   border-radius: 12px;
+}
+
+.cmModelFallback--interactive{
+  gap: 16px;
+  max-width: min(92vw, 540px);
+  margin: 0 auto;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.cmModelFallbackKicker{
+  margin: 0;
+  color: rgba(232,198,132,0.88);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+}
+
+.cmModelFallback--interactive h3{
+  margin: 0;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.08;
+  color: rgba(253,250,246,0.98);
+}
+
+.cmModelFallback--interactive p{
+  margin: 0;
+  max-width: 40ch;
+  line-height: 1.68;
+  color: rgba(247,244,238,0.78);
+}
+
+.cmModelCta{
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,198,132,0.56);
+  background: rgba(232,198,132,0.08);
+  color: rgba(247,244,238,0.94);
+  padding: 0 16px;
+  font: inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .cmDragHint{
@@ -531,6 +585,29 @@ body.cmRoute{
 }
 
 @media (max-width: 980px){
+  .cmPage{
+    padding: calc(env(safe-area-inset-top) + 14px) 16px 44px;
+  }
+
+  .cmHeader{
+    top: env(safe-area-inset-top);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 0 12px;
+  }
+
+  .cmHeader nav{
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .cmHeader nav::-webkit-scrollbar{
+    display: none;
+  }
+
   .cmHero{
     grid-template-columns: 1fr;
     min-height: auto;
@@ -561,5 +638,79 @@ body.cmRoute{
 
   .cmSwatchGrid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px){
+  .cmPage{
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .cmHero{
+    gap: 16px;
+    padding-top: 28px;
+  }
+
+  .cmHeroContent h1{
+    font-size: clamp(36px, 12vw, 56px);
+  }
+
+  .cmHeroContent p,
+  .cmLead,
+  .cmCard p,
+  .cmCard ul,
+  .cmFilmLead{
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .cmChips{
+    max-width: 100%;
+  }
+
+  .cmModelStage{
+    height: clamp(320px, 52vh, 430px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .cmModelFallback{
+    padding: 24px 18px;
+  }
+
+  .cmModelFallback--interactive{
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .cmDragHint{
+    left: 50%;
+    right: auto;
+    bottom: 14px;
+    transform: translateX(-50%);
+  }
+
+  .cmControlsTray{
+    padding: 12px;
+  }
+
+  .cmSwatch{
+    min-height: 42px;
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .cmFooter{
+    flex-direction: column;
+  }
+
+  .cmFooter a{
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 }

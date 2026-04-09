@@ -1,25 +1,41 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
-import { MaybachViewer } from "../components/maybach/MaybachViewer";
 import { MaybachColorControls } from "../components/maybach/MaybachColorControls";
 import "../styles/cartier-maybach.css";
 
 const DEFAULT_BODY = "#0A0A0A";
 const DEFAULT_ACCENT = "#C8A35A";
 const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
+const LOW_DATA_EFFECTIVE_TYPES = new Set(["slow-2g", "2g", "3g"]);
+
+const MaybachViewer = lazy(() =>
+  import("../components/maybach/MaybachViewer").then((module) => ({ default: module.MaybachViewer })),
+);
+
+type ConnectionInfo = {
+  addEventListener?: (type: "change", listener: () => void) => void;
+  removeEventListener?: (type: "change", listener: () => void) => void;
+  effectiveType?: string;
+  saveData?: boolean;
+};
 
 export function CartierMaybachPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const modelStageRef = useRef<HTMLDivElement | null>(null);
   const [bodyColor, setBodyColor] = useState(DEFAULT_BODY);
   const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT);
   const [heroLightOn, setHeroLightOn] = useState(true);
   const [showEntryLoader, setShowEntryLoader] = useState(Boolean((location.state as { fromMaybachLoader?: boolean } | null)?.fromMaybachLoader));
-  const [showDragHint, setShowDragHint] = useState(true);
+  const [showDragHint, setShowDragHint] = useState(false);
   const [dragHintText, setDragHintText] = useState("Click and Drag");
-  const [modelAvailability, setModelAvailability] = useState<"checking" | "ready" | "missing">("checking");
+  const [modelAvailability, setModelAvailability] = useState<"idle" | "checking" | "ready" | "missing">("idle");
+  const [shouldAutoloadModel, setShouldAutoloadModel] = useState(false);
+  const [shouldLoadModel, setShouldLoadModel] = useState(false);
+  const [useCompactViewer, setUseCompactViewer] = useState(false);
+  const [viewerModeReady, setViewerModeReady] = useState(false);
 
   useEffect(() => {
     if (!showEntryLoader) return;
@@ -35,16 +51,58 @@ export function CartierMaybachPage() {
   }, []);
 
   useEffect(() => {
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (coarse) setDragHintText("Drag to Rotate");
-    const t = window.setTimeout(() => setShowDragHint(false), 5000);
-    return () => window.clearTimeout(t);
+    const coarseQuery = window.matchMedia("(pointer: coarse)");
+    const compactQuery = window.matchMedia("(max-width: 920px)");
+    const connection = (navigator as Navigator & { connection?: ConnectionInfo }).connection;
+
+    const updateViewerMode = () => {
+      const coarsePointer = coarseQuery.matches || navigator.maxTouchPoints > 0;
+      const compactViewer = coarsePointer || compactQuery.matches;
+      const constrainedNetwork = Boolean(connection?.saveData) || LOW_DATA_EFFECTIVE_TYPES.has(connection?.effectiveType ?? "");
+
+      setDragHintText(coarsePointer ? "Drag to Rotate" : "Click and Drag");
+      setUseCompactViewer(compactViewer);
+      setShouldAutoloadModel(!compactViewer && !constrainedNetwork);
+      setViewerModeReady(true);
+    };
+
+    updateViewerMode();
+
+    coarseQuery.addEventListener("change", updateViewerMode);
+    compactQuery.addEventListener("change", updateViewerMode);
+    connection?.addEventListener?.("change", updateViewerMode);
+
+    return () => {
+      coarseQuery.removeEventListener("change", updateViewerMode);
+      compactQuery.removeEventListener("change", updateViewerMode);
+      connection?.removeEventListener?.("change", updateViewerMode);
+    };
   }, []);
 
   useEffect(() => {
+    if (!shouldAutoloadModel || shouldLoadModel) return;
+    const stage = modelStageRef.current;
+    if (!stage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        setShouldLoadModel(true);
+        observer.disconnect();
+      },
+      { rootMargin: "220px 0px" },
+    );
+
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [shouldAutoloadModel, shouldLoadModel]);
+
+  useEffect(() => {
+    if (!shouldLoadModel) return;
     let canceled = false;
 
     const checkModel = async () => {
+      setModelAvailability("checking");
       try {
         const res = await fetch(MAYBACH_GLB_URL, { method: "HEAD" });
         if (canceled) return;
@@ -58,7 +116,14 @@ export function CartierMaybachPage() {
     return () => {
       canceled = true;
     };
-  }, []);
+  }, [shouldLoadModel]);
+
+  useEffect(() => {
+    if (modelAvailability !== "ready") return;
+    setShowDragHint(true);
+    const t = window.setTimeout(() => setShowDragHint(false), 5000);
+    return () => window.clearTimeout(t);
+  }, [modelAvailability]);
 
   return (
     <div className="cmPage">
@@ -127,14 +192,45 @@ export function CartierMaybachPage() {
           />
         </motion.div>
 
-        <div className="cmModelStage">
-          {modelAvailability === "ready" ? (
-            <MaybachViewer bodyColor={bodyColor} accentColor={accentColor} heroLightOn={heroLightOn} />
+        <div ref={modelStageRef} className={`cmModelStage${useCompactViewer ? " is-compact" : ""}${!shouldLoadModel ? " is-idle" : ""}`}>
+          {shouldLoadModel ? (
+            modelAvailability === "ready" ? (
+              <Suspense
+                fallback={
+                  <div className="cmModelFallback">
+                    Preparing Maybach viewer…
+                  </div>
+                }
+              >
+                <MaybachViewer
+                  bodyColor={bodyColor}
+                  accentColor={accentColor}
+                  heroLightOn={heroLightOn}
+                  compactMode={useCompactViewer}
+                />
+              </Suspense>
+            ) : (
+              <div className={`cmModelFallback${modelAvailability === "missing" ? " is-error" : ""}`}>
+                {modelAvailability === "missing"
+                  ? "Maybach model missing. Ensure public/models/maybach.glb exists."
+                  : "Preparing Maybach…"}
+              </div>
+            )
+          ) : viewerModeReady && !shouldAutoloadModel ? (
+            <div className="cmModelFallback cmModelFallback--interactive">
+              <p className="cmModelFallbackKicker">Interactive Preview</p>
+              <h3>Load the 3D Maybach when you&apos;re ready.</h3>
+              <p>
+                On phones and data-aware connections, the live model stays on demand so the rest of the page remains fast and
+                easy to scroll.
+              </p>
+              <button type="button" className="cmModelCta" onClick={() => setShouldLoadModel(true)}>
+                Load 3D Model
+              </button>
+            </div>
           ) : (
-            <div className={`cmModelFallback${modelAvailability === "missing" ? " is-error" : ""}`}>
-              {modelAvailability === "missing"
-                ? "Maybach model missing. Ensure public/models/maybach.glb exists."
-                : "Loading Maybach…"}
+            <div className="cmModelFallback">
+              Preparing Maybach…
             </div>
           )}
           {modelAvailability === "ready" && showDragHint ? (

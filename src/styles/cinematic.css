@@ -2067,11 +2067,33 @@ ul{
   }
 
   .landing{
+    width: 100%;
     padding: 34px 18px 28px;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .landingActions{
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .enter{
+    align-self: flex-start;
+  }
+
+  .landing .name,
+  .landing .tag,
+  .landing .value{
+    text-align: left;
+  }
+
+  .landing::before{
+    top: -18px;
+    right: -12px;
+    bottom: -18px;
+    left: -12px;
   }
 
   .landingHighlights{
@@ -2148,6 +2170,8 @@ ul{
     top: calc(env(safe-area-inset-top) + 52px);
     right: 12px;
     width: min(260px, calc(100vw - 24px));
+    max-height: calc(100dvh - env(safe-area-inset-top) - 68px);
+    overflow-y: auto;
     z-index: 35;
     border-radius: 16px;
     border: 1px solid rgba(255,216,140,0.22);
