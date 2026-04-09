@@ -90,8 +90,8 @@
   CLICK &nbsp;INSPECT
 </div>
 
-<script type="module">
-import * as THREE from "../vendor/three.module.min.js";
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
 // ─────────────────────────────────────────────
 // RENDERER + SCENE
 // ─────────────────────────────────────────────
@@ -100,7 +100,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
