@@ -63,6 +63,18 @@ body.cmRoute{
   cursor: pointer;
 }
 
+.cmHeader a:focus-visible,
+.cmHeader button:focus-visible,
+.cmHeroLink:focus-visible,
+.cmModelCta:focus-visible,
+.cmSwatch:focus-visible,
+.cmLightToggle:focus-visible,
+.cmResetBtn:focus-visible,
+.cmFooter a:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(232,198,132,0.34);
+}
+
 .cmHeader a:hover,
 .cmHeader button:hover{
   color: rgba(228,192,125,0.96);
@@ -79,6 +91,15 @@ body.cmRoute{
   align-content: start;
   padding: clamp(42px, 6.5vw, 86px) 0 clamp(10px, 1.6vw, 20px);
   border-bottom: 1px solid rgba(255,255,255,0.09);
+}
+
+.cmScrollFloat,
+.cmModelStageWrap{
+  transform-origin: center center;
+}
+
+.cmModelStageWrap{
+  width: 100%;
 }
 
 .cmHeroContent h1{
@@ -101,6 +122,34 @@ body.cmRoute{
   max-width: 74ch;
   line-height: 1.72;
   color: rgba(247,244,238,0.8);
+}
+
+.cmHeroActions{
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cmHeroLink{
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,198,132,0.56);
+  background: rgba(232,198,132,0.08);
+  color: rgba(247,244,238,0.94);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cmHeroLink--secondary{
+  border-color: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.03);
 }
 
 .cmLead{
@@ -154,6 +203,12 @@ body.cmRoute{
   margin-right: calc(50% - 50vw);
   display: grid;
   gap: 8px;
+}
+
+.cmSection[id],
+.cmModelSection,
+.cmFilmSection{
+  scroll-margin-top: 96px;
 }
 
 .cmToolbarWrap{
@@ -313,6 +368,13 @@ body.cmRoute{
   color: rgba(247,244,238,0.74);
   border-bottom: 1px solid rgba(200,163,90,0.55);
   padding-bottom: 3px;
+}
+
+.cmModelIntro{
+  width: min(1280px, 96vw);
+  margin: 8px auto 0;
+  display: grid;
+  gap: 6px;
 }
 
 .cmControlsTray{
@@ -613,6 +675,10 @@ body.cmRoute{
     min-height: auto;
   }
 
+  .cmHeroActions{
+    margin-top: 18px;
+  }
+
   .cmChips{
     grid-template-columns: repeat(2, minmax(0, 1fr));
     display: grid;
@@ -652,6 +718,15 @@ body.cmRoute{
     padding-top: 28px;
   }
 
+  .cmHeroActions{
+    flex-direction: column;
+  }
+
+  .cmHeroLink{
+    width: 100%;
+    justify-content: center;
+  }
+
   .cmHeroContent h1{
     font-size: clamp(36px, 12vw, 56px);
   }
@@ -673,6 +748,10 @@ body.cmRoute{
     height: clamp(320px, 52vh, 430px);
     border-radius: 18px;
     border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .cmModelIntro{
+    width: 100%;
   }
 
   .cmModelFallback{

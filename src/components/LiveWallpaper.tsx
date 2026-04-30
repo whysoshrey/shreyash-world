@@ -12,6 +12,8 @@ export function LiveWallpaper(props: { inverted?: boolean; enabled?: boolean }) 
   const [isLandingActive, setIsLandingActive] = useState(false);
   const [showMobileHint, setShowMobileHint] = useState(false);
 
+  const wallpaperSrc = `${import.meta.env.BASE_URL}wallpaper-pingpong.mp4`;
+
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
     const update = () => {
@@ -206,12 +208,12 @@ export function LiveWallpaper(props: { inverted?: boolean; enabled?: boolean }) 
       <video
         ref={ref}
         className={`bgVideo${inverted ? " bgVideo--inverted" : ""}${enabled ? "" : " bgVideo--hidden"}`}
-        src="./wallpaper-pingpong.mp4"
+        src={wallpaperSrc}
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
       />
-      {isCoarsePointer && enabled ? <div ref={scrubZoneRef} className="scrubZone" aria-hidden="true" /> : null}
+      {isCoarsePointer && enabled && isLandingActive ? <div ref={scrubZoneRef} className="scrubZone" aria-hidden="true" /> : null}
       {showMobileHint ? <div className="mobileScrubHint">Hold + drag to scrub</div> : null}
     </>
   );
