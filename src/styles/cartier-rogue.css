@@ -80,6 +80,10 @@ body.crRoute {
   overflow: hidden;
 }
 
+.crSection[id] {
+  scroll-margin-top: 96px;
+}
+
 .crSection::before {
   content: "";
   position: absolute;
@@ -224,6 +228,12 @@ h2 {
   overflow: hidden;
   background: rgba(6, 6, 7, 0.7);
   box-shadow: 0 24px 52px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.crScrollFloat {
+  display: block;
+  width: 100%;
+  transform-origin: center center;
 }
 
 .crNewHeroFrame img {
@@ -652,6 +662,12 @@ h2 {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .crHeroVisual img {
+    animation: none;
+  }
+}
+
 @media (max-width: 1220px) {
   .crFrameworkLayout,
   .crWhatLayout,
@@ -726,6 +742,13 @@ h2 {
 
   .crHeader nav {
     width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .crHeader nav::-webkit-scrollbar {
+    display: none;
   }
 
   .crHeader a,
@@ -734,6 +757,8 @@ h2 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: auto;
+    flex: 0 0 auto;
   }
 
   .crSection {
@@ -889,13 +914,12 @@ h2 {
 
 @media (max-width: 560px) {
   .crHeader nav {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
   }
 
   .crHeader a,
   .crBtn {
-    width: 100%;
+    width: auto;
   }
 }
 

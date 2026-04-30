@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Artifact, Exhibit } from "../lib/types";
 import { ease } from "../lib/motion";
 
@@ -15,15 +15,73 @@ export function ExhibitModal(props: {
   const isRetailClientelingVignette = exhibit?.id === "merch-2";
   const isCredentialsExhibit = Boolean(exhibit?.id?.startsWith("cred"));
   const [zoomedImageSrc, setZoomedImageSrc] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const lightboxRef = useRef<HTMLDivElement | null>(null);
+  const lightboxCloseButtonRef = useRef<HTMLButtonElement | null>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
   const hasProblem = Boolean(exhibit?.problem?.trim());
   const hasApproach = Boolean(exhibit?.approach?.some((a) => a.trim().length > 0));
   const hasImpact = Boolean(exhibit?.impact?.some((a) => a.trim().length > 0));
   const hasSkills = Boolean(exhibit?.skills?.trim());
   const hasNarrativeSections = hasProblem || hasApproach || hasImpact || hasSkills;
+  const titleId = exhibit ? `exhibit-title-${exhibit.id}` : undefined;
   const resolveArtifactUrl = (url: string) => {
     if (!url.startsWith("/")) return url;
     return `${import.meta.env.BASE_URL}${url.slice(1)}`;
   };
+
+  useEffect(() => {
+    if (!open || !exhibit) return;
+
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      returnFocusRef.current?.focus();
+    };
+  }, [open, exhibit]);
+
+  useEffect(() => {
+    if (!open || !exhibit) return;
+
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const activePanel = zoomedImageSrc ? lightboxRef.current : modalRef.current;
+      if (!activePanel) return;
+      const focusables = Array.from(
+        activePanel.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute("disabled"));
+
+      if (focusables.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", trapFocus);
+    const focusTarget = zoomedImageSrc ? lightboxCloseButtonRef.current : closeButtonRef.current;
+    window.requestAnimationFrame(() => focusTarget?.focus());
+
+    return () => {
+      document.removeEventListener("keydown", trapFocus);
+    };
+  }, [open, exhibit, zoomedImageSrc]);
 
   return (
     <AnimatePresence>
@@ -38,13 +96,20 @@ export function ExhibitModal(props: {
               if (e.target === e.currentTarget) onClose();
             }}
           >
-            <motion.div className="modal" layoutId={`exhibit-${exhibit.id}`}>
+            <motion.div
+              ref={modalRef}
+              className="modal"
+              layoutId={`exhibit-${exhibit.id}`}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
+            >
               <div className="modalHead">
                 <div>
-                  <div className="modalTitle">{exhibit.title}</div>
+                  <div id={titleId} className="modalTitle">{exhibit.title}</div>
                   <div className="modalContext">{exhibit.context}</div>
                 </div>
-                <button className="iconBtn" type="button" onClick={onClose} aria-label="Close">
+                <button ref={closeButtonRef} className="iconBtn" type="button" onClick={onClose} aria-label="Close exhibit details">
                   ×
                 </button>
               </div>
@@ -136,8 +201,18 @@ export function ExhibitModal(props: {
                   if (e.target === e.currentTarget) setZoomedImageSrc(null);
                 }}
               >
-                <motion.div className="proofLightboxPanel" initial={{ scale: 0.98 }} animate={{ scale: 1 }} exit={{ scale: 0.98 }}>
+                <motion.div
+                  ref={lightboxRef}
+                  className="proofLightboxPanel"
+                  initial={{ scale: 0.98 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0.98 }}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Enlarged customer feedback image"
+                >
                   <button
+                    ref={lightboxCloseButtonRef}
                     className="iconBtn proofLightboxClose"
                     type="button"
                     onClick={() => setZoomedImageSrc(null)}

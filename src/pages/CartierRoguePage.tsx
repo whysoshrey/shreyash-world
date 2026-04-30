@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
+import { ScrollParallaxLayer } from "../components/ScrollParallaxLayer";
 import "../styles/cartier-rogue.css";
 
 const NEW_BASE = `${import.meta.env.BASE_URL}assets/cartier-rogue/new%20photos`;
@@ -67,12 +68,32 @@ const reveal = {
   },
 };
 
-function SupportCard({ visual, className = "" }: { visual: SupportVisual; className?: string }) {
+const staggerGroup = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.04 },
+  },
+};
+
+const revealCard = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.48, ease: [0.2, 0.65, 0.2, 1] },
+  },
+};
+
+function SupportCard(props: { visual: SupportVisual; className?: string }) {
+  const { visual, className = "" } = props;
   return (
     <motion.figure
       className={`crSupportCard ${visual.kind === "portrait" ? "is-portrait" : "is-landscape"} ${visual.fit === "contain" ? "is-contain" : ""} ${className}`.trim()}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      variants={revealCard}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.2, ease: "easeOut" } }}
     >
       <img
         src={visual.src}
@@ -276,6 +297,11 @@ export function CartierRoguePage() {
           >
             Back to Cartier GTM
           </button>
+          <a href="#what">Overview</a>
+          <a href="#language">Language</a>
+          <a href="#framework">Framework</a>
+          <a href="#rollout">Rollout</a>
+          <a href="#impact">Impact</a>
           <Link to="/">Back to Portfolio</Link>
         </nav>
       </header>
@@ -311,7 +337,13 @@ export function CartierRoguePage() {
                 <span>Youth Luxury</span>
               </div>
             </div>
-            <div className="crWhatSupportPair crCutaways">
+            <motion.div
+              className="crWhatSupportPair crCutaways"
+              variants={staggerGroup}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.28 }}
+            >
               <SupportCard
                 visual={{
                   src: oldSupportImages.lookbook,
@@ -330,13 +362,15 @@ export function CartierRoguePage() {
                   fit: "contain",
                 }}
               />
-            </div>
+            </motion.div>
           </div>
 
           <div className="crWhatVisual">
-            <figure className="crHeroVisual crNewHeroFrame">
-              <img src={newHeroImages[3]} alt="Cartier Rogue cinematic hero visual" />
-            </figure>
+            <ScrollParallaxLayer className="crScrollFloat" distance={40}>
+              <figure className="crHeroVisual crNewHeroFrame">
+                <img src={newHeroImages[3]} alt="Cartier Rogue cinematic hero visual" />
+              </figure>
+            </ScrollParallaxLayer>
           </div>
         </div>
       </motion.section>
@@ -349,19 +383,27 @@ export function CartierRoguePage() {
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <figure className="crFullHero crNewHeroFrame">
-          <img src={newHeroImages[0]} alt="Cartier Rogue campaign language hero image" loading="lazy" />
-          <figcaption>
-            <p className="crCaptionLabel">Campaign Language</p>
-            <p>Heritage silhouettes, contemporary posture, and cinematic nocturnal contrast.</p>
-          </figcaption>
-        </figure>
+        <ScrollParallaxLayer className="crScrollFloat" distance={32}>
+          <figure className="crFullHero crNewHeroFrame">
+            <img src={newHeroImages[0]} alt="Cartier Rogue campaign language hero image" loading="lazy" />
+            <figcaption>
+              <p className="crCaptionLabel">Campaign Language</p>
+              <p>Heritage silhouettes, contemporary posture, and cinematic nocturnal contrast.</p>
+            </figcaption>
+          </figure>
+        </ScrollParallaxLayer>
 
-        <div className="crSupportGrid crPortraitStrip">
+        <motion.div
+          className="crSupportGrid crPortraitStrip"
+          variants={staggerGroup}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.22 }}
+        >
           {campaignProofCards.map((card) => (
             <SupportCard key={`${card.caption}-${card.src}`} visual={card} className="crSupportGridCard" />
           ))}
-        </div>
+        </motion.div>
       </motion.section>
 
       <motion.section
@@ -378,25 +420,39 @@ export function CartierRoguePage() {
               <h2>Campaign Framework</h2>
               <p className="crSectionSub">What / Who / Why / Where / When</p>
             </div>
-            <div className="crFrameworkCards">
+            <motion.div
+              className="crFrameworkCards"
+              variants={staggerGroup}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+            >
               {frameworkCards.map((card) => (
-                <article key={card.key} className="crFrameworkCard">
+                <motion.article key={card.key} className="crFrameworkCard" variants={revealCard}>
                   <p className="crCardLabel">{card.key}</p>
                   <p>{card.body}</p>
-                </article>
+                </motion.article>
               ))}
-            </div>
+            </motion.div>
           </div>
-          <figure className="crFrameworkHero crNewHeroFrame">
-            <img src={newHeroImages[5]} alt="Cartier Rogue framework hero visual" loading="lazy" />
-            <figcaption>
-              <p className="crCaptionLabel">Framework Hero</p>
-              <p>Cartier codes translated into a contemporary campaign logic system.</p>
-            </figcaption>
-          </figure>
+          <ScrollParallaxLayer className="crScrollFloat" distance={30}>
+            <figure className="crFrameworkHero crNewHeroFrame">
+              <img src={newHeroImages[5]} alt="Cartier Rogue framework hero visual" loading="lazy" />
+              <figcaption>
+                <p className="crCaptionLabel">Framework Hero</p>
+                <p>Cartier codes translated into a contemporary campaign logic system.</p>
+              </figcaption>
+            </figure>
+          </ScrollParallaxLayer>
         </div>
 
-        <div className="crEvidenceStrip crPortraitStrip">
+        <motion.div
+          className="crEvidenceStrip crPortraitStrip"
+          variants={staggerGroup}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.24 }}
+        >
           <SupportCard
             visual={{
               src: oldSupportImages.braceletB,
@@ -426,7 +482,7 @@ export function CartierRoguePage() {
             }}
             className="crEvidenceCard"
           />
-        </div>
+        </motion.div>
       </motion.section>
 
       <motion.section
@@ -437,27 +493,41 @@ export function CartierRoguePage() {
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <figure className="crRolloutHero crNewHeroFrame">
-          <img src={newHeroImages[4]} alt="Cartier Rogue rollout hero visual" loading="lazy" />
-          <figcaption>
-            <p className="crCaptionLabel">How It Rolls Out</p>
-            <p>A phased luxury campaign system from visual tease to activation.</p>
-          </figcaption>
-        </figure>
+        <ScrollParallaxLayer className="crScrollFloat" distance={28}>
+          <figure className="crRolloutHero crNewHeroFrame">
+            <img src={newHeroImages[4]} alt="Cartier Rogue rollout hero visual" loading="lazy" />
+            <figcaption>
+              <p className="crCaptionLabel">How It Rolls Out</p>
+              <p>A phased luxury campaign system from visual tease to activation.</p>
+            </figcaption>
+          </figure>
+        </ScrollParallaxLayer>
 
         <div className="crRolloutGrid">
-          <ol className="crPhaseRail">
+          <motion.ol
+            className="crPhaseRail"
+            variants={staggerGroup}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+          >
             {rolloutPhases.map((phase) => (
-              <li key={phase.phase}>
+              <motion.li key={phase.phase} variants={revealCard}>
                 <span>{phase.phase}</span>
                 <p>{phase.title}</p>
-              </li>
+              </motion.li>
             ))}
-          </ol>
+          </motion.ol>
 
-          <div className="crPhaseCards">
+          <motion.div
+            className="crPhaseCards"
+            variants={staggerGroup}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.18 }}
+          >
             {rolloutPhases.map((phase) => (
-              <article key={phase.phase} className="crPhaseCard">
+              <motion.article key={phase.phase} className="crPhaseCard" variants={revealCard}>
                 <div className="crPhaseCopy">
                   <p className="crCardLabel">
                     Phase {phase.phase} · {phase.title}
@@ -470,12 +540,18 @@ export function CartierRoguePage() {
                   </div>
                 </div>
                 <SupportCard visual={phase.visual} className="crPhaseVisual" />
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        <article className="crActivationCard crVideo">
+        <motion.article
+          className="crActivationCard crVideo"
+          variants={revealCard}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.28 }}
+        >
           <div>
             <h3>Experiential Extension</h3>
             <p>
@@ -486,9 +562,15 @@ export function CartierRoguePage() {
           <button type="button" className="crBtn crBtn--gold" onClick={openMaybachFromRogue}>
             Open Cartier × Maybach Experience
           </button>
-        </article>
+        </motion.article>
 
-        <article className="crActivationCard">
+        <motion.article
+          className="crActivationCard"
+          variants={revealCard}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.28 }}
+        >
           <div>
             <h3>Campaign Film</h3>
           </div>
@@ -515,7 +597,7 @@ export function CartierRoguePage() {
               />
             </div>
           </div>
-        </article>
+        </motion.article>
       </motion.section>
 
       <motion.section
@@ -526,34 +608,42 @@ export function CartierRoguePage() {
         whileInView="show"
         viewport={{ once: true, amount: 0.25 }}
       >
-        <div className="crImpactHero crNewHeroFrame">
-          <img src={newHeroImages[6]} alt="Cartier Rogue impact closing visual" loading="lazy" />
-          <div className="crImpactOverlay">
-            <div className="crSectionHeading">
-              <h2>Impact &amp; Strategic Value</h2>
-            </div>
-            <div className="crImpactColumns">
-              <article>
-                <h3>Brand Impact</h3>
-                <p>Modernizes Cartier’s symbolic language without losing prestige or craft authority.</p>
-              </article>
-              <article>
-                <h3>Audience Impact</h3>
-                <p>Builds emotional relevance with culture-native luxury consumers and new icon communities.</p>
-              </article>
-              <article>
-                <h3>Platform Potential</h3>
-                <p>Scales cleanly across editorial, social, OOH, and experiential activation modules.</p>
-              </article>
-            </div>
-            <p className="crClosingLine">Heritage, re-authored.</p>
-            <div className="crHeroCtas">
-              <Link to="/" className="crBtn">
-                Back to Portfolio
-              </Link>
+        <ScrollParallaxLayer className="crScrollFloat" distance={24}>
+          <div className="crImpactHero crNewHeroFrame">
+            <img src={newHeroImages[6]} alt="Cartier Rogue impact closing visual" loading="lazy" />
+            <div className="crImpactOverlay">
+              <div className="crSectionHeading">
+                <h2>Impact &amp; Strategic Value</h2>
+              </div>
+              <motion.div
+                className="crImpactColumns"
+                variants={staggerGroup}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.25 }}
+              >
+                <motion.article variants={revealCard}>
+                  <h3>Brand Impact</h3>
+                  <p>Modernizes Cartier’s symbolic language without losing prestige or craft authority.</p>
+                </motion.article>
+                <motion.article variants={revealCard}>
+                  <h3>Audience Impact</h3>
+                  <p>Builds emotional relevance with culture-native luxury consumers and new icon communities.</p>
+                </motion.article>
+                <motion.article variants={revealCard}>
+                  <h3>Platform Potential</h3>
+                  <p>Scales cleanly across editorial, social, OOH, and experiential activation modules.</p>
+                </motion.article>
+              </motion.div>
+              <p className="crClosingLine">Heritage, re-authored.</p>
+              <div className="crHeroCtas">
+                <Link to="/" className="crBtn">
+                  Back to Portfolio
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollParallaxLayer>
       </motion.section>
 
       <AnimatePresence>

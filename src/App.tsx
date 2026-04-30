@@ -17,6 +17,118 @@ import { fadeUp, ease } from "./lib/motion";
 
 type View = "landing" | "hall" | "section";
 
+function PortfolioRail(props: {
+  content: Content;
+  view: View;
+  activeDoor: DoorKey;
+  activeExhibitId: string | null;
+  onGoHome: () => void;
+  onGoHall: () => void;
+  onOpenDoor: (key: DoorKey) => void;
+  onOpenExhibit: (id: string) => void;
+  onOpenArtifact: (artifact: Artifact) => void;
+}) {
+  const { content, view, activeDoor, activeExhibitId, onGoHome, onGoHall, onOpenDoor, onOpenExhibit, onOpenArtifact } = props;
+  const activeDoorData = content.doors.find((door) => door.key === activeDoor) ?? content.doors[0];
+  const activeExhibitData = activeExhibitId
+    ? content.exhibits[activeDoor].find((exhibit) => exhibit.id === activeExhibitId) ?? null
+    : null;
+  const resolveArtifactUrl = (url: string) => {
+    if (!url.startsWith("/")) return url;
+    return `${import.meta.env.BASE_URL}${url.slice(1)}`;
+  };
+
+  return (
+    <aside className="portfolioRail" aria-label="Portfolio index">
+      <div className="portfolioRailLabel">Index</div>
+
+      <div className="portfolioRailUtility">
+        <button type="button" className="portfolioRailAnchor" onClick={onGoHome}>
+          Home
+        </button>
+
+        <button type="button" className={`portfolioRailAnchor${view === "hall" ? " is-active" : ""}`} onClick={onGoHall} aria-current={view === "hall" ? "page" : undefined}>
+          Sections
+        </button>
+      </div>
+
+      <div className="portfolioRailSectionList">
+        {content.doors.map((door, index) => {
+          const isActive = view === "section" && activeDoor === door.key;
+          const doorExhibits = content.exhibits[door.key];
+
+          return (
+            <div key={door.key} className={`portfolioRailSectionGroup${isActive ? " is-active" : ""}`}>
+              <button
+                type="button"
+                className={`portfolioRailSection${isActive ? " is-active" : ""}`}
+                onClick={() => onOpenDoor(door.key)}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <span className="portfolioRailSectionBar" aria-hidden="true" />
+                <span className="portfolioRailSectionBody">
+                  <span className="portfolioRailIndex">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="portfolioRailSectionTitle">{door.title}</span>
+                </span>
+              </button>
+
+              {isActive ? (
+                <div className="portfolioRailExhibitList">
+                  {doorExhibits.map((exhibit, exhibitIndex) => {
+                    const isActiveExhibit = activeExhibitId === exhibit.id;
+
+                    return (
+                      <div key={exhibit.id} className={`portfolioRailExhibitGroup${isActiveExhibit ? " is-active" : ""}`}>
+                        <button
+                          type="button"
+                          className={`portfolioRailExhibit${isActiveExhibit ? " is-active" : ""}`}
+                          onClick={() => onOpenExhibit(exhibit.id)}
+                          aria-current={isActiveExhibit ? "page" : undefined}
+                        >
+                          <span className="portfolioRailExhibitIndex">{String(exhibitIndex + 1).padStart(2, "0")}</span>
+                          <span className="portfolioRailExhibitTitle">{exhibit.title}</span>
+                        </button>
+
+                        {isActiveExhibit ? (
+                          <div className="portfolioRailArtifactList">
+                            {exhibit.artifacts.map((artifact, artifactIndex) => (
+                              <button
+                                key={`${exhibit.id}-${artifact.label}`}
+                                type="button"
+                                className={`portfolioRailArtifact${artifact.variant === "hero" ? " is-hero" : ""}`}
+                                onClick={() => {
+                                  if (artifact.actionId) {
+                                    onOpenArtifact(artifact);
+                                    return;
+                                  }
+
+                                  window.open(resolveArtifactUrl(artifact.url), "_blank", "noopener,noreferrer");
+                                }}
+                              >
+                                <span className="portfolioRailArtifactIndex">{String(artifactIndex + 1).padStart(2, "0")}</span>
+                                <span className="portfolioRailArtifactTitle">{artifact.label}</span>
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="portfolioRailCurrent" aria-live="polite">
+        <span className="portfolioRailCurrentLabel">{activeExhibitData ? "Exhibit" : view === "section" ? "Section" : "At"}</span>
+        <span className="portfolioRailCurrentValue">{activeExhibitData ? activeExhibitData.title : view === "section" ? activeDoorData.title : "Portfolio Sections"}</span>
+      </div>
+    </aside>
+  );
+}
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,8 +137,12 @@ export default function App() {
   const [activeDoor, setActiveDoor] = useState<DoorKey>("ops");
   const [modalOpen, setModalOpen] = useState(false);
   const [activeExhibitId, setActiveExhibitId] = useState<string | null>(null);
-  const [wallpaperEnabled, setWallpaperEnabled] = useState(true);
-  const [highlightsOpen, setHighlightsOpen] = useState(false);
+  const [wallpaperEnabled, setWallpaperEnabled] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+    return !(prefersReducedMotion || isCoarsePointer);
+  });
   const [isMaybachLoading, setIsMaybachLoading] = useState(false);
   const [isRogueLoading, setIsRogueLoading] = useState(false);
   const maybachTimerRef = useRef<number | null>(null);
@@ -53,6 +169,8 @@ export default function App() {
   }, [content, activeDoor, activeExhibitId]);
 
   const openDoor = (key: DoorKey) => {
+    setModalOpen(false);
+    setActiveExhibitId(null);
     setActiveDoor(key);
     setView("section");
   };
@@ -66,20 +184,19 @@ export default function App() {
 
   const goHall = () => {
     setModalOpen(false);
-    setHighlightsOpen(false);
+    setActiveExhibitId(null);
     setView("hall");
   };
 
   const goLanding = () => {
     setModalOpen(false);
-    setHighlightsOpen(false);
+    setActiveExhibitId(null);
     setView("landing");
   };
 
   const startMaybachTransition = () => {
     if (isMaybachLoading || isRogueLoading) return;
     setModalOpen(false);
-    setHighlightsOpen(false);
     setIsMaybachLoading(true);
     maybachTimerRef.current = window.setTimeout(() => {
       navigate("/cartier-maybach", { state: { fromMaybachLoader: true } });
@@ -91,7 +208,6 @@ export default function App() {
   const startRogueTransition = () => {
     if (isMaybachLoading || isRogueLoading) return;
     setModalOpen(false);
-    setHighlightsOpen(false);
     setIsRogueLoading(true);
     rogueTimerRef.current = window.setTimeout(() => {
       navigate("/cartier-rogue", { state: { fromRogueTransition: true } });
@@ -167,9 +283,11 @@ export default function App() {
 
       <div className="shell">
         <Topbar
+          siteName={content.site.name}
           positioning={content.site.positioning}
           links={content.site.links}
-          onNavHome={() => (view === "section" ? goHall() : goLanding())}
+          onNavHome={goLanding}
+          onBack={showBack ? goHall : undefined}
           showBack={showBack}
           wallpaperEnabled={wallpaperEnabled}
           onToggleWallpaper={() => setWallpaperEnabled((v) => !v)}
@@ -180,8 +298,13 @@ export default function App() {
             {view === "landing" ? (
               <div className="panel">
                 <motion.div key="landing" className="landing" variants={fadeUp} initial="hidden" animate="show" exit="exit">
+                  <div className="landingEyebrow">{content.site.positioning}</div>
                   <h1 className="name">{content.site.name}</h1>
-                  <p className="value">B.F.Tech, NIFT Delhi | MPS FM, Parsons School of Design, TNS.</p>
+                  <p className="landingRole">B.F.Tech, NIFT Delhi | MPS FM, Parsons School of Design, TNS</p>
+                  <p className="value">{content.site.valueProp}</p>
+                  <p className="landingBody">
+                    Selected work across operational systems, merchandising execution, and brand-led product experiences.
+                  </p>
                   <div className="landingActions">
                     <motion.button
                       type="button"
@@ -191,99 +314,121 @@ export default function App() {
                       whileTap={{ scale: 0.99 }}
                       transition={{ duration: 0.25, ease }}
                     >
-                      {content.site.cta}
+                      Browse Portfolio
                     </motion.button>
                     <motion.button
                       type="button"
                       className="enter enter--secondary"
-                      onClick={() => setHighlightsOpen((value) => !value)}
-                      aria-expanded={highlightsOpen}
-                      aria-controls="landingHighlights"
+                      onClick={() => openDoor("brand")}
                       whileHover={{ y: -1 }}
                       whileTap={{ scale: 0.99 }}
                       transition={{ duration: 0.25, ease }}
                     >
-                      Highlights
+                      Art Campaigns
                     </motion.button>
                   </div>
-                  <AnimatePresence>
-                    {highlightsOpen ? (
-                      <motion.div
-                        id="landingHighlights"
-                        className="landingHighlights"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.26, ease }}
-                      >
-                        <a className="landingHighlightCard" href={acme3dHref} target="_blank" rel="noreferrer" onClick={() => setHighlightsOpen(false)}>
-                          <span className="landingHighlightKicker">Operational Systems</span>
-                          <span className="landingHighlightTitle">ACME AGV 3D Reconstruction</span>
-                          <span className="landingHighlightMeta">Interactive robot breakdown and inspection view</span>
-                        </a>
+                  <div className="landingFeatureBlock">
+                    <div className="landingFeatureHeader">
+                      <div className="landingFeatureTitle">Start with the strongest entry points.</div>
+                    </div>
+                    <div id="landingHighlights" className="landingHighlights">
+                      <a className="landingHighlightCard" href={acme3dHref} target="_blank" rel="noreferrer">
+                        <span className="landingHighlightKicker">Operational Systems</span>
+                        <span className="landingHighlightTitle">ACME AGV 3D Reconstruction</span>
+                        <span className="landingHighlightMeta">Interactive robot breakdown and inspection view</span>
+                      </a>
 
-                        <button className="landingHighlightCard" type="button" onClick={startMaybachTransition}>
-                          <span className="landingHighlightKicker">Brand Experience</span>
-                          <span className="landingHighlightTitle">Cartier x Maybach</span>
-                          <span className="landingHighlightMeta">Luxury mobility concept with 3D vehicle staging</span>
-                        </button>
+                      <button className="landingHighlightCard" type="button" onClick={startMaybachTransition}>
+                        <span className="landingHighlightKicker">Brand Experience</span>
+                        <span className="landingHighlightTitle">Cartier x Maybach</span>
+                        <span className="landingHighlightMeta">Luxury mobility concept with 3D vehicle staging</span>
+                      </button>
 
-                        <button className="landingHighlightCard" type="button" onClick={startRogueTransition}>
-                          <span className="landingHighlightKicker">Brand Campaign</span>
-                          <span className="landingHighlightTitle">Cartier Rogue</span>
-                          <span className="landingHighlightMeta">Editorial campaign world, rollout logic, and film</span>
-                        </button>
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
+                      <button className="landingHighlightCard" type="button" onClick={startRogueTransition}>
+                        <span className="landingHighlightKicker">Brand Campaign</span>
+                        <span className="landingHighlightTitle">Cartier Rogue</span>
+                        <span className="landingHighlightMeta">Editorial campaign world, rollout logic, and film</span>
+                      </button>
+                    </div>
+                  </div>
                 </motion.div>
               </div>
             ) : null}
 
             {view === "hall" ? (
-              <div className="panel panel--hall">
-                <motion.div key="hall" variants={fadeUp} initial="hidden" animate="show" exit="exit">
-                  <DoorHall content={content} onOpenDoor={openDoor} />
-                  <div style={{ padding: "14px 18px 0", display: "flex", justifyContent: "flex-end" }}>
-                    <button className="navBtn" type="button" onClick={goLanding}>
-                      Back to Landing
-                    </button>
-                  </div>
-                </motion.div>
+              <div className="panel panel--content panel--portfolio">
+                <div className="portfolioViewport">
+                  <PortfolioRail
+                    content={content}
+                    view={view}
+                    activeDoor={activeDoor}
+                    activeExhibitId={activeExhibitId}
+                    onGoHome={goLanding}
+                    onGoHall={goHall}
+                    onOpenDoor={openDoor}
+                    onOpenExhibit={openExhibit}
+                    onOpenArtifact={handleArtifactAction}
+                  />
+
+                  <motion.div key="hall" className="portfolioShell" variants={fadeUp} initial="hidden" animate="show" exit="exit">
+                    <div className="contentShell contentShell--hall">
+                      <div className="glassBackdrop" aria-hidden="true" />
+
+                      <div className="contentShellInner">
+                        <div className="hallHeader">
+                          <div className="hallEyebrow">Portfolio Sections</div>
+                          <h2 className="hallTitle">Browse the work by discipline.</h2>
+                          <p className="hallSummary">
+                            Explore operating systems, merchandising execution, brand experiences, and credentials from one place.
+                          </p>
+                        </div>
+                        <DoorHall content={content} onOpenDoor={openDoor} />
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
               </div>
             ) : null}
 
             {view === "section" ? (
-              <div className={`panel panel--content panel--${view}`}>
-                <motion.div
-                  className={`contentShell contentShell--${view}${activeDoor === "merch" && content.exhibits.merch.length <= 2 ? " contentShell--compact" : ""}`}
-                  variants={fadeUp}
-                  initial="hidden"
-                  animate="show"
-                  exit="exit"
-                  layout
-                  transition={{ layout: { duration: 0.32, ease } }}
-                >
-                  <div className="glassBackdrop" aria-hidden="true" />
+              <div className={`panel panel--content panel--portfolio panel--${view}`}>
+                <div className="portfolioViewport">
+                  <PortfolioRail
+                    content={content}
+                    view={view}
+                    activeDoor={activeDoor}
+                    activeExhibitId={activeExhibitId}
+                    onGoHome={goLanding}
+                    onGoHall={goHall}
+                    onOpenDoor={openDoor}
+                    onOpenExhibit={openExhibit}
+                    onOpenArtifact={handleArtifactAction}
+                  />
 
-                  <div className="contentShellInner">
-                    <AnimatePresence mode="wait">
-                      {view === "section" ? (
-                        <motion.div key="section-content" variants={fadeUp} initial="hidden" animate="show" exit="exit">
-                          <SectionGallery content={content} doorKey={activeDoor} onOpenExhibit={openExhibit} />
-                          <div style={{ padding: "0 18px 22px", display: "flex", justifyContent: "space-between", gap: 10 }}>
-                            <button className="navBtn" type="button" onClick={goHall}>
-                              Back
-                            </button>
-                            <button className="navBtn" type="button" onClick={() => setView("landing")}>
-                              Landing
-                            </button>
-                          </div>
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
+                  <motion.div
+                    className="portfolioShell portfolioShell--section"
+                    variants={fadeUp}
+                    initial="hidden"
+                    animate="show"
+                    exit="exit"
+                    layout
+                    transition={{ layout: { duration: 0.32, ease } }}
+                  >
+                    <div className={`contentShell contentShell--${view}${activeDoor === "merch" && content.exhibits.merch.length <= 2 ? " contentShell--compact" : ""}`}>
+                      <div className="glassBackdrop" aria-hidden="true" />
+
+                      <div className="contentShellInner">
+                        <AnimatePresence mode="wait">
+                          {view === "section" ? (
+                            <motion.div key="section-content" variants={fadeUp} initial="hidden" animate="show" exit="exit">
+                              <SectionGallery content={content} doorKey={activeDoor} onOpenExhibit={openExhibit} onGoHome={goLanding} />
+                            </motion.div>
+                          ) : null}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
               </div>
             ) : null}
           </AnimatePresence>
