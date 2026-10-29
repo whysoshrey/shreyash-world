@@ -3345,3 +3345,374 @@ a { text-underline-offset: 0.18em; }
 .case__metaWrap { margin-top: clamp(88px, 9vw, 140px); }
 .statement .plate--large .plate__figure { font-size: min(30cqw, 320px); }
 .page { overflow-x: clip; }
+
+/* =========================================================
+   v6 — Navigation system
+   Three layers, always in the same places:
+   1. Header (fixed): who, where you can go, and Back.
+   2. Wayfinder (top of every inner page): the trail from the Index, and a project's parts.
+   3. Section nav (sticky inside long pages): where you are on this page.
+   Plus the chapter pager at the end of every part of a multi-page project.
+   ========================================================= */
+.siteHeader__start { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.backBtn {
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 12px;
+  border-radius: 999px; background: var(--paper-2); color: var(--blue);
+  font-size: 15px; font-weight: 500; white-space: nowrap; min-width: 0;
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
+}
+.backBtn .arrow { width: 16px; height: 16px; flex: none; transition: transform var(--dur-2) var(--ease-out); }
+.backBtn__text { overflow: hidden; text-overflow: ellipsis; }
+.backBtn:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .backBtn:hover { background: var(--blue); color: var(--cream); }
+  .backBtn:hover .arrow { transform: translateX(-3px) rotate(180deg); }
+}
+.siteHeader.is-quiet .backBtn, .siteHeader.is-open .backBtn { background: rgba(250, 240, 181, 0.14); color: var(--cream); }
+/* inner pages: the monogram stands in for the name, Back takes its place */
+.page:not(.page--cover) .siteHeader__mark { display: none; }
+@media (max-width: 1100px) { .backBtn__to { display: none; } }
+@media (max-width: 760px) {
+  .backBtn { height: 36px; padding: 0 12px 0 10px; font-size: 14px; }
+  .siteHeader__start { gap: 10px; }
+}
+
+.wayfinder {
+  padding: calc(var(--header-h) + 18px) var(--pad) 0;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px;
+}
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; list-style: none; margin: 0; padding: 0; font-size: 15px; }
+.crumbs li { display: inline-flex; align-items: center; color: var(--ink-2); }
+.crumbs li + li::before { content: "/"; margin: 0 10px; color: var(--paper-3); color: color-mix(in srgb, var(--blue) 35%, transparent); }
+.crumbs a { color: var(--blue); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--blue) 30%, transparent); text-underline-offset: 4px; transition: text-decoration-color var(--dur-2) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .crumbs a:hover { text-decoration-color: var(--red); } }
+.crumbs li[aria-current] { color: var(--blue); font-weight: 600; }
+
+.chapters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.chapters__name { font-family: var(--serif); font-size: 22px; color: var(--blue); }
+.chapters__list { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; margin: 0; padding: 4px; background: var(--paper-2); border-radius: 999px; }
+.chapters__tab {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px;
+  font-size: 15px; font-weight: 500; color: var(--blue);
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
+}
+.chapters__tab:active { transform: scale(0.97); }
+.chapters__tab.is-current { background: var(--blue); color: var(--cream); }
+@media (hover: hover) and (pointer: fine) { .chapters__tab:not(.is-current):hover { background: var(--paper); } }
+.chapters__pos { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 760px) {
+  .crumbs li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+  .crumbs li:nth-last-child(2)::before { display: none; }
+  .chapters { width: 100%; }
+  .chapters__list { width: 100%; border-radius: 22px; }
+  .chapters__list li { flex: 1 1 auto; }
+  .chapters__tab { width: 100%; justify-content: center; padding: 0 10px; font-size: 14px; }
+}
+
+/* page heads sit under the wayfinder rather than under the header */
+.wayfinder + .pageHead, .wayfinder + .case .case__head, .wayfinder + article .case__head { padding-top: clamp(28px, 4vw, 64px); }
+
+.pager { padding: clamp(72px, 9vw, 140px) var(--pad) 0; }
+.pager__title { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4vw, 64px); line-height: 1; color: var(--blue); margin: 0 0 clamp(24px, 3vw, 40px); }
+.pager__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+.pager__card {
+  display: flex; flex-direction: column; gap: 12px; padding: clamp(24px, 3vw, 40px); min-height: 220px;
+  background: var(--paper-2); color: var(--blue);
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
+}
+.pager__card--next { background: var(--blue); color: var(--cream); text-align: right; align-items: flex-end; }
+.pager__card:active { transform: scale(0.99); }
+.pager__dir { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; }
+.pager__dir .arrow { width: 18px; height: 18px; }
+.pager__name { font-family: var(--serif); font-size: clamp(32px, 3.4vw, 56px); line-height: 1; margin-top: auto; }
+.pager__blurb { font-size: 16px; line-height: 1.45; max-width: 44ch; opacity: 0.9; }
+@media (hover: hover) and (pointer: fine) {
+  .pager__card--prev:hover { background: var(--paper-3); }
+  .pager__card--next:hover { background: var(--red); }
+}
+@media (max-width: 760px) { .pager__grid { grid-template-columns: 1fr; } .pager__card { min-height: 0; } }
+
+/* =========================================================
+   v6 — Campaign chapters (Cartier Rogue, Cartier × Maybach)
+   Same system as every other page: paper ground, blue type, serif heads,
+   filled pills, square pictures. The dark Maybach model stage becomes a
+   deep-blue field, like the home cover.
+   ========================================================= */
+.page--campaign { background: var(--paper); color: var(--blue); }
+.page--campaign :is(.crPage, .cmPage) {
+  background: var(--paper); color: var(--blue); font-family: var(--sans);
+  padding: 0 0 0; min-height: 0; overflow-x: visible;
+}
+.page--campaign :is(.crPage, .cmPage)::before { display: none; }
+.page--campaign .sectionNav { margin-top: clamp(28px, 3vw, 48px); }
+
+/* sections: no boxes, just space */
+.page--campaign :is(.crSection, .cmSection, .cmHero, .cmModelSection, .cmFilmSection) {
+  background: none; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  padding: 0 var(--pad); margin-top: clamp(72px, 8vw, 128px); overflow: visible; min-height: 0;
+}
+.page--campaign .crSection::before { display: none; }
+.page--campaign :is(.crSection, .cmSection, .cmHero, .cmModelSection, .cmFilmSection)[id] { scroll-margin-top: calc(var(--header-h) + 64px); }
+
+/* type */
+.page--campaign :is(.crPage, .cmPage) :is(h1, h2, h3) {
+  font-family: var(--serif); font-weight: 400; color: var(--blue); text-transform: none; letter-spacing: -0.01em;
+}
+.page--campaign :is(.crPage, .cmPage) h1 { font-size: clamp(56px, 7vw, 120px); line-height: 0.92; margin: 0; }
+.page--campaign :is(.crPage, .cmPage) h2 { font-size: clamp(40px, 4.6vw, 76px); line-height: 0.98; margin: 0 0 18px; }
+.page--campaign :is(.crPage, .cmPage) h3 { font-size: clamp(24px, 2vw, 32px); line-height: 1.05; margin: 0 0 10px; }
+.page--campaign :is(.crPage, .cmPage) p { color: var(--blue); }
+.page--campaign :is(.crKicker, .cmModelFallbackKicker) { display: none; }
+.page--campaign :is(.crSubtitle, .cmSubtitle, .crSectionSub, .cmFilmSubtitle) {
+  font-family: var(--serif); font-size: clamp(22px, 2vw, 30px); line-height: 1.15; letter-spacing: 0; text-transform: none;
+  color: var(--red); margin: 18px 0 0; max-width: 34ch;
+}
+.page--campaign :is(.crLead, .cmLead, .cmFilmLead, .cmHeroContent p:not(.cmSubtitle)) { font-size: 18px; line-height: 1.55; color: var(--blue); max-width: 60ch; }
+.page--campaign .crTagline, .page--campaign .crClosingLine {
+  font-family: var(--serif); font-size: clamp(26px, 2.4vw, 38px); line-height: 1.1; color: var(--blue); font-style: normal;
+}
+.page--campaign :is(.crCardLabel) {
+  font-family: var(--serif); font-size: clamp(28px, 2.4vw, 40px); letter-spacing: 0; text-transform: none; color: var(--red); margin: 0 0 8px;
+}
+.page--campaign .crCaptionLabel { display: inline; font-weight: 700; letter-spacing: 0; text-transform: none; font-size: inherit; color: inherit; margin: 0; }
+.page--campaign .crCaptionLabel::after { content: ". "; }
+
+/* pills and buttons, as everywhere else */
+.page--campaign :is(.crChipRow, .crTagRow, .cmMeta, .cmChips) { display: flex; flex-wrap: wrap; gap: 6px; }
+.page--campaign :is(.crChipRow, .crTagRow, .cmMeta, .cmChips) span {
+  border: 0; border-radius: 999px; background: var(--paper-2); color: var(--blue);
+  font-size: 14px; letter-spacing: 0; text-transform: none; padding: 7px 14px; backdrop-filter: none;
+}
+.page--campaign .cmChips { align-content: start; }
+.page--campaign :is(.crBtn, .cmHeroLink, .cmModelCta, .cmFilmLink) {
+  display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+  background: var(--blue); color: var(--cream); font: 600 15px/1 var(--sans); letter-spacing: 0; text-transform: none; text-decoration: none;
+  box-shadow: none; cursor: pointer;
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
+}
+.page--campaign :is(.crBtn--gold, .cmHeroLink--secondary) { background: var(--paper-2); color: var(--blue); }
+.page--campaign :is(.crBtn, .cmHeroLink, .cmModelCta, .cmFilmLink):active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .page--campaign :is(.crBtn, .cmHeroLink, .cmModelCta, .cmFilmLink):hover { background: var(--red); color: var(--cream); }
+}
+
+/* pictures: square, unboxed, captions underneath */
+.page--campaign :is(.crNewHeroFrame, .crSupportCard, .crEvidenceCard, .crPhaseVisual, .cmFilmFrame) {
+  border: 0; border-radius: 0; box-shadow: none; background: var(--paper-2);
+}
+.page--campaign :is(.crNewHeroFrame, .crSupportCard, .crEvidenceCard) img { border-radius: 0; }
+.page--campaign :is(.crSupportCard, .crEvidenceCard) { background: none; }
+.page--campaign .crSupportCard.is-contain img { background: var(--paper-2); }
+.page--campaign :is(.crSupportCard, .crEvidenceCard, .crPhaseVisual) figcaption {
+  position: static; background: none; color: var(--ink-2); padding: 10px 0 0;
+  font-size: 15px; letter-spacing: 0; text-transform: none;
+}
+.page--campaign :is(.crFullHero, .crFrameworkHero, .crRolloutHero) figcaption {
+  position: static; inset: auto; background: var(--blue); color: var(--cream); border: 0; border-radius: 0;
+  padding: 16px 20px; backdrop-filter: none; max-width: none; margin: 0;
+}
+.page--campaign :is(.crFullHero, .crFrameworkHero, .crRolloutHero) figcaption p { color: var(--cream); font-size: 17px; letter-spacing: 0; text-transform: none; margin: 0; }
+
+/* cards: tone steps instead of outlines */
+.page--campaign :is(.crFrameworkCard, .crPhaseCard, .crActivationCard, .cmCard, .crImpactColumns article) {
+  border: 0; border-radius: 0; box-shadow: none; background: var(--paper-2); padding: clamp(18px, 2vw, 28px);
+}
+.page--campaign :is(.crFrameworkCard, .crPhaseCard, .crActivationCard, .cmCard) p,
+.page--campaign .cmCard li { color: var(--blue); font-size: 16px; line-height: 1.5; }
+.page--campaign .crActivationCard.crVideo { background: var(--blue); }
+.page--campaign .crActivationCard.crVideo :is(h3, p) { color: var(--cream); }
+.page--campaign .crActivationCard.crVideo .crBtn--gold { background: var(--cream); color: var(--blue); }
+.page--campaign .crPhaseRail { border: 0; }
+.page--campaign .crPhaseRail li { border: 0; }
+.page--campaign .crPhaseRail li::before { background: var(--red); border-radius: 0; }
+.page--campaign :is(.crPhaseRail span, .crPhaseRail p) { color: var(--blue); letter-spacing: 0; text-transform: none; }
+.page--campaign .crVideoFrame, .page--campaign .crVideoIframe { border: 0; border-radius: 0; }
+
+/* the closing image: picture first, then a solid blue panel for the words */
+.page--campaign .crImpactHero { aspect-ratio: auto; min-height: 0; border: 0; border-radius: 0; box-shadow: none; background: none; }
+.page--campaign .crImpactHero > img { position: static; width: 100%; height: auto; aspect-ratio: 21 / 9; object-fit: cover; display: block; }
+.page--campaign .crImpactHero::after { display: none; }
+.page--campaign .crImpactOverlay { position: static; background: var(--blue); border: 0; border-radius: 0; padding: clamp(24px, 3vw, 48px); }
+.page--campaign .crImpactOverlay :is(h2, h3, p) { color: var(--cream); }
+.page--campaign .crImpactColumns article { background: rgba(250, 240, 181, 0.08); }
+.page--campaign .crImpactColumns :is(h3) { color: var(--cream); font-size: 26px; }
+.page--campaign .crImpactColumns p { color: var(--cream); opacity: 0.92; }
+.page--campaign .crImpactOverlay .crClosingLine { color: var(--cream); }
+
+/* Maybach: hero copy on paper, the model on a deep-blue stage */
+.page--campaign .cmHero { grid-template-columns: minmax(0, 1fr) auto; padding-top: 0; }
+.page--campaign .cmHeroContent { max-width: 70ch; }
+.page--campaign .cmModelStage { background: var(--blue-3); border-radius: 0; }
+.page--campaign .cmModelStage::before, .page--campaign .cmModelStage::after { opacity: 0.35; }
+.page--campaign .cmModelPoster { background: var(--blue-3); margin: 0; }
+.page--campaign .cmModelPoster figcaption { color: var(--cream); background: none; letter-spacing: 0; text-transform: none; font-size: 15px; }
+.page--campaign .cmModelFallback { color: var(--cream); background: var(--blue-3); border: 0; border-radius: 0; letter-spacing: 0; text-transform: none; }
+.page--campaign .cmModelFallback--interactive :is(h3, p) { color: var(--cream); }
+.page--campaign .cmModelFallback--interactive .cmModelCta { background: var(--cream); color: var(--blue); }
+.page--campaign .cmToolbarWrap { margin-bottom: 12px; }
+.page--campaign .cmControlsTray { background: var(--paper-2); border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; }
+.page--campaign :is(.cmControlTitle, .cmControlGroup) { color: var(--blue); letter-spacing: 0; text-transform: none; font-size: 14px; }
+.page--campaign :is(.cmSwatch, .cmResetBtn, .cmLightToggle) {
+  border: 0; border-radius: 999px; background: var(--paper); color: var(--blue); letter-spacing: 0; text-transform: none; font-size: 13px;
+}
+.page--campaign .cmSwatch.is-active { background: var(--blue); color: var(--cream); box-shadow: none; }
+.page--campaign .cmLightToggle.is-on { background: var(--blue); color: var(--cream); }
+.page--campaign .cmDragHint { background: var(--cream); color: var(--blue); border: 0; letter-spacing: 0; text-transform: none; }
+.page--campaign .cmFilmFrame { background: var(--blue-3); }
+.page--campaign .cmFilmFrame iframe { border: 0; border-radius: 0; }
+.page--campaign .cmGrid { gap: var(--gap); }
+
+/* entry veils use the cover blue, not black */
+.page--campaign .crEntryVeil { background: var(--blue); }
+.chapters__tab, .pager__card { text-decoration: none; }
+/* campaign fixes: hero picture fits its column; framework cards get room */
+.page--campaign .crHeroVisual { aspect-ratio: auto; min-height: 0; height: 100%; }
+.page--campaign .crHeroVisual img { height: 100%; min-height: clamp(480px, 52vw, 760px); object-fit: cover; }
+.page--campaign .crWhatLayout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); gap: var(--gap); }
+.page--campaign .crFrameworkLayout { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--gap); }
+.page--campaign .crFrameworkCards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2px; }
+.page--campaign .crFrameworkCard p { font-size: 16px; }
+.page--campaign :is(.crPhaseCards) { gap: 2px; }
+@media (max-width: 900px) {
+  .page--campaign :is(.crWhatLayout, .crFrameworkLayout) { grid-template-columns: 1fr; }
+  .page--campaign .crHeroVisual img { min-height: 0; aspect-ratio: 4 / 5; }
+}
+
+/* =========================================================
+   v6 — The lead (first screen)
+   ========================================================= */
+.siteHeader.is-quiet { background: var(--paper); color: var(--blue); }
+.siteHeader.is-quiet .navLink.is-active::after { background: var(--red); }
+
+.lead {
+  position: relative;
+  min-height: max(640px, 100svh);
+  padding: calc(var(--header-h) + 8px) var(--pad) clamp(28px, 3vw, 44px);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 1fr auto;
+  column-gap: var(--gap);
+  background: var(--paper);
+  overflow: clip;
+  isolation: isolate;
+}
+.lead__sheet, .lead__cover { grid-column: 1 / span 8; grid-row: 1; }
+.lead__sheet {
+  background: var(--red);
+  transform-origin: 30% 80%;
+  margin: 26px -18px -10px 22px;
+  z-index: 0;
+}
+.lead__cover {
+  position: relative; z-index: 1;
+  background: var(--blue); color: var(--cream);
+  padding: clamp(28px, 3.4vw, 56px) clamp(28px, 3.4vw, 56px) clamp(28px, 3vw, 48px);
+  display: flex; flex-direction: column; min-height: 0;
+}
+.lead__tag {
+  font-family: var(--sans); font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase;
+  font-size: clamp(20px, 2vw, 30px); line-height: 1; color: var(--cream); margin: 0;
+}
+.lead__name {
+  font-family: var(--serif); font-weight: 400; color: var(--cream);
+  font-size: clamp(88px, 12.2vw, 196px); line-height: 0.86; letter-spacing: -0.02em;
+  margin: auto 0 0; padding-top: 0.12em;
+}
+.lead__name .lines__mask { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.lead__value {
+  font-family: var(--serif); font-size: clamp(22px, 1.9vw, 30px); line-height: 1.12; color: var(--cream);
+  max-width: 24ch; margin: clamp(18px, 2vw, 28px) 0 0;
+}
+.lead__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(20px, 2.4vw, 32px); }
+
+.lead__prints { grid-column: 7 / -1; grid-row: 1; position: relative; list-style: none; margin: 0; padding: 0; z-index: 3; min-height: 520px; }
+.leadPrint { position: absolute; }
+.leadPrint__body { transform-origin: 50% 60%; }
+.leadPrint__link {
+  display: flex; flex-direction: column; gap: 0; background: #fff; padding: 10px 10px 0; color: var(--blue); text-decoration: none;
+  /* prints are the one thing on the page that floats, so they are the one thing with a shadow */
+  box-shadow: 0 1px 2px rgba(15, 36, 102, 0.18), 0 22px 44px -22px rgba(15, 36, 102, 0.55);
+  transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.leadPrint__link img { width: 100%; display: block; object-fit: cover; background: var(--paper-2); }
+.leadPrint__cap { font-size: 14px; line-height: 1.3; padding: 9px 2px 11px; }
+.leadPrint__link:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .leadPrint__link:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 1px 2px rgba(15, 36, 102, 0.18), 0 34px 60px -26px rgba(15, 36, 102, 0.6); }
+}
+.leadPrint__plate {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; aspect-ratio: 1 / 1;
+  background: var(--cream); color: var(--blue); padding: 18px;
+}
+.leadPrint__plate strong { font-family: var(--serif); font-weight: 400; font-size: clamp(52px, 5vw, 84px); line-height: 0.9; color: var(--red); }
+.leadPrint__plate span { font-size: 16px; line-height: 1.3; }
+
+.leadPrint--rogue { width: clamp(220px, 19vw, 300px); top: 2%; right: 6%; }
+.leadPrint--rogue img { aspect-ratio: 4 / 5; object-position: center 25%; }
+.leadPrint--agv { width: clamp(220px, 18vw, 290px); top: 46%; left: -14%; }
+.leadPrint--agv img { aspect-ratio: 4 / 3; }
+.leadPrint--waste { width: clamp(180px, 14vw, 230px); top: 52%; right: 2%; }
+.leadPrint--maybach { width: clamp(180px, 14vw, 220px); top: 10%; left: 2%; }
+.leadPrint--maybach img { aspect-ratio: 3 / 4; object-position: 40% center; }
+
+.lead__foot { grid-column: 1 / -1; grid-row: 2; margin: 18px 0 0; font-size: 16px; color: var(--blue); text-align: right; }
+
+@media (max-width: 1100px) {
+  .leadPrint--agv { left: -6%; }
+  .leadPrint--maybach { display: none; }
+}
+@media (max-width: 900px) {
+  .lead { display: flex; flex-direction: column; min-height: 0; padding-bottom: 32px; }
+  .lead__sheet { display: none; }
+  .lead__cover { box-shadow: 14px 14px 0 var(--red); margin-right: 14px; }
+  .lead__name { font-size: clamp(76px, 22vw, 132px); margin-top: 28px; }
+  .lead__prints { min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: -18px; padding: 0 4px; }
+  .leadPrint { position: relative; inset: auto !important; width: auto !important; }
+  .leadPrint--maybach { display: none; }
+  .leadPrint__link { padding: 6px 6px 0; }
+  .leadPrint__cap { font-size: 12px; padding: 6px 1px 8px; }
+  .leadPrint__plate { padding: 10px; }
+  .leadPrint__plate strong { font-size: 36px; }
+  .leadPrint__plate span { font-size: 12px; }
+  .leadPrint--rogue img, .leadPrint--agv img { aspect-ratio: 1 / 1; }
+  .lead__foot { text-align: left; margin-top: 22px; }
+}
+/* the desk section no longer needs to clear the header */
+.lead + .cover .deskSection { padding-top: clamp(72px, 8vw, 128px); }
+.lead__sheet { margin: 22px -16px 6px 30px; }
+.lead__foot { position: relative; z-index: 4; margin-top: 30px; }
+.leadPrint__plate strong { white-space: nowrap; font-size: clamp(48px, 4.2vw, 72px); }
+.leadPrint--maybach { top: 3%; left: 0; }
+.leadPrint--agv { top: 58%; left: -15%; }
+.leadPrint--waste { top: 56%; right: 0; }
+@media (max-width: 900px) { .leadPrint__plate strong { font-size: 30px; } }
+@media (max-width: 900px) {
+  .page--campaign .cmHero { grid-template-columns: minmax(0, 1fr); }
+  .page--campaign .cmChips { order: 2; }
+}
+@media (max-width: 760px) {
+  .chapters { gap: 8px; }
+  .chapters__name { display: none; }
+  .chapters__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-radius: 18px; }
+  .chapters__tab { height: auto; min-height: 44px; padding: 6px 8px; text-align: center; line-height: 1.15; border-radius: 14px; }
+  .chapters__pos { font-size: 14px; }
+}
+.page--campaign .sectionNav + * { margin-top: clamp(40px, 5vw, 72px); }
+.page--campaign .cmHeroContent .cmSubtitle { margin-bottom: 16px; }
+.pager__dir { margin-top: 8px; }
+.pager__name { margin-top: auto; }
+.page--campaign .crPhaseTitle { font-size: clamp(26px, 2.2vw, 36px); color: var(--red); margin: 0 0 8px; }
+.page--campaign .crPhaseRail span { display: none; }
+@media (max-width: 900px) {
+  .page--campaign .crPortraitStrip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; gap: 12px; }
+  .page--campaign .crPortraitStrip .crSupportCard { flex: none; width: auto; max-width: none; }
+}
+@media (max-width: 900px) {
+  .leadPrint__cap { font-size: 13px; }
+  .leadPrint__plate span { font-size: 13px; }
+}
+/* each phase card now carries its own title, so the duplicate rail goes */
+.page--campaign .crPhaseRail { display: none; }
+.page--campaign .crRolloutGrid { grid-template-columns: minmax(0, 1fr); }
+.bridge, .bridge * { font-style: normal; }
+.sysPrinciples { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; } @media (max-width: 760px) { .sysPrinciples { grid-template-columns: 1fr; } }

@@ -43,8 +43,8 @@ function buildCards(work: WorkItem[]): DeskCard[] {
   };
   const img = (c: Omit<DeskCard, "door"> & { door?: DoorKey }): DeskCard => ({ door: "brand", ...c });
 
-  const R = "/cartier-rogue";
-  const M = "/cartier-maybach";
+  const R = "/work/cartier-gtm-redirection/rogue";
+  const M = "/work/cartier-gtm-redirection/maybach";
   const art = (key: string, to: string, title: string, kicker: string, file: string, ratio: string, x: number, y: number, w: number, r: number, z: number, door: DoorKey = "brand", extra: Partial<DeskCard> = {}): DeskCard =>
     img({ key, to, title, kicker, door, image: `/assets/web/${file}.webp`, imageAlt: `${title} — ${kicker}`, ratio, x, y, w, r, z, ...extra });
 

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
 import { ScrollParallaxLayer } from "../components/ScrollParallaxLayer";
+import { SectionNav } from "../components/system/SectionNav";
 import "../styles/cartier-rogue.css";
 
 const WEB = `${import.meta.env.BASE_URL}assets/web`;
@@ -50,7 +51,7 @@ const oldSupportImages = {
 } as const;
 
 const SECTIONS: [string, string][] = [
-  ["what", "Overview"],
+  ["what", "What it is"],
   ["language", "Language"],
   ["framework", "Framework"],
   ["rollout", "Rollout"],
@@ -141,7 +142,7 @@ export function CartierRoguePage() {
     if (isMaybachLoading) return;
     setIsMaybachLoading(true);
     maybachTimerRef.current = window.setTimeout(() => {
-      navigate("/cartier-maybach", { state: { fromMaybachLoader: true } });
+      navigate("/work/cartier-gtm-redirection/maybach", { state: { fromMaybachLoader: true } });
       setIsMaybachLoading(false);
       maybachTimerRef.current = null;
     }, 950);
@@ -286,21 +287,7 @@ export function CartierRoguePage() {
 
   return (
     <div className="crPage">
-      <header className="crHeader">
-        <div className="campaignBar__lead">
-          <Link to="/work/cartier-gtm-redirection" className="campaignBar__back">
-            <span aria-hidden="true">←</span> Cartier GTM
-          </Link>
-          <span className="campaignBar__title crBrand">Cartier Rogue</span>
-        </div>
-        <nav>
-          {SECTIONS.map(([id, label]) => (
-            <button key={id} type="button" onClick={() => jumpTo(id)}>
-              {label}
-            </button>
-          ))}
-        </nav>
-      </header>
+      <SectionNav title="Cartier Rogue" sections={SECTIONS.map(([id, label]) => ({ id, label }))} />
 
       <motion.section
         id="what"
@@ -509,7 +496,6 @@ export function CartierRoguePage() {
           >
             {rolloutPhases.map((phase) => (
               <motion.li key={phase.phase} variants={revealCard}>
-                <span>{phase.phase}</span>
                 <p>{phase.title}</p>
               </motion.li>
             ))}
@@ -525,9 +511,7 @@ export function CartierRoguePage() {
             {rolloutPhases.map((phase) => (
               <motion.article key={phase.phase} className="crPhaseCard" variants={revealCard}>
                 <div className="crPhaseCopy">
-                  <p className="crCardLabel">
-                    Phase {phase.phase} · {phase.title}
-                  </p>
+                  <h3 className="crPhaseTitle">{phase.title}</h3>
                   <p>{phase.body}</p>
                   <div className="crTagRow">
                     {phase.channels.map((channel) => (
@@ -632,14 +616,6 @@ export function CartierRoguePage() {
                 </motion.article>
               </motion.div>
               <p className="crClosingLine">Heritage, re-authored.</p>
-              <div className="crHeroCtas">
-                <Link to="/work/cartier-gtm-redirection" className="crBtn">
-                  Back to the case study
-                </Link>
-                <Link to="/work" className="crBtn">
-                  All work
-                </Link>
-              </div>
             </div>
           </div>
         </ScrollParallaxLayer>

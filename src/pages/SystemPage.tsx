@@ -11,7 +11,8 @@ import { getWork, pad } from "../lib/projects";
 const PRINCIPLES = [
   ["Outcome first", "Every project leads with its result. A recruiter scanning for eight seconds should leave with a number, a context and a discipline."],
   ["The cover", "Colour is used the way the reference poster uses it: one blue field that holds the work, cream type on it, red for the objects that matter."],
-  ["No ornament", "No eyebrow labels, index numbers, hairline rules, gradients or resting shadows. Space, scale and a step in tone do that work."],
+  ["No ornament", "No eyebrow labels, index numbers, hairline rules or gradients. Shadows only on things that float, like the prints on the first screen."],
+  ["Always a way back", "The header’s Back button names where it goes and returns you to the same spot. Every inner page shows its trail from the Index; projects told across several pages show their parts as tabs and end with a pager."],
   ["Reveal on demand", "Long text folds away. Detail is one click deeper for those who want it, never in the way for those who don’t."],
   ["Motion with a reason", "Interface motion stays under 250 ms on strong ease-out curves; presses scale to 0.97; hovers only on real pointers; reduced motion shows the finished page."],
 ];

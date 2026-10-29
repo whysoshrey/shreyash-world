@@ -5,6 +5,7 @@ import { easeOutExpo } from "../../lib/motion";
 import { useContentState } from "../../lib/content";
 import { SiteHeader } from "./SiteHeader";
 import { Arrow } from "./primitives";
+import { Wayfinder } from "./Wayfinder";
 
 /**
  * Wraps every route: page-transition curtain, document title,
@@ -14,7 +15,7 @@ export function PageShell(props: {
   title: string;
   curtainLabel?: string;
   chrome?: boolean;
-  tone?: "paper" | "ink" | "cover";
+  tone?: "paper" | "ink" | "cover" | "campaign";
   children: ReactNode;
 }) {
   const { title, curtainLabel, chrome = true, tone = "paper", children } = props;
@@ -50,6 +51,7 @@ export function PageShell(props: {
       {chrome && content ? <SiteHeader name={content.site.name} positioning={content.site.positioning} links={content.site.links} /> : null}
 
       <main id="main" tabIndex={-1} className="page__main">
+        {chrome ? <Wayfinder /> : null}
         {children}
       </main>
 

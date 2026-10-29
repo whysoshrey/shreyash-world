@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { easeOutExpo } from "../../lib/motion";
 import type { SiteLink } from "../../lib/types";
+import { BackButton } from "./Wayfinder";
 
 const NAV = [
   { to: "/work", label: "Work" },
@@ -56,6 +57,7 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
         Skip to content
       </a>
       <header className={`siteHeader${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}${location.pathname === "/" && !pastHero ? " is-quiet" : ""}`}>
+        <div className="siteHeader__start">
         <Link to="/" className="siteHeader__brand" aria-label={`${name} — home`}>
           <span className="siteHeader__mono" aria-hidden="true">
             S<i>·</i>O
@@ -63,6 +65,9 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
           <span className="siteHeader__mark" aria-hidden={location.pathname === "/" && !pastHero ? true : undefined}>{name}</span>
           <span className="siteHeader__role" aria-hidden="true">{positioning}</span>
         </Link>
+
+        <BackButton className="siteHeader__back" />
+        </div>
 
         <nav className="siteHeader__nav" aria-label="Primary">
           {NAV.map((item) => (
@@ -119,7 +124,6 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
                   className="siteMenu__item"
                 >
                   <Link to={item.to} className="siteMenu__link">
-                    <span className="siteMenu__num">{String(i + 1).padStart(2, "0")}</span>
                     {item.label}
                   </Link>
                 </motion.div>
@@ -137,7 +141,6 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
                     window.setTimeout(scrollToContact, 350);
                   }}
                 >
-                  <span className="siteMenu__num">05</span>
                   Contact
                 </button>
               </motion.div>

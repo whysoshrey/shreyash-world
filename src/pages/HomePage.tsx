@@ -6,6 +6,7 @@ import { WorkList } from "../components/site/WorkList";
 import { Arrow, CountUp, Lines, Reveal } from "../components/site/primitives";
 import { Button } from "../components/system/Button";
 import { Desk } from "../components/system/Desk";
+import { Lead } from "../components/system/Lead";
 import { Icon } from "../components/system/Icon";
 import { Bridge, ChapterRail } from "../components/system/Flow";
 import { useContentState } from "../lib/content";
@@ -68,45 +69,28 @@ function Home({ content }: { content: Content }) {
         ]}
       />
 
-      {/* ——— The cover: one blue field holding the name and the desk of work ——— */}
-      <div className="cover">
-        <section className="hero" aria-labelledby="hero-name">
-          <motion.p className="cover__tag cover__tag--tr" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.6 } }}>
-            {site.positioning}
-          </motion.p>
-
-          <div className="hero__grid">
-            <h1 id="hero-name" className="hero__name">
-              <Lines animateNow delay={0.25} lines={[site.name]} />
-            </h1>
-            <motion.p
-              className="hero__value"
-              initial={{ opacity: 0, transform: "translateY(16px)" }}
-              animate={{ opacity: 1, transform: "translateY(0px)", transition: { delay: 0.55, duration: 0.7, ease: easeOutExpo } }}
-            >
-              {site.valueProp}
-            </motion.p>
-          </div>
-
-          <motion.div
-            className="hero__foot"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 0.75, duration: 0.6 } }}
-          >
-            <p className="hero__disciplines">{DISCIPLINES.join(" · ")}</p>
-            <div className="hero__ctas">
-              <Button variant="cream" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
-                View the work
+      {/* ——— The lead: the cover laid on the desk, with prints from the work on top ——— */}
+      <Lead
+        tag={site.positioning}
+        name={<Lines animateNow delay={0.25} lines={site.name.split(" ")} />}
+        value={site.valueProp}
+        actions={
+          <>
+            <Button variant="cream" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
+              View the work
+            </Button>
+            {cv ? (
+              <Button variant="onblue" href={cv.href} icon={<Arrow />}>
+                Résumé
               </Button>
-              {cv ? (
-                <Button variant="onblue" href={cv.href} icon={<Arrow />}>
-                  Résumé
-                </Button>
-              ) : null}
-            </div>
-          </motion.div>
-        </section>
+            ) : null}
+          </>
+        }
+        foot={DISCIPLINES.join(" · ")}
+      />
 
+      {/* ——— The desk: every project as a print ——— */}
+      <div className="cover">
         <section id="desk" className="deskSection" aria-labelledby="desk-title">
           <header className="deskSection__head">
             <h2 id="desk-title" className="deskSection__title">Pick up a project</h2>
@@ -180,7 +164,7 @@ function Home({ content }: { content: Content }) {
         </header>
         <div className="feature__grid">
           <Reveal className="feature__card feature__card--tall">
-            <Link to="/cartier-rogue" className="mediaCard">
+            <Link to="/work/cartier-gtm-redirection/rogue" className="mediaCard">
               <span className="mediaCard__img">
                 <img src={asset("/assets/web/art-mood-drape.webp")} alt="Cartier Rogue setting and mood artwork" loading="lazy" />
               </span>
@@ -192,7 +176,7 @@ function Home({ content }: { content: Content }) {
             </Link>
           </Reveal>
           <Reveal className="feature__card" delay={0.08}>
-            <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
+            <Link to="/work/cartier-gtm-redirection/maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
               <span className="mediaCard__img">
                 <img src={asset("/assets/web/maybach-poster.webp")} alt="Render of the Cartier × Maybach vehicle from the 3D model" loading="lazy" />
               </span>

@@ -97,8 +97,8 @@ export function liveArtifacts(exhibit: Exhibit): Artifact[] {
 }
 
 export const ACTION_ROUTES: Record<string, string> = {
-  cartier_maybach_route: "/cartier-maybach",
-  cartier_rogue_route: "/cartier-rogue",
+  cartier_maybach_route: "/work/cartier-gtm-redirection/maybach",
+  cartier_rogue_route: "/work/cartier-gtm-redirection/rogue",
 };
 
 export function pad(n: number) {

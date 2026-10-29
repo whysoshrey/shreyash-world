@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
 import { ScrollParallaxLayer } from "../components/ScrollParallaxLayer";
 import { MaybachColorControls } from "../components/maybach/MaybachColorControls";
+import { SectionNav } from "../components/system/SectionNav";
 import "../styles/cartier-maybach.css";
 
 const DEFAULT_BODY = "#0A0A0A";
@@ -23,7 +24,7 @@ type ConnectionInfo = {
 };
 
 const SECTIONS: [string, string][] = [
-  ["overview", "Overview"],
+  ["overview", "Concept"],
   ["model", "Model"],
   ["film", "Film"],
   ["activation", "Activation"],
@@ -157,21 +158,7 @@ export function CartierMaybachPage() {
 
   return (
     <div className="cmPage">
-      <header className="cmHeader">
-        <div className="campaignBar__lead">
-          <Link to="/work/cartier-gtm-redirection" className="campaignBar__back">
-            <span aria-hidden="true">←</span> Cartier GTM
-          </Link>
-          <span className="campaignBar__title">Cartier × Maybach</span>
-        </div>
-        <nav>
-          {SECTIONS.map(([id, label]) => (
-            <button key={id} type="button" onClick={() => jumpTo(id)}>
-              {label}
-            </button>
-          ))}
-        </nav>
-      </header>
+      <SectionNav title="Cartier × Maybach" sections={SECTIONS.map(([id, label]) => ({ id, label }))} />
 
       <motion.section
         id="overview"
@@ -511,11 +498,6 @@ export function CartierMaybachPage() {
         </motion.div>
       </motion.section>
 
-      <footer className="cmFooter">
-        <Link to="/">Back to Portfolio</Link>
-        <Link to="/work/cartier-gtm-redirection">Return to Cartier GTM case study</Link>
-        <Link to="/cartier-rogue">Continue to Cartier Rogue →</Link>
-      </footer>
 
       <MaybachLoader open={showEntryLoader} text="ENTERING CARTIER × MAYBACH" />
     </div>

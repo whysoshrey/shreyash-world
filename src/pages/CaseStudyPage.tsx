@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ChapterPager } from "../components/site/Wayfinder";
 import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, ProjectPlate, Reveal } from "../components/site/primitives";
 import { Button } from "../components/system/Button";
@@ -121,16 +122,6 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
           <Lines animateNow delay={0.3} lines={[exhibit.title]} />
         </h1>
         <p className="case__lede">{exhibit.context}</p>
-        <nav className="case__crumbs" aria-label="Breadcrumb">
-          <Link to="/work" className="uLink">Work</Link>
-          <span aria-hidden="true">/</span>
-          <Link to={`/work?d=${d}`} className="uLink case__door">
-            <Icon name={d as IconName} size={14} /> {door.title}
-          </Link>
-          <span className="case__count">
-            Project {item.index} of {total}
-          </span>
-        </nav>
       </header>
 
       <Statement item={item} />
@@ -179,6 +170,8 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
           </Reveal>
         </section>
       ))}
+
+      <ChapterPager />
 
       {/* ——— More work ——— */}
       <section className="case__related" aria-label="More work">
@@ -381,7 +374,7 @@ function ArtifactCard({ artifact }: { artifact: Artifact }) {
 function CartierWorlds() {
   return (
     <div className="worlds">
-      <Link to="/cartier-rogue" className="mediaCard">
+      <Link to="/work/cartier-gtm-redirection/rogue" className="mediaCard">
         <span className="mediaCard__img">
           <img src={asset("/assets/web/rogue-1.webp")} alt="Cartier Rogue campaign still" loading="lazy" />
         </span>
@@ -391,7 +384,7 @@ function CartierWorlds() {
           <span className="mediaCard__cta">Enter <Arrow dir="e" /></span>
         </span>
       </Link>
-      <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
+      <Link to="/work/cartier-gtm-redirection/maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
         <span className="mediaCard__img">
           <img src={asset("/assets/web/maybach-poster.webp")} alt="Render of the Cartier × Maybach vehicle from the 3D model" loading="lazy" />
         </span>
