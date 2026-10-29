@@ -18,6 +18,7 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
   const { name, positioning, links } = props;
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const location = useLocation();
   const menuBtnRef = useRef<HTMLButtonElement | null>(null);
   const cv = links.find((l) => l.label.toLowerCase() === "cv");
@@ -25,7 +26,10 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
   useEffect(() => setOpen(false), [location.pathname]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      setPastHero(window.scrollY > window.innerHeight * 0.45);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -51,8 +55,11 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
       <a className="skipLink" href="#main" onClick={(e) => { e.preventDefault(); document.getElementById("main")?.focus(); }}>
         Skip to content
       </a>
-      <header className={`siteHeader${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}`}>
+      <header className={`siteHeader${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}${location.pathname === "/" && !pastHero ? " is-quiet" : ""}`}>
         <Link to="/" className="siteHeader__brand" aria-label={`${name} — home`}>
+          <span className="siteHeader__mono" aria-hidden="true">
+            S<i>·</i>O
+          </span>
           <span className="siteHeader__mark">{name}</span>
           <span className="siteHeader__role">{positioning}</span>
         </Link>

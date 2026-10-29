@@ -26,10 +26,23 @@ export type ProjectMeta = {
   image?: string;
   imageAlt?: string;
   imagePosition?: string;
+  /** snapshots shown in the case study gallery — all cut from the project's own artwork */
+  gallery?: { src: string; caption: string; ratio: string }[];
 };
 
+const g = (file: string, caption: string, ratio: string) => ({ src: `/assets/web/${file}.webp`, caption, ratio });
+
 export const PROJECT_META: Record<string, ProjectMeta> = {
-  "ops-1": { figure: "22%", figureNote: "reduction in aggregate WIP movement" },
+  "ops-1": {
+    figure: "22%",
+    figureNote: "reduction in aggregate WIP movement",
+    image: "/assets/web/agv-assembled.webp",
+    imageAlt: "3D reconstruction of the autonomous WIP movement robot",
+    gallery: [
+      g("agv-assembled", "Assembled — interactive 3D reconstruction", "740 / 540"),
+      g("agv-exploded", "Exploded view — chassis, electronics bay, payload plate", "750 / 720"),
+    ],
+  },
   "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },
   "ops-3": { figure: "300", figureNote: "kg / day of hard waste eliminated" },
   "inzex-dashboards": { word: "Reporting", figureNote: "Ops analytics & backend" },
@@ -44,6 +57,18 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
     image: "/assets/web/rogue-3.webp",
     imageAlt: "Cartier Rogue campaign portrait",
     imagePosition: "60% 30%",
+    gallery: [
+      g("art-keyart-mask", "Key art", "800 / 1095"),
+      g("art-bracelet-macro", "Hero product — the Palisade bracelet", "1200 / 778"),
+      g("art-models", "Casting board", "760 / 1065"),
+      g("art-mood-drape", "Setting & mood", "860 / 1045"),
+      g("art-times-square", "Out-of-home — Times Square", "1080 / 722"),
+      g("art-bus-shelter", "Out-of-home — bus shelter", "1 / 1"),
+      g("art-airport", "Digital activation — airports", "976 / 657"),
+      g("art-website", "Digital flagship — Rogue website", "1166 / 1215"),
+      g("art-film-maybach", "Cartier × Maybach — film still", "980 / 920"),
+      g("art-maybach-boutique", "Cartier × Maybach — mobile boutique", "1037 / 1215"),
+    ],
   },
 };
 

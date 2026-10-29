@@ -72,6 +72,15 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       ),
     });
 
+  if (meta.gallery?.length)
+    sections.push({
+      id: "gallery",
+      label: "Gallery",
+      title: "From the work",
+      wide: true,
+      body: <Gallery shots={meta.gallery} />,
+    });
+
   if (!isRetail && exhibit.impact.some((a) => a.trim()))
     sections.push({
       id: "impact",
@@ -214,7 +223,7 @@ function Statement({ item }: { item: WorkItem }) {
         animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { delay: 0.45, duration: 1.4, ease: easeOutExpo } }}
       >
         <motion.div style={{ y }} className="statement__plate">
-          <ProjectPlate meta={item.meta} door={item.door.key} label={DOOR_SHORT[item.door.key]} index={item.index} eager large />
+          <ProjectPlate meta={item.meta.gallery && item.meta.figure ? { ...item.meta, image: undefined } : item.meta} door={item.door.key} label={DOOR_SHORT[item.door.key]} index={item.index} eager large />
         </motion.div>
       </motion.div>
       <motion.blockquote className="statement__card" style={{ y: cardY }}>
@@ -222,6 +231,83 @@ function Statement({ item }: { item: WorkItem }) {
         <p>{item.exhibit.proof}</p>
       </motion.blockquote>
     </section>
+  );
+}
+
+/* ---------- Gallery: filmstrip of snapshots cut from the artwork, with a lightbox ---------- */
+type Shot = { src: string; caption: string; ratio: string };
+function Gallery({ shots }: { shots: Shot[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+  const closeRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocus = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (open === null) return;
+    lastFocus.current = document.activeElement as HTMLElement;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+      if (e.key === "ArrowRight") setOpen((i) => (i === null ? i : (i + 1) % shots.length));
+      if (e.key === "ArrowLeft") setOpen((i) => (i === null ? i : (i - 1 + shots.length) % shots.length));
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      lastFocus.current?.focus();
+    };
+  }, [open, shots.length]);
+
+  return (
+    <>
+      <Carousel label={`${shots.length} snapshots`} itemClassName="carousel__item--shot">
+        {shots.map((s, i) => (
+          <button key={s.src} type="button" className="shot" onClick={() => setOpen(i)} aria-label={`Enlarge: ${s.caption}`}>
+            <span className="shot__img" style={{ aspectRatio: s.ratio }}>
+              <img src={asset(s.src)} alt={s.caption} loading="lazy" decoding="async" />
+            </span>
+            <span className="shot__cap">
+              <span className="shot__n label">{pad(i + 1)}</span>
+              {s.caption}
+            </span>
+          </button>
+        ))}
+      </Carousel>
+      <AnimatePresence>
+        {open !== null ? (
+          <motion.div
+            className="lightbox lightbox--gallery"
+            role="dialog"
+            aria-modal="true"
+            aria-label={shots[open].caption}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={(e) => e.target === e.currentTarget && setOpen(null)}
+          >
+            <motion.figure key={open} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } }}>
+              <img src={asset(shots[open].src)} alt={shots[open].caption} />
+              <figcaption>
+                <span className="label">{pad(open + 1)} / {pad(shots.length)}</span> {shots[open].caption}
+              </figcaption>
+            </motion.figure>
+            <div className="lightbox__nav">
+              <button type="button" className="carousel__btn" onClick={() => setOpen((open - 1 + shots.length) % shots.length)} aria-label="Previous image">
+                <Arrow dir="w" />
+              </button>
+              <button type="button" className="carousel__btn" onClick={() => setOpen((open + 1) % shots.length)} aria-label="Next image">
+                <Arrow dir="e" />
+              </button>
+            </div>
+            <button ref={closeRef} type="button" className="lightbox__close" onClick={() => setOpen(null)}>
+              Close ×
+            </button>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -311,7 +397,7 @@ function CartierWorlds() {
       </Link>
       <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
         <span className="mediaCard__img">
-          <img src={asset("/assets/web/maybach-poster-2.webp")} alt="3D render of the Cartier × Maybach vehicle in an alternate finish" loading="lazy" />
+          <img src={asset("/assets/web/maybach-poster.webp")} alt="Render of the Cartier × Maybach vehicle from the 3D model" loading="lazy" />
         </span>
         <span className="mediaCard__meta">
           <span className="label">Mobile luxury gallery</span>

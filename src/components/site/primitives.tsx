@@ -115,6 +115,11 @@ export function ProjectPlate(props: {
         <span>{label}</span>
         <span>№ {String(index).padStart(2, "0")}</span>
       </div>
+      {meta.image && meta.figure ? (
+        <div className="plate__chip" aria-hidden="true">
+          <strong>{meta.figure}</strong> {meta.figureNote}
+        </div>
+      ) : null}
       {meta.figureNote && !meta.image ? (
         <div className="plate__note" aria-hidden="true">
           {meta.figureNote}

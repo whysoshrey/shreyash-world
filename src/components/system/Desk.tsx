@@ -43,33 +43,62 @@ function buildCards(work: WorkItem[]): DeskCard[] {
   };
   const img = (c: Omit<DeskCard, "door"> & { door?: DoorKey }): DeskCard => ({ door: "brand", ...c });
 
+  const R = "/cartier-rogue";
+  const M = "/cartier-maybach";
+  const art = (key: string, to: string, title: string, kicker: string, file: string, ratio: string, x: number, y: number, w: number, r: number, z: number, door: DoorKey = "brand", extra: Partial<DeskCard> = {}): DeskCard =>
+    img({ key, to, title, kicker, door, image: `/assets/web/${file}.webp`, imageAlt: `${title} — ${kicker}`, ratio, x, y, w, r, z, ...extra });
+
+  // Desk is a 100 × 84 field. Four loose rows, every card a real piece of work.
   const cards: (DeskCard | null)[] = [
-    img({ key: "rogue-a", to: "/cartier-rogue", title: "Cartier Rogue", kicker: "Campaign world", image: "/assets/web/rogue-0.webp", imageAlt: "Cartier Rogue campaign still", ratio: "16 / 10", x: 1, y: 7, w: 23, r: -6, z: 0.5 }),
-    plate("ops-1", 26.5, 1, 12.5, 4, 0.9),
-    img({ key: "bloom", to: "/work/merch-2", title: "Retail clienteling", kicker: "Customer note, Bloomingdale’s", door: "merch", image: "/assets/web/bloomingdales-feedback.webp", imageAlt: "Customer feedback note from Bloomingdale’s", ratio: "2.17 / 1", fit: "contain", x: 41, y: 9, w: 19, r: -3, z: 0.3 }),
-    img({ key: "maybach", to: "/cartier-maybach", state: { fromMaybachLoader: true }, title: "Cartier × Maybach", kicker: "3D activation concept", image: "/assets/web/maybach-poster.webp", imageAlt: "3D render of the Cartier × Maybach vehicle", ratio: "1.45 / 1", x: 62, y: 2, w: 21, r: 5, z: 0.7 }),
-    plate("ops-3", 86, 6, 12, -5, 0.4),
-    plate("brand-1", 3, 47, 11.5, 7, 0.8),
-    img({ key: "gtm", to: "/work/cartier-gtm-redirection", title: "Cartier GTM Redirection", kicker: "Brand & Product Experiences", image: "/assets/web/rogue-3.webp", imageAlt: "Cartier Rogue portrait", ratio: "4 / 5", pos: "62% 30%", x: 17, y: 43, w: 13, r: -4, z: 0.6 }),
-    img({ key: "lookbook", to: "/cartier-rogue", title: "Rogue lookbook", kicker: "Campaign cover", image: "/assets/web/old-11-50-16.webp", imageAlt: "Cartier Rogue lookbook cover", ratio: "690 / 898", x: 33, y: 47, w: 11, r: 3, z: 0.2 }),
-    plate("merch-1", 46.5, 41, 12.5, -7, 0.9),
-    img({ key: "ooh", to: "/cartier-rogue", title: "Rogue out-of-home", kicker: "OOH street placement", image: "/assets/web/old-11-51-11.webp", imageAlt: "Cartier Rogue out-of-home placement at night", ratio: "1476 / 984", x: 61, y: 45, w: 19, r: 4, z: 0.5 }),
-    plate("ops-2", 83, 48, 12, -3, 0.7),
-    plate("inzex-dashboards", 7, 75, 11.5, 5, 0.3),
-    plate("brand-3", 24, 78, 11, -4, 0.6),
-    plate("offwhite-human", 40, 75, 11.5, 6, 0.8),
-    img({ key: "rogue-b", to: "/cartier-rogue", title: "Rogue framework", kicker: "Campaign still", image: "/assets/web/rogue-5.webp", imageAlt: "Cartier Rogue campaign still", ratio: "16 / 10", x: 56, y: 77, w: 18, r: -5, z: 0.4 }),
+    // row A
+    art("film-rogue", R, "Cartier Rogue", "Campaign film still", "art-film-rogue", "920 / 905", 0.5, 3, 14.5, -6, 0.5),
+    plate("ops-1", 15.5, 0.5, 10.5, 5, 0.9),
+    art("agv", "/work/ops-1", "Autonomous WIP robot", "3D reconstruction", "agv-assembled", "740 / 540", 27, 5, 15, -3, 0.6, "ops"),
+    art("mask", R, "Cartier Rogue", "Key art", "art-keyart-mask", "800 / 1095", 43.5, 0, 11, 4, 0.8),
+    art("film-maybach", M, "Cartier × Maybach", "Campaign film still", "art-film-maybach", "980 / 920", 55.5, 4, 13.5, -4, 0.4, "brand", { state: { fromMaybachLoader: true } }),
+    plate("ops-3", 70, 1, 10.5, 6, 0.7),
+    art("tower", R, "Rogue out-of-home", "Building billboard", "art-billboard-tower", "670 / 1007", 82.5, 3, 10, -3, 0.3),
+    // row B
+    art("bloom", "/work/merch-2", "Retail clienteling", "Customer note, Bloomingdale’s", "bloomingdales-feedback", "2.17 / 1", 0, 34, 16.5, 3, 0.4, "merch", { fit: "contain" }),
+    plate("brand-1", 17, 33, 10, -5, 0.8),
+    art("bracelet", R, "Palisade bracelet", "Hero product", "art-bracelet-macro", "1200 / 778", 28.5, 31, 16, 2, 0.5),
+    plate("merch-1", 45.5, 27, 10.5, -6, 0.9),
+    art("times", R, "Rogue out-of-home", "Times Square", "art-times-square", "1080 / 722", 57, 30, 15.5, 4, 0.6),
+    plate("ops-2", 73.5, 28, 10.5, -3, 0.7),
+    art("boutique", M, "Cartier × Maybach", "Mobile boutique", "art-maybach-boutique", "1037 / 1215", 85.5, 26, 12.5, 5, 0.4, "brand", { state: { fromMaybachLoader: true } }),
+    // row C
+    art("models", R, "Cartier Rogue", "Casting board", "art-models", "760 / 1065", 1.5, 55, 11, -4, 0.6),
+    plate("inzex-dashboards", 14, 57, 10.5, 5, 0.3),
+    art("website", R, "Rogue website", "Digital flagship", "art-website", "1166 / 1215", 25.5, 54, 13.5, -2, 0.7),
+    art("gtm", "/work/cartier-gtm-redirection", "Cartier GTM Redirection", "Brand & Product Experiences", "rogue-3", "4 / 5", 40.5, 57, 11, 6, 0.5, "brand", { pos: "62% 30%" }),
+    plate("brand-3", 52.5, 54, 10, -5, 0.8),
+    art("shelter", R, "Rogue out-of-home", "Bus shelter", "art-bus-shelter", "1 / 1", 63.5, 57, 12.5, 3, 0.4),
+    art("agv-x", "/work/ops-1", "Autonomous WIP robot", "Exploded view", "agv-exploded", "750 / 720", 77, 54, 12.5, -4, 0.6, "ops"),
+    art("garden", R, "Rogue airports", "Digital totem", "art-airport-garden", "579 / 865", 90, 56, 9.5, 4, 0.8),
+    // row D
+    plate("offwhite-human", 9.5, 81, 10.5, 4, 0.5),
+    art("chandelier", R, "Cartier Rogue", "Setting & mood", "art-mood-chandelier", "860 / 550", 19, 82, 15.5, -3, 0.7),
+    art("billboard", R, "Rogue billboard", "Campaign banner", "art-billboard", "1200 / 401", 36, 85, 22, 2, 0.4),
+    art("leopard", R, "Cartier Rogue", "Key art", "art-keyart-leopard", "620 / 915", 60, 79, 9.5, -5, 0.8),
+    art("street", R, "Cartier Rogue", "Street casting", "rogue-0", "16 / 10", 71, 82, 15, 3, 0.5),
+    art("lookbook", R, "Rogue lookbook", "Campaign cover", "old-11-50-16", "690 / 898", 88.5, 79, 9.5, -4, 0.3),
   ];
-  return cards.filter(Boolean) as DeskCard[];
+  // Loosen the rows: compress vertically and jitter each card so the prints overlap like a real table.
+  const JITTER = [0, 4, -3, 5, -2, 3, -4, 2, -5, 4, -1, 5, -3, 2, 3, -4, 1, -2, 5, -3, 2, -5, 4, -1, 3, -2, 1, 4];
+  return (cards.filter(Boolean) as DeskCard[]).map((c, i) => ({
+    ...c,
+    y: Math.max(0, c.y * 0.74 + JITTER[i % JITTER.length]),
+    x: c.x + (i % 3 === 0 ? 0.8 : i % 3 === 1 ? -0.6 : 0),
+  }));
 }
 
 function CardFace({ c }: { c: DeskCard }) {
   if (c.item) {
-    return <ProjectPlate meta={c.item.meta} door={c.door} label={DOOR_SHORT[c.door]} index={c.item.index} />;
+    return <ProjectPlate meta={{ ...c.item.meta, image: undefined }} door={c.door} label={DOOR_SHORT[c.door]} index={c.item.index} />;
   }
   return (
     <span className={`deskCard__img${c.fit === "contain" ? " is-contain" : ""}`} style={{ aspectRatio: c.ratio }}>
-      <img src={asset(c.image!)} alt={c.imageAlt ?? ""} loading="lazy" decoding="async" style={c.pos ? { objectPosition: c.pos } : undefined} />
+      <img src={asset(c.image!)} alt={c.imageAlt ?? ""} decoding="async" style={c.pos ? { objectPosition: c.pos } : undefined} />
     </span>
   );
 }

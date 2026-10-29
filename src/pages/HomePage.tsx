@@ -7,6 +7,7 @@ import { Arrow, CountUp, Lines, Reveal } from "../components/site/primitives";
 import { Button } from "../components/system/Button";
 import { Desk } from "../components/system/Desk";
 import { Icon } from "../components/system/Icon";
+import { Bridge, ChapterRail } from "../components/system/Flow";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { asset, getWork, pad, WORK_DOORS } from "../lib/projects";
@@ -47,23 +48,38 @@ function Home({ content }: { content: Content }) {
 
   return (
     <>
-      {/* ——— Hero ——— */}
+      <ChapterRail
+        chapters={[
+          ["desk", "The desk"],
+          ["evidence", "In numbers"],
+          ["work", "Index"],
+          ["cartier", "Cartier"],
+          ["practice", "Practice"],
+          ["recognition", "Recognition"],
+          ["about-teaser", "About"],
+          ["contact", "Contact"],
+        ]}
+      />
+      {/* ——— Hero: who, what, proof — then straight into the work ——— */}
       <section className="hero" aria-labelledby="hero-name">
-        <motion.div
-          className="hero__meta"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { delay: 0.6, duration: 0.8 } }}
-        >
-          <span className="label">Portfolio — Selected work</span>
-          <span className="label">{site.positioning}</span>
+        <motion.div className="hero__meta" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.6, duration: 0.8 } }}>
+          <span className="label">Portfolio — selected work</span>
           <span className="label hero__metaEnd">NIFT Delhi · Parsons, New York</span>
         </motion.div>
 
-        <h1 id="hero-name" className="hero__name">
-          <Lines animateNow delay={0.35} lines={[first, <em key="l">{last}</em>]} lineClassName={["hero__first", "hero__last"]} />
-        </h1>
-
         <div className="hero__grid">
+          <div className="hero__id">
+            <h1 id="hero-name" className="hero__name">
+              <Lines animateNow delay={0.3} lines={[<>{first} <em>{last}</em></>]} />
+            </h1>
+            <motion.p
+              className="hero__role"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.7, duration: 0.9, ease: easeOutExpo } }}
+            >
+              {site.positioning}
+            </motion.p>
+          </div>
           <motion.p
             className="hero__value"
             initial={{ opacity: 0, y: 20 }}
@@ -71,35 +87,32 @@ function Home({ content }: { content: Content }) {
           >
             {site.valueProp}
           </motion.p>
-
-          <motion.div
-            className="hero__side"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 1, duration: 1, ease: easeOutExpo } }}
-          >
-            <ul className="hero__disciplines" aria-label="Disciplines">
-              {DISCIPLINES.map((d, i) => (
-                <li key={d}>
-                  <span className="hero__dnum">{pad(i + 1)}</span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-            <div className="hero__ctas">
-              <Button variant="primary" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
-                View the work
-              </Button>
-              {cv ? (
-                <Button variant="secondary" href={cv.href} icon={<Arrow />}>
-                  Résumé
-                </Button>
-              ) : null}
-            </div>
-          </motion.div>
-
         </div>
 
-        <p className="hero__edu label">B.F.Tech, NIFT Delhi&nbsp;&nbsp;/&nbsp;&nbsp;MPS Fashion Management, Parsons School of Design, The New School</p>
+        <motion.div
+          className="hero__foot"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0, transition: { delay: 1.05, duration: 1, ease: easeOutExpo } }}
+        >
+          <ul className="hero__disciplines" aria-label="Disciplines">
+            {DISCIPLINES.map((d, i) => (
+              <li key={d}>
+                <span className="hero__dnum">{pad(i + 1)}</span>
+                {d}
+              </li>
+            ))}
+          </ul>
+          <div className="hero__ctas">
+            <Button variant="primary" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
+              View the work
+            </Button>
+            {cv ? (
+              <Button variant="secondary" href={cv.href} icon={<Arrow />}>
+                Résumé
+              </Button>
+            ) : null}
+          </div>
+        </motion.div>
       </section>
 
       {/* ——— The desk ——— */}
@@ -109,13 +122,23 @@ function Home({ content }: { content: Content }) {
           <h2 id="desk-title" className="deskSection__title">
             Pick up <em>a project</em>
           </h2>
+          <p className="deskSection__lede">Prints from the archive — factory floor, sales floor and campaign, side by side.</p>
           <p className="deskSection__hint label"><span className="onFine">Hover to lift · click to open</span><span className="onCoarse">Swipe · tap to open</span></p>
         </header>
         <Desk work={work} />
+        <Bridge to="evidence" label="What it added up to" />
       </section>
 
       {/* ——— Evidence ——— */}
-      <section className="evidence" aria-label="Results at a glance">
+      <section id="evidence" className="evidenceWrap" aria-labelledby="ev-title">
+      <header className="sectionHead sectionHead--tight">
+        <span className="label">(01) In numbers</span>
+        <h2 id="ev-title" className="sectionHead__title">
+          <Lines lines={["Measured,", <em key="m">not claimed</em>]} />
+        </h2>
+        <p className="sectionHead__aside">Each figure links to the project it came from.</p>
+      </header>
+      <div className="evidence">
         {EVIDENCE.map((e, i) => (
           <Reveal key={e.id} className="evidence__item" delay={i * 0.08}>
             <Link to={`/work/${e.id}`} className="evidence__link">
@@ -127,12 +150,14 @@ function Home({ content }: { content: Content }) {
             </Link>
           </Reveal>
         ))}
+      </div>
+      <Bridge to="work" label="The full index" />
       </section>
 
       {/* ——— Selected work ——— */}
       <section id="work" className="section" aria-labelledby="work-title">
         <header className="sectionHead">
-          <span className="label">(01) Index</span>
+          <span className="label">(02) Index</span>
           <h2 id="work-title" className="sectionHead__title">
             <Lines lines={["Selected", <em key="w">work</em>]} />
           </h2>
@@ -151,9 +176,9 @@ function Home({ content }: { content: Content }) {
       </section>
 
       {/* ——— Campaign feature ——— */}
-      <section className="feature" aria-labelledby="feature-title">
+      <section id="cartier" className="feature" aria-labelledby="feature-title">
         <header className="feature__head">
-          <span className="label">(02) Brand &amp; product experiences</span>
+          <span className="label">(03) Brand &amp; product experiences</span>
           <h2 id="feature-title" className="feature__title">
             <Lines lines={["Cartier,", <em key="r">re-authored</em>]} />
           </h2>
@@ -168,7 +193,7 @@ function Home({ content }: { content: Content }) {
           <Reveal className="feature__card feature__card--tall">
             <Link to="/cartier-rogue" className="mediaCard">
               <span className="mediaCard__img">
-                <img src={asset("/assets/web/rogue-2.webp")} alt="Cartier Rogue campaign still" loading="lazy" />
+                <img src={asset("/assets/web/art-mood-drape.webp")} alt="Cartier Rogue setting and mood artwork" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
                 <span className="label">Campaign · Editorial / OOH / Digital</span>
@@ -180,7 +205,7 @@ function Home({ content }: { content: Content }) {
           <Reveal className="feature__card" delay={0.12}>
             <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
               <span className="mediaCard__img">
-                <img src={asset("/assets/web/maybach-poster-2.webp")} alt="3D render of the Cartier × Maybach vehicle in an alternate finish" loading="lazy" />
+                <img src={asset("/assets/web/maybach-poster.webp")} alt="Render of the Cartier × Maybach vehicle from the 3D model" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
                 <span className="label">Activation · Interactive 3D</span>
@@ -193,9 +218,9 @@ function Home({ content }: { content: Content }) {
       </section>
 
       {/* ——— Practice ——— */}
-      <section className="section practice" aria-labelledby="practice-title">
+      <section id="practice" className="section practice" aria-labelledby="practice-title">
         <header className="sectionHead">
-          <span className="label">(03) Practice</span>
+          <span className="label">(04) Practice</span>
           <h2 id="practice-title" className="sectionHead__title">
             <Lines lines={["Three ways", <em key="p">of working</em>]} />
           </h2>
@@ -222,9 +247,9 @@ function Home({ content }: { content: Content }) {
       </section>
 
       {/* ——— Recognition ——— */}
-      <section className="section recognition" aria-labelledby="rec-title">
+      <section id="recognition" className="section recognition" aria-labelledby="rec-title">
         <header className="sectionHead">
-          <span className="label">(04) Recognition</span>
+          <span className="label">(05) Recognition</span>
           <h2 id="rec-title" className="sectionHead__title">
             <Lines lines={["Awards &", <em key="e">endorsements</em>]} />
           </h2>
@@ -248,8 +273,8 @@ function Home({ content }: { content: Content }) {
       </section>
 
       {/* ——— About teaser ——— */}
-      <section className="section aboutTeaser" aria-labelledby="about-title">
-        <span className="label">(05) About</span>
+      <section id="about-teaser" className="section aboutTeaser" aria-labelledby="about-title">
+        <span className="label">(06) About</span>
         <h2 id="about-title" className="aboutTeaser__text">
           <Reveal>
             Trained in fashion technology at NIFT Delhi and fashion management at Parsons, I work where the{" "}
