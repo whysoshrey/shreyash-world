@@ -7,6 +7,7 @@ import { AboutPage } from "./pages/AboutPage";
 import { CaseStudyPage, NotFoundBody } from "./pages/CaseStudyPage";
 import { CredentialsPage } from "./pages/CredentialsPage";
 import { HomePage } from "./pages/HomePage";
+import { SystemPage } from "./pages/SystemPage";
 import { WorkPage } from "./pages/WorkPage";
 import "./styles/site.css";
 
@@ -47,6 +48,7 @@ function AnimatedRoutes() {
         <Route path="/work/:id" element={<WorkOrCredential />} />
         <Route path="/credentials" element={<CredentialsPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/system" element={<SystemPage />} />
         <Route path="/cartier-rogue" element={<Campaign which="rogue" />} />
         <Route path="/cartier-maybach" element={<Campaign which="maybach" />} />
         <Route path="*" element={<NotFoundBody />} />

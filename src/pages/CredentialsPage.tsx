@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, Reveal } from "../components/site/primitives";
+import { Button } from "../components/system/Button";
+import { Icon } from "../components/system/Icon";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { liveArtifacts, pad } from "../lib/projects";
@@ -43,9 +45,9 @@ export function CredentialsPage() {
         >
           <p className="pageHead__lede">Faculty letters from NIFT Delhi, academic awards, and recognition from Parsons School of Design.</p>
           {resume ? (
-            <a className="btn btn--solid" href={liveArtifacts(resume)[0]?.url} target="_blank" rel="noreferrer">
-              Open résumé ({resume.context}) <Arrow />
-            </a>
+            <Button variant="primary" href={liveArtifacts(resume)[0]?.url ?? "#"} icon={<Arrow />}>
+              Open résumé ({resume.context})
+            </Button>
           ) : null}
         </motion.div>
       </section>
@@ -79,10 +81,12 @@ function CredGroup(props: { title: string; num: string; items: Exhibit[]; open: 
                   aria-controls={`${c.id}-panel`}
                   onClick={() => setOpen(isOpen ? null : c.id)}
                 >
-                  <span className="credItem__num">{pad(i + 1)}</span>
+                  <span className="credItem__num">
+                    <Icon name="cred" size={16} /> {pad(i + 1)}
+                  </span>
                   <span className="credItem__title">{c.title}</span>
                   <span className="credItem__ctx">{c.context}</span>
-                  <span className="credItem__plus" aria-hidden="true" />
+                  <span className="credItem__plus" aria-hidden="true"><Icon name="plus" size={18} /></span>
                 </button>
                 {link ? (
                   <a className="credItem__link" href={link.url} target="_blank" rel="noreferrer">

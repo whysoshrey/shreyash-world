@@ -10,7 +10,7 @@ type Props = {
 
 const BODY_HINTS = ["body", "paint", "carpaint", "exterior", "bonnet", "hood", "door", "fender", "panel"];
 const ACCENT_HINTS = ["chrome", "trim", "rim", "wheel", "detail", "grill", "logo", "metal", "line"];
-const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
+const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.${import.meta.env.VITE_MODEL_EXT ?? "glb"}`;
 
 function isMesh(obj: Object3D): obj is Mesh {
   return (obj as Mesh).isMesh === true;

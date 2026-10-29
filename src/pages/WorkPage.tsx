@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { PageShell } from "../components/site/PageShell";
-import { Arrow, Lines, ProjectPlate } from "../components/site/primitives";
+import { Lines } from "../components/site/primitives";
+import { Icon } from "../components/system/Icon";
+import { useViewed, WorkCard } from "../components/system/WorkCard";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
-import { DOOR_SHORT, getWork, pad, WORK_DOORS } from "../lib/projects";
+import { getWork, pad, WORK_DOORS } from "../lib/projects";
 import type { DoorKey } from "../lib/types";
 
 export function WorkPage() {
   const { content } = useContentState();
   const [params, setParams] = useSearchParams();
+  const viewed = useViewed();
   const raw = params.get("d");
   const filter: DoorKey | "all" = raw && (WORK_DOORS as string[]).includes(raw) ? (raw as DoorKey) : "all";
 
@@ -46,10 +49,12 @@ export function WorkPage() {
             key={t.key}
             type="button"
             className={`filter${filter === t.key ? " is-active" : ""}`}
+            data-d={t.key}
             aria-pressed={filter === t.key}
             onClick={() => setParams(t.key === "all" ? {} : { d: t.key }, { replace: true })}
           >
             <span className="filter__pill" aria-hidden="true" />
+            {t.key !== "all" ? <Icon name={t.key} size={15} className="filter__icon" /> : null}
             <span className="filter__label">{t.label}</span>
             <span className="filter__count">{pad(t.count)}</span>
           </button>
@@ -64,18 +69,7 @@ export function WorkPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0, transition: { duration: 0.9, ease: easeOutExpo, delay: 0.1 + i * 0.06 } }}
             >
-              <Link to={`/work/${item.exhibit.id}`} className="workCard">
-                <ProjectPlate meta={item.meta} door={item.door.key} label={DOOR_SHORT[item.door.key]} index={item.index} eager={i < 3} />
-                <span className="workCard__meta">
-                  <span className="workCard__num">{pad(item.index)}</span>
-                  <span className="workCard__body">
-                    <span className="workCard__title">{item.exhibit.title}</span>
-                    <span className="workCard__ctx">{item.exhibit.context}</span>
-                    <span className="workCard__proof">{item.exhibit.proof}</span>
-                  </span>
-                  <Arrow className="workCard__arrow" />
-                </span>
-              </Link>
+              <WorkCard item={item} eager={i < 3} viewed={viewed.has(item.exhibit.id)} />
             </motion.li>
           ))}
       </ul>

@@ -8,7 +8,7 @@ import "../styles/cartier-maybach.css";
 
 const DEFAULT_BODY = "#0A0A0A";
 const DEFAULT_ACCENT = "#C8A35A";
-const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.glb`;
+const MAYBACH_GLB_URL = `${import.meta.env.BASE_URL}models/maybach.${import.meta.env.VITE_MODEL_EXT ?? "glb"}`;
 const LOW_DATA_EFFECTIVE_TYPES = new Set(["slow-2g", "2g", "3g"]);
 
 const MaybachViewer = lazy(() =>
@@ -253,11 +253,14 @@ export function CartierMaybachPage() {
                   />
                 </Suspense>
               ) : (
-                <div className={`cmModelFallback${modelAvailability === "missing" ? " is-error" : ""}`}>
-                  {modelAvailability === "missing"
-                    ? "Maybach model missing. Ensure public/models/maybach.glb exists."
-                    : "Preparing Maybach…"}
-                </div>
+                modelAvailability === "missing" ? (
+                  <figure className="cmModelPoster">
+                    <img src={`${import.meta.env.BASE_URL}assets/web/maybach-poster.webp`} alt="Render of the Cartier × Maybach vehicle from the 3D model" />
+                    <figcaption>Rendered still — the interactive 3D model loads on the full site.</figcaption>
+                  </figure>
+                ) : (
+                  <div className="cmModelFallback">Preparing Maybach…</div>
+                )
               )
             ) : viewerModeReady && !shouldAutoloadModel ? (
               <div className="cmModelFallback cmModelFallback--interactive">

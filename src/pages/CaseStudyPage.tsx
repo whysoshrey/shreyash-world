@@ -1,8 +1,14 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, ProjectPlate, Reveal } from "../components/site/primitives";
+import { Button } from "../components/system/Button";
+import { Carousel } from "../components/system/Carousel";
+import { Disclosure } from "../components/system/Disclosure";
+import { Icon, type IconName } from "../components/system/Icon";
+import { SectionNav } from "../components/system/SectionNav";
+import { markViewed, useViewed, WorkCard } from "../components/system/WorkCard";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { ACTION_ROUTES, asset, DOOR_SHORT, getWork, isExternal, liveArtifacts, pad, sentence, type WorkItem } from "../lib/projects";
@@ -22,26 +28,37 @@ export function CaseStudyPage() {
 
   return (
     <PageShell title={`${item.exhibit.title} — Shreyash Ojha`} curtainLabel={item.exhibit.title}>
-      <CaseStudy key={item.exhibit.id} item={item} total={work.length} prev={prev} next={next} />
+      <CaseStudy key={item.exhibit.id} item={item} work={work} total={work.length} prev={prev} next={next} />
     </PageShell>
   );
 }
 
-function CaseStudy(props: { item: WorkItem; total: number; prev: WorkItem; next: WorkItem }) {
-  const { item, total, prev, next } = props;
+type Sec = { id: string; label: string; title: string; body: ReactNode; wide?: boolean };
+
+function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; prev: WorkItem; next: WorkItem }) {
+  const { item, work, total, prev, next } = props;
   const { exhibit, door, meta } = item;
+  const d = door.key;
   const artifacts = liveArtifacts(exhibit);
   const isRetail = exhibit.id === "merch-2";
   const isCartier = exhibit.id === "cartier-gtm-redirection";
-  const plateRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({ target: plateRef, offset: ["start end", "end start"] });
-  const plateY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const viewed = useViewed();
 
-  const sections: { key: string; title: string; body: React.ReactNode }[] = [];
-  if (!isRetail && exhibit.problem.trim()) sections.push({ key: "problem", title: "Problem", body: <p className="prose">{sentence(exhibit.problem)}</p> });
+  useEffect(() => markViewed(exhibit.id), [exhibit.id]);
+
+  /* ---------- build sections (the "rooms" of this project) ---------- */
+  const sections: Sec[] = [];
+
+  if (isRetail) {
+    sections.push(...retailSections());
+  } else if (exhibit.problem.trim()) {
+    sections.push({ id: "brief", label: "Brief", title: "The brief", body: <Brief text={sentence(exhibit.problem)} /> });
+  }
+
   if (!isRetail && exhibit.approach.some((a) => a.trim()))
     sections.push({
-      key: "approach",
+      id: "approach",
+      label: "Approach",
       title: "Approach",
       body: (
         <ol className="steps">
@@ -54,26 +71,50 @@ function CaseStudy(props: { item: WorkItem; total: number; prev: WorkItem; next:
         </ol>
       ),
     });
+
   if (!isRetail && exhibit.impact.some((a) => a.trim()))
     sections.push({
-      key: "impact",
+      id: "impact",
+      label: "Impact",
       title: "Impact",
       body: (
-        <ul className="impactList">
+        <ul className="impactTiles">
           {exhibit.impact.map((a, i) => (
-            <li key={i}>{sentence(a)}</li>
+            <ImpactTile key={i} text={sentence(a)} index={i} />
           ))}
         </ul>
       ),
     });
 
+  if (isCartier) sections.push({ id: "worlds", label: "Two worlds", title: "Two worlds", body: <CartierWorlds />, wide: true });
+
+  if (artifacts.length && !isCartier)
+    sections.push({
+      id: "artifacts",
+      label: "Artifacts",
+      title: "Artifacts",
+      wide: true,
+      body: (
+        <Carousel label={`${artifacts.length} artifact${artifacts.length > 1 ? "s" : ""}`} itemClassName="carousel__item--artifact">
+          {artifacts.map((a) => (
+            <ArtifactCard key={a.label} artifact={a} />
+          ))}
+        </Carousel>
+      ),
+    });
+
+  const related = [...work.filter((w) => w.door.key === d && w !== item), ...work.filter((w) => w.door.key !== d)].slice(0, 6);
+
   return (
-    <article className="case">
+    <article className="case" data-d={d}>
+      {/* ——— Banner ——— */}
       <header className="case__head">
         <div className="case__crumbs label">
           <Link to="/work" className="uLink">Work</Link>
           <span aria-hidden="true">/</span>
-          <Link to={`/work?d=${door.key}`} className="uLink">{door.title}</Link>
+          <Link to={`/work?d=${d}`} className="uLink case__door">
+            <Icon name={d as IconName} size={14} /> {door.title}
+          </Link>
           <span className="case__count">
             {pad(item.index)} — {pad(total)}
           </span>
@@ -81,49 +122,49 @@ function CaseStudy(props: { item: WorkItem; total: number; prev: WorkItem; next:
         <h1 className="case__title">
           <Lines animateNow delay={0.3} lines={[exhibit.title]} />
         </h1>
-        <motion.div
-          className="case__intro"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0, transition: { delay: 0.7, duration: 1, ease: easeOutExpo } }}
+        <motion.dl
+          className="metaStrip"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0, transition: { delay: 0.65, duration: 1, ease: easeOutExpo } }}
         >
-          <p className="case__lede">{exhibit.proof}</p>
-          <dl className="case__facts">
+          <div>
+            <dt className="label">Context</dt>
+            <dd>{exhibit.context}</dd>
+          </div>
+          <div>
+            <dt className="label">Discipline</dt>
+            <dd>{door.title}</dd>
+          </div>
+          {exhibit.skills ? (
             <div>
-              <dt className="label">Context</dt>
-              <dd>{exhibit.context}</dd>
+              <dt className="label">Skills</dt>
+              <dd>{sentence(exhibit.skills)}</dd>
             </div>
-            <div>
-              <dt className="label">Discipline</dt>
-              <dd>{door.title}</dd>
-            </div>
-            {exhibit.skills ? (
-              <div>
-                <dt className="label">Skills</dt>
-                <dd>{sentence(exhibit.skills)}</dd>
-              </div>
-            ) : null}
-          </dl>
-        </motion.div>
+          ) : null}
+          <div>
+            <dt className="label">Artifacts</dt>
+            <dd className="metaStrip__artifacts">
+              {artifacts.length ? (
+                <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
+                  {artifacts.length} {isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"} ↓
+                </button>
+              ) : (
+                "—"
+              )}
+            </dd>
+          </div>
+        </motion.dl>
       </header>
 
-      <motion.div
-        ref={plateRef}
-        className="case__plate"
-        initial={{ clipPath: "inset(12% 6% 12% 6%)", opacity: 0 }}
-        animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { delay: 0.5, duration: 1.4, ease: easeOutExpo } }}
-      >
-        <motion.div style={{ y: plateY }} className="case__plateInner">
-          <ProjectPlate meta={meta} door={door.key} label={DOOR_SHORT[door.key]} index={item.index} eager large />
-        </motion.div>
-      </motion.div>
+      <Statement item={item} />
 
-      {isRetail ? <RetailVignette /> : null}
+      <SectionNav title={exhibit.title} sections={sections.map((s) => ({ id: s.id, label: s.label }))} />
 
       {sections.map((s, i) => (
-        <section key={s.key} className="case__section" aria-labelledby={`s-${s.key}`}>
+        <section key={s.id} id={s.id} className={`case__section${s.wide ? " case__section--wide" : ""}`} aria-labelledby={`h-${s.id}`}>
           <Reveal className="case__sectionHead">
             <span className="case__sectionNum">{pad(i + 1)}</span>
-            <h2 id={`s-${s.key}`} className="case__sectionTitle">{s.title}</h2>
+            <h2 id={`h-${s.id}`} className="case__sectionTitle">{s.title}</h2>
           </Reveal>
           <Reveal className="case__sectionBody" delay={0.08}>
             {s.body}
@@ -131,34 +172,23 @@ function CaseStudy(props: { item: WorkItem; total: number; prev: WorkItem; next:
         </section>
       ))}
 
-      {isCartier ? <CartierWorlds num={sections.length + 1} /> : null}
+      {/* ——— More work ——— */}
+      <section className="case__related" aria-label="More work">
+        <Carousel label="More work" itemClassName="carousel__item--card">
+          {related.map((w) => (
+            <WorkCard key={w.exhibit.id} item={w} compact viewed={viewed.has(w.exhibit.id)} />
+          ))}
+        </Carousel>
+      </section>
 
-      {artifacts.length && !isCartier ? (
-        <section className="case__section" aria-labelledby="s-artifacts">
-          <Reveal className="case__sectionHead">
-            <span className="case__sectionNum">{pad(sections.length + 1)}</span>
-            <h2 id="s-artifacts" className="case__sectionTitle">Artifacts</h2>
-          </Reveal>
-          <Reveal className="case__sectionBody" delay={0.08}>
-            <ul className="artifactList">
-              {artifacts.map((a) => (
-                <li key={a.label}>
-                  <ArtifactLink artifact={a} />
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </section>
-      ) : null}
-
-      <nav className="case__next" aria-label="More projects">
+      <nav className="case__next" aria-label="Previous and next project">
         <Link to={`/work/${prev.exhibit.id}`} className="case__prev">
           <span className="label">
             <Arrow dir="w" /> Previous
           </span>
           <span className="case__prevTitle">{prev.exhibit.title}</span>
         </Link>
-        <Link to={`/work/${next.exhibit.id}`} className="case__nextLink">
+        <Link to={`/work/${next.exhibit.id}`} className="case__nextLink" data-d={next.door.key}>
           <span className="label">
             Next project <Arrow dir="e" />
           </span>
@@ -170,15 +200,86 @@ function CaseStudy(props: { item: WorkItem; total: number; prev: WorkItem; next:
   );
 }
 
-function ArtifactLink({ artifact }: { artifact: Artifact }) {
-  const cls = `artifactLink${artifact.variant === "hero" ? " artifactLink--hero" : ""}`;
+/* ---------- Statement band: layered banner (plate = back layer, paper card = top layer) ---------- */
+function Statement({ item }: { item: WorkItem }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const cardY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  return (
+    <section className="statement" ref={ref} aria-label="Key result">
+      <motion.div
+        className="statement__back"
+        initial={{ clipPath: "inset(10% 5% 10% 5%)", opacity: 0 }}
+        animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { delay: 0.45, duration: 1.4, ease: easeOutExpo } }}
+      >
+        <motion.div style={{ y }} className="statement__plate">
+          <ProjectPlate meta={item.meta} door={item.door.key} label={DOOR_SHORT[item.door.key]} index={item.index} eager large />
+        </motion.div>
+      </motion.div>
+      <motion.blockquote className="statement__card" style={{ y: cardY }}>
+        <span className="label">Result</span>
+        <p>{item.exhibit.proof}</p>
+      </motion.blockquote>
+    </section>
+  );
+}
+
+/* ---------- Brief: long text folds behind a Disclosure ---------- */
+function Brief({ text }: { text: string }) {
+  if (text.length < 260) return <p className="prose">{text}</p>;
+  const re = /[.:;]\s/g;
+  re.lastIndex = 110;
+  const m = re.exec(text);
+  const cut = m ? m.index : -1;
+  if (cut < 0 || cut > 320) return <p className="prose">{text}</p>;
+  const lead = text.slice(0, cut + 1);
+  const rest = sentence(text.slice(cut + 2));
+  return (
+    <>
+      <p className="prose">{lead}</p>
+      <Disclosure variant="inline" summary="Read the full brief">
+        <p className="prose prose--small">{rest}</p>
+      </Disclosure>
+    </>
+  );
+}
+
+/* ---------- Impact tile: lifts the number out of the sentence when there is one ---------- */
+function ImpactTile({ text, index }: { text: string; index: number }) {
+  const m = text.match(/(\d[\d,.]*\s?(?:%|kg\/day|kg|s)?)/);
+  return (
+    <li className="impactTile">
+      <span className="impactTile__n label">{pad(index + 1)}</span>
+      {m ? <span className="impactTile__fig">{m[1].trim()}</span> : <Icon name="check" size={28} className="impactTile__icon" />}
+      <span className="impactTile__text">{text}</span>
+    </li>
+  );
+}
+
+/* ---------- Artifact card ---------- */
+function artifactKind(a: Artifact): { kind: string; icon: IconName } {
+  if (a.actionId) return { kind: "Case world", icon: "globe" };
+  if (a.url.includes("drive.google.com/drive")) return { kind: "Folder", icon: "folder" };
+  if (a.url.endsWith(".html")) return { kind: "Interactive 3D", icon: "cube" };
+  if (/\.(jpe?g|png|webp)$/i.test(a.url)) return { kind: "Image", icon: "image" };
+  if (isExternal(a.url)) return { kind: "Document", icon: "doc" };
+  return { kind: "Link", icon: "doc" };
+}
+
+function ArtifactCard({ artifact }: { artifact: Artifact }) {
+  const { kind, icon } = artifactKind(artifact);
+  const cls = `artifactCard${artifact.variant === "hero" ? " artifactCard--hero" : ""}`;
   const inner = (
     <>
-      <span className="artifactLink__label">{artifact.label}</span>
-      <span className="artifactLink__kind label">
-        {artifact.actionId ? "Case world" : artifact.url.includes("drive.google.com/drive") ? "Folder" : artifact.url.endsWith(".html") ? "Interactive" : isExternal(artifact.url) ? "Document" : "Image"}
+      <span className="artifactCard__top">
+        <Icon name={icon} size={26} />
+        <span className="label">{kind}</span>
       </span>
-      <Arrow className="artifactLink__arrow" dir={artifact.actionId ? "e" : "ne"} />
+      <span className="artifactCard__label">{artifact.label}</span>
+      <span className="artifactCard__cta">
+        {artifact.actionId ? "Enter" : "Open"} <Arrow dir={artifact.actionId ? "e" : "ne"} />
+      </span>
     </>
   );
   if (artifact.actionId && ACTION_ROUTES[artifact.actionId]) {
@@ -195,46 +296,84 @@ function ArtifactLink({ artifact }: { artifact: Artifact }) {
   );
 }
 
-function CartierWorlds({ num }: { num: number }) {
+function CartierWorlds() {
   return (
-    <section className="case__section case__section--wide" aria-labelledby="s-worlds">
-      <Reveal className="case__sectionHead">
-        <span className="case__sectionNum">{pad(num)}</span>
-        <h2 id="s-worlds" className="case__sectionTitle">Two worlds</h2>
-      </Reveal>
-      <div className="worlds">
-        <Reveal>
-          <Link to="/cartier-rogue" className="mediaCard">
-            <span className="mediaCard__img">
-              <img src={asset("/assets/web/rogue-0.webp")} alt="Cartier Rogue campaign language image" loading="lazy" />
-            </span>
-            <span className="mediaCard__meta">
-              <span className="label">Campaign platform</span>
-              <span className="mediaCard__title">Cartier Rogue</span>
-              <span className="mediaCard__cta">Enter <Arrow dir="e" /></span>
-            </span>
-          </Link>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
-            <span className="mediaCard__img">
-              <img src={asset("/assets/web/maybach-poster.webp")} alt="3D render of the Cartier × Maybach vehicle" loading="lazy" />
-            </span>
-            <span className="mediaCard__meta">
-              <span className="label">Mobile luxury gallery</span>
-              <span className="mediaCard__title">Cartier × Maybach</span>
-              <span className="mediaCard__cta">Enter <Arrow dir="e" /></span>
-            </span>
-          </Link>
-        </Reveal>
-      </div>
-    </section>
+    <div className="worlds">
+      <Link to="/cartier-rogue" className="mediaCard">
+        <span className="mediaCard__img">
+          <img src={asset("/assets/web/rogue-1.webp")} alt="Cartier Rogue campaign still" loading="lazy" />
+        </span>
+        <span className="mediaCard__meta">
+          <span className="label">Campaign platform</span>
+          <span className="mediaCard__title">Cartier Rogue</span>
+          <span className="mediaCard__cta">Enter <Arrow dir="e" /></span>
+        </span>
+      </Link>
+      <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
+        <span className="mediaCard__img">
+          <img src={asset("/assets/web/maybach-poster-2.webp")} alt="3D render of the Cartier × Maybach vehicle in an alternate finish" loading="lazy" />
+        </span>
+        <span className="mediaCard__meta">
+          <span className="label">Mobile luxury gallery</span>
+          <span className="mediaCard__title">Cartier × Maybach</span>
+          <span className="mediaCard__cta">Enter <Arrow dir="e" /></span>
+        </span>
+      </Link>
+    </div>
   );
 }
 
+/* ---------- Retail clienteling: bespoke rooms, content preserved verbatim ---------- */
 const RETAIL_STRENGTHS = ["Clienteling", "Fit Resolution", "Service Recovery", "Luxury Floor Execution", "Cross-Sell Support", "Customer Trust"];
 
-function RetailVignette() {
+function retailSections(): Sec[] {
+  return [
+    {
+      id: "context",
+      label: "Context",
+      title: "Context",
+      body: (
+        <p className="prose">
+          I worked in frontline menswear retail where execution quality directly shaped trust, conversion, and repeat intent. This experience
+          sharpened my ability to resolve fit issues, guide product decisions, and deliver calm, high-standard service in a fast-moving luxury
+          floor environment.
+        </p>
+      ),
+    },
+    {
+      id: "floor",
+      label: "On the floor",
+      title: "What I brought to the floor",
+      body: (
+        <div className="retail">
+          <ol className="steps">
+            {["Clienteling and fit-resolution support", "Product guidance and styling-oriented selling", "Service recovery and customer reassurance", "Cross-sell support without breaking trust"].map(
+              (t, i) => (
+                <li key={t}>
+                  <span className="steps__n">{pad(i + 1)}</span>
+                  <span>{t}</span>
+                </li>
+              ),
+            )}
+          </ol>
+          <div>
+            <p className="label">Retail strengths</p>
+            <ul className="tags">
+              {RETAIL_STRENGTHS.map((c) => (
+                <li key={c} className="tag">{c}</li>
+              ))}
+            </ul>
+            <p className="label" style={{ marginTop: 28 }}>Category exposure</p>
+            <p className="prose prose--small">Menswear tailoring, outerwear, footwear, accessories, and fragrance.</p>
+          </div>
+        </div>
+      ),
+    },
+    { id: "proof", label: "Proof", title: "Proof", body: <RetailProof /> },
+  ];
+}
+
+function RetailProof() {
   const [zoom, setZoom] = useState(false);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const openRef = useRef<HTMLButtonElement | null>(null);
@@ -257,68 +396,16 @@ function RetailVignette() {
 
   return (
     <>
-      <section className="case__section" aria-labelledby="s-context">
-        <Reveal className="case__sectionHead">
-          <span className="case__sectionNum">01</span>
-          <h2 id="s-context" className="case__sectionTitle">Context</h2>
-        </Reveal>
-        <Reveal className="case__sectionBody" delay={0.08}>
-          <p className="prose">
-            I worked in frontline menswear retail where execution quality directly shaped trust, conversion, and repeat intent. This
-            experience sharpened my ability to resolve fit issues, guide product decisions, and deliver calm, high-standard service in a
-            fast-moving luxury floor environment.
-          </p>
-        </Reveal>
-      </section>
-
-      <section className="case__section" aria-labelledby="s-floor">
-        <Reveal className="case__sectionHead">
-          <span className="case__sectionNum">02</span>
-          <h2 id="s-floor" className="case__sectionTitle">What I brought to the floor</h2>
-        </Reveal>
-        <Reveal className="case__sectionBody retail" delay={0.08}>
-          <ol className="steps">
-            {["Clienteling and fit-resolution support", "Product guidance and styling-oriented selling", "Service recovery and customer reassurance", "Cross-sell support without breaking trust"].map(
-              (t, i) => (
-                <li key={t}>
-                  <span className="steps__n">{pad(i + 1)}</span>
-                  <span>{t}</span>
-                </li>
-              ),
-            )}
-          </ol>
-          <div>
-            <p className="label">Retail strengths</p>
-            <ul className="tags">
-              {RETAIL_STRENGTHS.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-            <p className="label" style={{ marginTop: 28 }}>Category exposure</p>
-            <p className="prose prose--small">Menswear tailoring, outerwear, footwear, accessories, and fragrance.</p>
-          </div>
-        </Reveal>
-      </section>
-
-      <section className="case__section" aria-labelledby="s-proof">
-        <Reveal className="case__sectionHead">
-          <span className="case__sectionNum">03</span>
-          <h2 id="s-proof" className="case__sectionTitle">Proof</h2>
-        </Reveal>
-        <Reveal className="case__sectionBody" delay={0.08}>
-          <figure className="proofFig">
-            <button ref={openRef} type="button" className="proofFig__btn" onClick={() => setZoom(true)} aria-label="Open customer feedback image in larger view">
-              <img src={src} alt="Customer feedback screenshot from Bloomingdale’s Men’s floor support" loading="lazy" />
-              <span className="proofFig__zoom label">Enlarge +</span>
-            </button>
-            <figcaption>
-              <span>Customer feedback received during Bloomingdale’s Men’s floor support (attached image).</span>
-              <span className="proofFig__line">The note reflects service clarity, follow-through, and customer trust.</span>
-            </figcaption>
-          </figure>
-        </Reveal>
-      </section>
-
+      <figure className="proofFig">
+        <button ref={openRef} type="button" className="proofFig__btn" onClick={() => setZoom(true)} aria-label="Open customer feedback image in larger view">
+          <img src={src} alt="Customer feedback screenshot from Bloomingdale’s Men’s floor support" loading="lazy" />
+          <span className="proofFig__zoom label">Enlarge +</span>
+        </button>
+        <figcaption>
+          <span>Customer feedback received during Bloomingdale’s Men’s floor support (attached image).</span>
+          <span className="proofFig__line">The note reflects service clarity, follow-through, and customer trust.</span>
+        </figcaption>
+      </figure>
       <AnimatePresence>
         {zoom ? (
           <motion.div
@@ -357,9 +444,9 @@ export function NotFoundBody() {
           <Lines animateNow lines={[<em key="n">Not here.</em>]} />
         </h1>
         <p className="pageHead__lede">That page doesn’t exist — it may have moved in the redesign.</p>
-        <Link to="/" className="btn btn--solid">
-          Back to the index <Arrow dir="e" />
-        </Link>
+        <Button to="/" variant="primary" icon={<Arrow dir="e" />}>
+          Back to the index
+        </Button>
       </section>
     </PageShell>
   );

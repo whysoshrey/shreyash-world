@@ -89,6 +89,7 @@ export function SiteFooter(props: { tone?: "ink" | "paper" }) {
           <Link to="/work">Work</Link>
           <Link to="/credentials">Credentials</Link>
           <Link to="/about">About</Link>
+          <Link to="/system">Design system</Link>
         </span>
         <button type="button" className="textBtn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           Back to top <Arrow dir="n" />

@@ -39,7 +39,7 @@ export function MaybachLoader({ open, text = "ENTERING CARTIER × MAYBACH" }: Pr
               transition={{ duration: 1.65, ease: "easeInOut", repeat: Infinity }}
             >
               {!logoFailed ? (
-                <img src="/branding/maybach-logo.png" alt="Maybach" onError={() => setLogoFailed(true)} />
+                <img src={`${import.meta.env.BASE_URL}branding/maybach-logo.png`} alt="Maybach" onError={() => setLogoFailed(true)} />
               ) : (
                 <span className="maybachLoader__fallback">MAYBACH</span>
               )}

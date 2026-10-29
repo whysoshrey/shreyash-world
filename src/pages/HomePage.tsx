@@ -4,6 +4,9 @@ import { PageShell } from "../components/site/PageShell";
 import { scrollToContact } from "../components/site/SiteHeader";
 import { WorkList } from "../components/site/WorkList";
 import { Arrow, CountUp, Lines, Reveal } from "../components/site/primitives";
+import { Button } from "../components/system/Button";
+import { Desk } from "../components/system/Desk";
+import { Icon } from "../components/system/Icon";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { asset, getWork, pad, WORK_DOORS } from "../lib/projects";
@@ -83,33 +86,32 @@ function Home({ content }: { content: Content }) {
               ))}
             </ul>
             <div className="hero__ctas">
-              <a className="btn btn--solid" href="#work" onClick={(e) => { e.preventDefault(); document.getElementById("work")?.scrollIntoView({ behavior: "smooth" }); }}>
-                View selected work <Arrow dir="s" />
-              </a>
+              <Button variant="primary" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
+                View the work
+              </Button>
               {cv ? (
-                <a className="btn" href={cv.href} target="_blank" rel="noreferrer">
-                  Résumé <Arrow />
-                </a>
+                <Button variant="secondary" href={cv.href} icon={<Arrow />}>
+                  Résumé
+                </Button>
               ) : null}
             </div>
           </motion.div>
 
-          <motion.figure
-            className="hero__feature"
-            initial={{ opacity: 0, clipPath: "inset(100% 0 0 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0% 0 0 0)", transition: { delay: 0.6, duration: 1.3, ease: easeOutExpo } }}
-          >
-            <Link to="/cartier-rogue" className="hero__featureLink" aria-label="Featured: Cartier Rogue campaign">
-              <img src={asset("/assets/web/rogue-3.webp")} alt="Cartier Rogue campaign portrait" fetchPriority="high" />
-            </Link>
-            <figcaption>
-              <span className="label">Featured</span>
-              <Link to="/cartier-rogue" className="uLink">Cartier Rogue — campaign world</Link>
-            </figcaption>
-          </motion.figure>
         </div>
 
         <p className="hero__edu label">B.F.Tech, NIFT Delhi&nbsp;&nbsp;/&nbsp;&nbsp;MPS Fashion Management, Parsons School of Design, The New School</p>
+      </section>
+
+      {/* ——— The desk ——— */}
+      <section id="desk" className="deskSection" aria-labelledby="desk-title">
+        <header className="deskSection__head">
+          <span className="label">(00) The desk</span>
+          <h2 id="desk-title" className="deskSection__title">
+            Pick up <em>a project</em>
+          </h2>
+          <p className="deskSection__hint label"><span className="onFine">Hover to lift · click to open</span><span className="onCoarse">Swipe · tap to open</span></p>
+        </header>
+        <Desk work={work} />
       </section>
 
       {/* ——— Evidence ——— */}
@@ -142,9 +144,9 @@ function Home({ content }: { content: Content }) {
           <WorkList items={work} />
         </Reveal>
         <Reveal className="section__more">
-          <Link to="/work" className="btn">
-            Browse all work as a gallery <Arrow dir="e" />
-          </Link>
+          <Button to="/work" icon={<Arrow dir="e" />}>
+            Browse all work as a gallery
+          </Button>
         </Reveal>
       </section>
 
@@ -166,7 +168,7 @@ function Home({ content }: { content: Content }) {
           <Reveal className="feature__card feature__card--tall">
             <Link to="/cartier-rogue" className="mediaCard">
               <span className="mediaCard__img">
-                <img src={asset("/assets/web/rogue-0.webp")} alt="Cartier Rogue campaign language image" loading="lazy" />
+                <img src={asset("/assets/web/rogue-2.webp")} alt="Cartier Rogue campaign still" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
                 <span className="label">Campaign · Editorial / OOH / Digital</span>
@@ -178,7 +180,7 @@ function Home({ content }: { content: Content }) {
           <Reveal className="feature__card" delay={0.12}>
             <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
               <span className="mediaCard__img">
-                <img src={asset("/assets/web/maybach-poster.webp")} alt="3D render of the Cartier × Maybach vehicle" loading="lazy" />
+                <img src={asset("/assets/web/maybach-poster-2.webp")} alt="3D render of the Cartier × Maybach vehicle in an alternate finish" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
                 <span className="label">Activation · Interactive 3D</span>
@@ -203,8 +205,11 @@ function Home({ content }: { content: Content }) {
             .filter((d) => WORK_DOORS.includes(d.key))
             .map((door, i) => (
               <Reveal as="li" key={door.key} delay={i * 0.1} className="practice__item">
-                <Link to={`/work?d=${door.key}`} className="practice__link">
-                  <span className="practice__num">{pad(i + 1)}</span>
+                <Link to={`/work?d=${door.key}`} className="practice__link" data-d={door.key}>
+                  <span className="practice__top">
+                    <span className="practice__num">{pad(i + 1)}</span>
+                    <Icon name={door.key === "cred" ? "cred" : door.key} size={28} />
+                  </span>
                   <span className="practice__title">{door.title}</span>
                   <span className="practice__thesis">{door.thesis}</span>
                   <span className="practice__count">
@@ -252,12 +257,12 @@ function Home({ content }: { content: Content }) {
           </Reveal>
         </h2>
         <Reveal className="aboutTeaser__ctas">
-          <Link to="/about" className="btn">
-            More about me <Arrow dir="e" />
-          </Link>
-          <button type="button" className="btn btn--ghost" onClick={scrollToContact}>
+          <Button to="/about" icon={<Arrow dir="e" />}>
+            More about me
+          </Button>
+          <Button variant="ghost" onClick={scrollToContact}>
             Get in touch
-          </button>
+          </Button>
         </Reveal>
       </section>
 
