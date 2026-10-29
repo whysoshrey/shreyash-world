@@ -10,8 +10,8 @@ import { Icon } from "../components/system/Icon";
 import { Bridge, ChapterRail } from "../components/system/Flow";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
-import { asset, getWork, pad, WORK_DOORS } from "../lib/projects";
-import type { Content } from "../lib/types";
+import { asset, getWork, WORK_DOORS } from "../lib/projects";
+import type { Content, DoorKey } from "../lib/types";
 
 export const DISCIPLINES = [
   "Fashion management",
@@ -22,18 +22,25 @@ export const DISCIPLINES = [
   "Creative direction",
 ];
 
-/** Headline numbers, each lifted verbatim from a project's proof line. */
+/** Results, each lifted verbatim from a project's proof line, written as sentences rather than a stat row. */
 const EVIDENCE = [
-  { value: "22%", label: "Less aggregate WIP movement", id: "ops-1" },
-  { value: "25%", label: "Output efficiency improvement", id: "ops-2" },
-  { value: "300", unit: "kg/day", label: "Hard waste eliminated", id: "ops-3" },
-  { value: "30", unit: "sec", label: "Early-bird sellout, 150+ attendees", id: "brand-1" },
+  { value: "22%", text: "less aggregate WIP movement on the production floor", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
+  { value: "25%", text: "better output efficiency with an IoT needle time-tracker", where: "Inzex Textiles", id: "ops-2" },
+  { value: "300", unit: " kg", text: "of hard waste eliminated every day across 168 looms", where: "Welspun India", id: "ops-3" },
+  { value: "30", unit: " s", text: "to sell out the early-bird release, with 150+ attendees", where: "Genesis 2.2", id: "brand-1" },
 ];
+
+/** The three disciplines, presented as the three swatches of the palette. */
+const SWATCH: Record<Exclude<DoorKey, "cred">, { name: string; code: string }> = {
+  ops: { name: "Blue", code: "P 105-8 C" },
+  merch: { name: "Red", code: "P 48-8 C" },
+  brand: { name: "Cream", code: "P 938 C" },
+};
 
 export function HomePage() {
   const { content } = useContentState();
   return (
-    <PageShell title="Shreyash Ojha — Fashion Operations & Applied AI" curtainLabel="Index">
+    <PageShell title="Shreyash Ojha — Fashion Operations & Applied AI" curtainLabel="Index" tone="cover">
       {content ? <Home content={content} /> : null}
     </PageShell>
   );
@@ -42,16 +49,16 @@ export function HomePage() {
 function Home({ content }: { content: Content }) {
   const { site } = content;
   const work = getWork(content);
-  const [first, last] = site.name.split(" ");
   const awards = content.exhibits.cred.filter((c) => c.id !== "cred-1");
   const cv = site.links.find((l) => l.label === "CV");
+  const doors = content.doors.filter((d) => WORK_DOORS.includes(d.key));
 
   return (
     <>
       <ChapterRail
         chapters={[
           ["desk", "The desk"],
-          ["evidence", "In numbers"],
+          ["evidence", "Results"],
           ["work", "Index"],
           ["cartier", "Cartier"],
           ["practice", "Practice"],
@@ -60,109 +67,92 @@ function Home({ content }: { content: Content }) {
           ["contact", "Contact"],
         ]}
       />
-      {/* ——— Hero: who, what, proof — then straight into the work ——— */}
-      <section className="hero" aria-labelledby="hero-name">
-        <motion.div className="hero__meta" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.6, duration: 0.8 } }}>
-          <span className="label">Portfolio — selected work</span>
-          <span className="label hero__metaEnd">NIFT Delhi · Parsons, New York</span>
-        </motion.div>
 
-        <div className="hero__grid">
-          <div className="hero__id">
+      {/* ——— The cover: one blue field holding the name and the desk of work ——— */}
+      <div className="cover">
+        <section className="hero" aria-labelledby="hero-name">
+          <motion.p className="cover__tag cover__tag--tr" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.6 } }}>
+            {site.positioning}
+          </motion.p>
+
+          <div className="hero__grid">
             <h1 id="hero-name" className="hero__name">
-              <Lines animateNow delay={0.3} lines={[<>{first} <em>{last}</em></>]} />
+              <Lines animateNow delay={0.25} lines={[site.name]} />
             </h1>
             <motion.p
-              className="hero__role"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.7, duration: 0.9, ease: easeOutExpo } }}
+              className="hero__value"
+              initial={{ opacity: 0, transform: "translateY(16px)" }}
+              animate={{ opacity: 1, transform: "translateY(0px)", transition: { delay: 0.55, duration: 0.7, ease: easeOutExpo } }}
             >
-              {site.positioning}
+              {site.valueProp}
             </motion.p>
           </div>
-          <motion.p
-            className="hero__value"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.85, duration: 1, ease: easeOutExpo } }}
+
+          <motion.div
+            className="hero__foot"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.75, duration: 0.6 } }}
           >
-            {site.valueProp}
-          </motion.p>
-        </div>
-
-        <motion.div
-          className="hero__foot"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0, transition: { delay: 1.05, duration: 1, ease: easeOutExpo } }}
-        >
-          <ul className="hero__disciplines" aria-label="Disciplines">
-            {DISCIPLINES.map((d, i) => (
-              <li key={d}>
-                <span className="hero__dnum">{pad(i + 1)}</span>
-                {d}
-              </li>
-            ))}
-          </ul>
-          <div className="hero__ctas">
-            <Button variant="primary" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
-              View the work
-            </Button>
-            {cv ? (
-              <Button variant="secondary" href={cv.href} icon={<Arrow />}>
-                Résumé
+            <p className="hero__disciplines">{DISCIPLINES.join(" · ")}</p>
+            <div className="hero__ctas">
+              <Button variant="cream" icon={<Arrow dir="s" />} onClick={() => document.getElementById("desk")?.scrollIntoView({ behavior: "smooth" })}>
+                View the work
               </Button>
-            ) : null}
-          </div>
-        </motion.div>
-      </section>
+              {cv ? (
+                <Button variant="onblue" href={cv.href} icon={<Arrow />}>
+                  Résumé
+                </Button>
+              ) : null}
+            </div>
+          </motion.div>
+        </section>
 
-      {/* ——— The desk ——— */}
-      <section id="desk" className="deskSection" aria-labelledby="desk-title">
-        <header className="deskSection__head">
-          <span className="label">(00) The desk</span>
-          <h2 id="desk-title" className="deskSection__title">
-            Pick up <em>a project</em>
-          </h2>
-          <p className="deskSection__lede">Prints from the archive — factory floor, sales floor and campaign, side by side.</p>
-          <p className="deskSection__hint label"><span className="onFine">Hover to lift · click to open</span><span className="onCoarse">Swipe · tap to open</span></p>
-        </header>
-        <Desk work={work} />
-        <Bridge to="evidence" label="What it added up to" />
-      </section>
-
-      {/* ——— Evidence ——— */}
-      <section id="evidence" className="evidenceWrap" aria-labelledby="ev-title">
-      <header className="sectionHead sectionHead--tight">
-        <span className="label">(01) In numbers</span>
-        <h2 id="ev-title" className="sectionHead__title">
-          <Lines lines={["Measured,", <em key="m">not claimed</em>]} />
-        </h2>
-        <p className="sectionHead__aside">Each figure links to the project it came from.</p>
-      </header>
-      <div className="evidence">
-        {EVIDENCE.map((e, i) => (
-          <Reveal key={e.id} className="evidence__item" delay={i * 0.08}>
-            <Link to={`/work/${e.id}`} className="evidence__link">
-              <span className="evidence__value">
-                <CountUp value={e.value} />
-                {e.unit ? <span className="evidence__unit">{e.unit}</span> : null}
-              </span>
-              <span className="evidence__label">{e.label}</span>
-            </Link>
-          </Reveal>
-        ))}
+        <section id="desk" className="deskSection" aria-labelledby="desk-title">
+          <header className="deskSection__head">
+            <h2 id="desk-title" className="deskSection__title">Pick up a project</h2>
+            <p className="deskSection__lede">
+              Prints from the archive: factory floor, sales floor and campaign, side by side. Blue-grey cards are operations, red is
+              merchandising, cream is brand and product. Hover to lift one, click to open it.
+            </p>
+          </header>
+          <Desk work={work} />
+          <p className="cover__tag cover__tag--bl">NIFT Delhi · Parsons, New York</p>
+          <Bridge to="evidence" label="What it added up to" />
+        </section>
       </div>
-      <Bridge to="work" label="The full index" />
+
+      {/* ——— Results, as sentences ——— */}
+      <section id="evidence" className="section results" aria-labelledby="ev-title">
+        <header className="sectionHead">
+          <h2 id="ev-title" className="sectionHead__title">Measured, not claimed</h2>
+          <p className="sectionHead__aside">Every figure comes from a project on this site. Follow one to see how it was measured.</p>
+        </header>
+        <ul className="results__list">
+          {EVIDENCE.map((e, i) => (
+            <Reveal as="li" key={e.id} delay={i * 0.06}>
+              <Link to={`/work/${e.id}`} className="result">
+                <span className="result__value">
+                  <CountUp value={e.value} />
+                  {e.unit ?? ""}
+                </span>
+                <span className="result__text">{e.text}</span>
+                <span className="result__where">
+                  {e.where} <Arrow dir="e" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
       </section>
 
       {/* ——— Selected work ——— */}
       <section id="work" className="section" aria-labelledby="work-title">
         <header className="sectionHead">
-          <span className="label">(02) Index</span>
           <h2 id="work-title" className="sectionHead__title">
-            <Lines lines={["Selected", <em key="w">work</em>]} />
+            <Lines lines={["Selected work"]} />
           </h2>
           <p className="sectionHead__aside">
-            {work.length} projects across {content.doors.filter((d) => WORK_DOORS.includes(d.key)).map((d) => d.title.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " and $1")}.
+            {work.length} projects across {doors.map((d) => d.title.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " and $1")}.
           </p>
         </header>
         <Reveal>
@@ -175,17 +165,16 @@ function Home({ content }: { content: Content }) {
         </Reveal>
       </section>
 
-      {/* ——— Campaign feature ——— */}
+      {/* ——— Campaign feature: the red field ——— */}
       <section id="cartier" className="feature" aria-labelledby="feature-title">
         <header className="feature__head">
-          <span className="label">(03) Brand &amp; product experiences</span>
           <h2 id="feature-title" className="feature__title">
-            <Lines lines={["Cartier,", <em key="r">re-authored</em>]} />
+            <Lines lines={["Cartier, re-authored"]} />
           </h2>
           <Reveal>
             <p className="feature__lede">
-              A go-to-market redirection told through two worlds — an editorial campaign platform and a mobile luxury
-              gallery staged in a Maybach.
+              A go-to-market redirection told through two worlds: an editorial campaign platform and a mobile luxury gallery staged in a
+              Maybach.
             </p>
           </Reveal>
         </header>
@@ -196,20 +185,20 @@ function Home({ content }: { content: Content }) {
                 <img src={asset("/assets/web/art-mood-drape.webp")} alt="Cartier Rogue setting and mood artwork" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
-                <span className="label">Campaign · Editorial / OOH / Digital</span>
                 <span className="mediaCard__title">Cartier Rogue</span>
+                <span className="mediaCard__sub">Campaign · editorial, out-of-home, digital</span>
                 <span className="mediaCard__cta">Enter the campaign <Arrow /></span>
               </span>
             </Link>
           </Reveal>
-          <Reveal className="feature__card" delay={0.12}>
+          <Reveal className="feature__card" delay={0.08}>
             <Link to="/cartier-maybach" state={{ fromMaybachLoader: true }} className="mediaCard">
               <span className="mediaCard__img">
                 <img src={asset("/assets/web/maybach-poster.webp")} alt="Render of the Cartier × Maybach vehicle from the 3D model" loading="lazy" />
               </span>
               <span className="mediaCard__meta">
-                <span className="label">Activation · Interactive 3D</span>
                 <span className="mediaCard__title">Cartier × Maybach</span>
+                <span className="mediaCard__sub">Activation · interactive 3D</span>
                 <span className="mediaCard__cta">Explore the vehicle <Arrow /></span>
               </span>
             </Link>
@@ -217,45 +206,49 @@ function Home({ content }: { content: Content }) {
         </div>
       </section>
 
-      {/* ——— Practice ——— */}
+      {/* ——— Practice: the three swatches ——— */}
       <section id="practice" className="section practice" aria-labelledby="practice-title">
         <header className="sectionHead">
-          <span className="label">(04) Practice</span>
           <h2 id="practice-title" className="sectionHead__title">
-            <Lines lines={["Three ways", <em key="p">of working</em>]} />
+            <Lines lines={["Three ways of working"]} />
           </h2>
+          <p className="sectionHead__aside">One colour each, carried through every card and case study on the site.</p>
         </header>
-        <ol className="practice__grid">
-          {content.doors
-            .filter((d) => WORK_DOORS.includes(d.key))
-            .map((door, i) => (
-              <Reveal as="li" key={door.key} delay={i * 0.1} className="practice__item">
-                <Link to={`/work?d=${door.key}`} className="practice__link" data-d={door.key}>
-                  <span className="practice__top">
-                    <span className="practice__num">{pad(i + 1)}</span>
-                    <Icon name={door.key === "cred" ? "cred" : door.key} size={28} />
+        <ul className="swatches">
+          {doors.map((door, i) => {
+            const k = door.key as Exclude<DoorKey, "cred">;
+            return (
+              <Reveal as="li" key={door.key} delay={i * 0.08} className="swatches__item">
+                <Link to={`/work?d=${door.key}`} className="swatch" data-d={door.key}>
+                  <span className="swatch__chip">
+                    <Icon name={k} size={36} />
                   </span>
-                  <span className="practice__title">{door.title}</span>
-                  <span className="practice__thesis">{door.thesis}</span>
-                  <span className="practice__count">
-                    {content.exhibits[door.key].length} projects <Arrow dir="e" />
+                  <span className="swatch__card">
+                    <span className="swatch__brand">{door.title}</span>
+                    <span className="swatch__code">
+                      {SWATCH[k].name} · {SWATCH[k].code}
+                    </span>
+                    <span className="swatch__thesis">{door.thesis}</span>
+                    <span className="swatch__count">
+                      {content.exhibits[door.key].length} projects <Arrow dir="e" />
+                    </span>
                   </span>
                 </Link>
               </Reveal>
-            ))}
-        </ol>
+            );
+          })}
+        </ul>
       </section>
 
       {/* ——— Recognition ——— */}
       <section id="recognition" className="section recognition" aria-labelledby="rec-title">
         <header className="sectionHead">
-          <span className="label">(05) Recognition</span>
           <h2 id="rec-title" className="sectionHead__title">
-            <Lines lines={["Awards &", <em key="e">endorsements</em>]} />
+            <Lines lines={["Awards and endorsements"]} />
           </h2>
           <Reveal className="sectionHead__aside">
             <Link to="/credentials" className="uLink">
-              All credentials &amp; letters <Arrow dir="e" />
+              All credentials and letters <Arrow dir="e" />
             </Link>
           </Reveal>
         </header>
@@ -272,25 +265,44 @@ function Home({ content }: { content: Content }) {
         </ul>
       </section>
 
-      {/* ——— About teaser ——— */}
+      {/* ——— About ——— */}
       <section id="about-teaser" className="section aboutTeaser" aria-labelledby="about-title">
-        <span className="label">(06) About</span>
-        <h2 id="about-title" className="aboutTeaser__text">
+        <div className="aboutTeaser__main">
+          <h2 id="about-title" className="sectionHead__title">Factory floor, sales floor, campaign</h2>
           <Reveal>
-            Trained in fashion technology at NIFT Delhi and fashion management at Parsons, I work where the{" "}
-            <em>factory floor</em>, the <em>sales floor</em> and the <em>campaign</em> meet — and measure what changes.
+            <p className="aboutTeaser__text">
+              Trained in fashion technology at NIFT Delhi and fashion management at Parsons, I work where those three meet, and I measure
+              what changes.
+            </p>
           </Reveal>
-        </h2>
-        <Reveal className="aboutTeaser__ctas">
-          <Button to="/about" icon={<Arrow dir="e" />}>
-            More about me
-          </Button>
-          <Button variant="ghost" onClick={scrollToContact}>
-            Get in touch
-          </Button>
+          <Reveal className="aboutTeaser__ctas">
+            <Button to="/about" icon={<Arrow dir="e" />}>
+              More about me
+            </Button>
+            <Button variant="ghost" onClick={scrollToContact}>
+              Get in touch
+            </Button>
+          </Reveal>
+        </div>
+        <Reveal className="aboutTeaser__facts" delay={0.1}>
+          <dl>
+            <div>
+              <dt>Education</dt>
+              <dd>B.F.Tech, NIFT Delhi</dd>
+              <dd>MPS Fashion Management, Parsons School of Design</dd>
+            </div>
+            <div>
+              <dt>Recognition</dt>
+              <dd>Best Graduation Project, Most Innovative Project and Most Commercially Viable Project at NIFT Delhi</dd>
+              <dd>MANGO Scholarship Award, Parsons</dd>
+            </div>
+            <div>
+              <dt>Presented at</dt>
+              <dd>Bharat Tex 2024, Ministry of Textiles, Government of India</dd>
+            </div>
+          </dl>
         </Reveal>
       </section>
-
     </>
   );
 }

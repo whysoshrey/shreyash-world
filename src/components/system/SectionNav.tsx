@@ -29,7 +29,7 @@ export function SectionNav(props: { sections: { id: string; label: string }[]; t
     <nav className="sectionNav" aria-label={`${title} — sections`}>
       <span className="sectionNav__title">{title}</span>
       <ol className="sectionNav__list">
-        {sections.map((s, i) => (
+        {sections.map((s) => (
           <li key={s.id}>
             <button
               type="button"
@@ -37,7 +37,6 @@ export function SectionNav(props: { sections: { id: string; label: string }[]; t
               aria-current={active === s.id ? "true" : undefined}
               onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
             >
-              <span className="sectionNav__n">{String(i + 1).padStart(2, "0")}</span>
               {s.label}
             </button>
           </li>

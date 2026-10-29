@@ -6,8 +6,8 @@ import { Arrow } from "../site/primitives";
  * shift-wheel), drag-to-scroll with a mouse, prev/next buttons that disable at the ends,
  * and a position counter. Used for artifacts, related work and the system page.
  */
-export function Carousel(props: { label: string; children: ReactNode[]; className?: string; itemClassName?: string; tone?: "paper" | "ink" }) {
-  const { label, children, className = "", itemClassName = "", tone = "paper" } = props;
+export function Carousel(props: { label: string; children: ReactNode[]; className?: string; itemClassName?: string; tone?: "paper" | "ink"; heading?: boolean }) {
+  const { label, children, className = "", itemClassName = "", tone = "paper", heading = false } = props;
   const track = useRef<HTMLUListElement | null>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -45,10 +45,12 @@ export function Carousel(props: { label: string; children: ReactNode[]; classNam
   return (
     <div className={`carousel carousel--${tone} ${className}`} role="region" aria-roledescription="carousel" aria-label={label}>
       <div className="carousel__bar">
-        <span className="label carousel__label">{label}</span>
-        <span className="carousel__count label" aria-hidden="true">
-          {String(pos).padStart(2, "0")} / {String(children.length).padStart(2, "0")}
+        {heading ? <h2 className="carousel__title">{label}</h2> : <span className="label carousel__label">{label}</span>}
+        {heading ? null : (
+          <span className="carousel__count label" aria-hidden="true">
+          {pos} of {children.length}
         </span>
+        )}
         <div className="carousel__controls">
           <button type="button" className="carousel__btn" onClick={() => page(-1)} disabled={atStart} aria-label={`Previous — ${label}`}>
             <Arrow dir="w" />

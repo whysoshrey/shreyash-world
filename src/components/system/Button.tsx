@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
  * Variants: primary (solid ink) · secondary (outline) · ghost (quiet outline) · link (underline)
  * States (CSS): default · hover (fill wipes up) · pressed (sinks 1px, 0.98) · focus-visible (accent ring) · disabled
  */
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "link";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "link" | "cream" | "onblue";
 
 type Common = {
   variant?: ButtonVariant;

@@ -7,10 +7,18 @@ import { Button } from "../components/system/Button";
 import { Icon } from "../components/system/Icon";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
-import { liveArtifacts, pad } from "../lib/projects";
+import { liveArtifacts } from "../lib/projects";
 import type { Exhibit } from "../lib/types";
 
 const ENDORSEMENT_IDS = ["cred-2", "cred-3"];
+const BASE = import.meta.env.BASE_URL;
+const THUMBS: Record<string, { src: string; alt: string }> = {
+  "cred-2": { src: "assets/web/lor-bawa.webp", alt: "First page of Prof. Pritika Bawa's recommendation letter" },
+  "cred-3": { src: "assets/web/lor-panghal.webp", alt: "First page of Dr. Deepak Panghal's recommendation letter" },
+  "cred-7": { src: "assets/web/cert-best-grad.webp", alt: "NIFT Certificate of Merit, Best Graduation Project" },
+  "cred-4": { src: "assets/web/cert-commercial.webp", alt: "NIFT Certificate of Merit, Most Commercially Viable Project" },
+  "cred-6": { src: "assets/web/cert-innovative.webp", alt: "NIFT Certificate of Merit, Most Innovative Project" },
+};
 
 export function CredentialsPage() {
   const { content } = useContentState();
@@ -34,9 +42,8 @@ export function CredentialsPage() {
   return (
     <PageShell title="Credentials — Shreyash Ojha" curtainLabel="Credentials">
       <section className="pageHead">
-        <span className="label">{content.doors.find((d) => d.key === "cred")?.thesis}</span>
         <h1 className="pageHead__title">
-          <Lines animateNow delay={0.3} lines={["Creden", <em key="c">tials</em>]} lineClassName={["", "pageHead__indent"]} />
+          <Lines animateNow delay={0.3} lines={["Credentials"]} />
         </h1>
         <motion.div
           className="credResume"
@@ -50,10 +57,33 @@ export function CredentialsPage() {
             </Button>
           ) : null}
         </motion.div>
+        <ul className="credWall">
+          {["cred-7", "cred-2", "cred-4", "cred-3", "cred-6"].map((id, i) => {
+            const t = THUMBS[id];
+            const c = creds.find((x) => x.id === id);
+            if (!t || !c) return null;
+            return (
+              <Reveal as="li" key={id} delay={0.4 + i * 0.05} className={`credWall__item credWall__item--${i}`}>
+                <a
+                  href={`#${id}`}
+                  className="credWall__link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen(id);
+                    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }}
+                >
+                  <img src={BASE + t.src} alt={t.alt} loading="eager" />
+                  <span className="credWall__cap">{c.title}</span>
+                </a>
+              </Reveal>
+            );
+          })}
+        </ul>
       </section>
 
-      <CredGroup title="Endorsements" num="01" items={endorsements} open={open} setOpen={setOpen} />
-      <CredGroup title="Awards & recognition" num="02" items={awards} open={open} setOpen={setOpen} />
+      <CredGroup title="Endorsements" num="e" items={endorsements} open={open} setOpen={setOpen} />
+      <CredGroup title="Awards and recognition" num="a" items={awards} open={open} setOpen={setOpen} />
     </PageShell>
   );
 }
@@ -63,9 +93,7 @@ function CredGroup(props: { title: string; num: string; items: Exhibit[]; open: 
   return (
     <section className="credGroup" aria-labelledby={`cg-${num}`}>
       <Reveal className="credGroup__head">
-        <span className="label">({num})</span>
         <h2 id={`cg-${num}`} className="credGroup__title">{title}</h2>
-        <span className="label">{pad(items.length)} items</span>
       </Reveal>
       <ul className="credList">
         {items.map((c, i) => {
@@ -81,9 +109,11 @@ function CredGroup(props: { title: string; num: string; items: Exhibit[]; open: 
                   aria-controls={`${c.id}-panel`}
                   onClick={() => setOpen(isOpen ? null : c.id)}
                 >
-                  <span className="credItem__num">
-                    <Icon name="cred" size={16} /> {pad(i + 1)}
-                  </span>
+                  {THUMBS[c.id] ? (
+                    <span className="credItem__thumb"><img src={BASE + THUMBS[c.id].src} alt="" loading="lazy" /></span>
+                  ) : (
+                    <span className="credItem__num"><Icon name="cred" size={18} /></span>
+                  )}
                   <span className="credItem__title">{c.title}</span>
                   <span className="credItem__ctx">{c.context}</span>
                   <span className="credItem__plus" aria-hidden="true"><Icon name="plus" size={18} /></span>

@@ -14,7 +14,7 @@ export function PageShell(props: {
   title: string;
   curtainLabel?: string;
   chrome?: boolean;
-  tone?: "paper" | "ink";
+  tone?: "paper" | "ink" | "cover";
   children: ReactNode;
 }) {
   const { title, curtainLabel, chrome = true, tone = "paper", children } = props;
@@ -31,16 +31,16 @@ export function PageShell(props: {
         aria-hidden="true"
         variants={{
           initial: { scaleY: 1, transformOrigin: "50% 0%" },
-          enter: { scaleY: 0, transformOrigin: "50% 0%", transition: { duration: 0.75, ease: easeOutExpo, delay: 0.08 } },
-          exit: { scaleY: 1, transformOrigin: "50% 100%", transition: { duration: 0.5, ease: [0.7, 0, 0.84, 0] } },
+          enter: { scaleY: 0, transformOrigin: "50% 0%", transition: { duration: 0.55, ease: [0.77, 0, 0.175, 1], delay: 0.04 } },
+          exit: { scaleY: 1, transformOrigin: "50% 100%", transition: { duration: 0.32, ease: [0.77, 0, 0.175, 1] } },
         }}
       >
         <motion.span
           className="curtain__label"
           variants={{
             initial: { opacity: 1 },
-            enter: { opacity: 0, transition: { duration: 0.25 } },
-            exit: { opacity: 1, transition: { duration: 0.2, delay: 0.25 } },
+            enter: { opacity: 0, transition: { duration: 0.16 } },
+            exit: { opacity: 1, transition: { duration: 0.16, delay: 0.12 } },
           }}
         >
           {curtainLabel ?? title.split(" — ")[0]}
@@ -65,9 +65,8 @@ export function SiteFooter(props: { tone?: "ink" | "paper" }) {
   return (
     <footer id="contact" className={`siteFooter siteFooter--${props.tone ?? "ink"}`}>
       <div className="siteFooter__top">
-        <p className="label">Contact</p>
         <h2 className="siteFooter__title">
-          Let’s <em>talk</em>
+          Let’s talk
           <span className="siteFooter__dot">.</span>
         </h2>
         <p className="siteFooter__lede">{site.valueProp}</p>

@@ -110,7 +110,7 @@ function DeskItem({ c, i, progress, active, setActive }: { c: DeskCard; i: numbe
     <motion.li
       className={`deskCard${isActive ? " is-active" : ""}${active && !isActive ? " is-dim" : ""}`}
       data-d={c.door}
-      style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%`, y, zIndex: isActive ? 50 : 1 + Math.round(c.z * 10), ["--unrotate" as string]: `${-c.r}deg` }}
+      style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%`, y, zIndex: isActive ? 50 : (c.item ? 20 : 1) + Math.round(c.z * 10), ["--unrotate" as string]: `${-c.r}deg` }}
       initial={{ opacity: 0, rotate: c.r * 2.4, scale: 1.15, x: (c.x - 45) * 2 }}
       whileInView={{ opacity: 1, rotate: c.r, scale: 1, x: 0, transition: { duration: 1.1, ease: easeOutExpo, delay: 0.05 * i } }}
       viewport={{ once: true, margin: "0px 0px -15% 0px" }}
@@ -131,7 +131,7 @@ function DeskItem({ c, i, progress, active, setActive }: { c: DeskCard; i: numbe
         <span className="deskCard__caption" aria-hidden="true">
           <Icon name={c.door === "cred" ? "cred" : c.door} size={14} />
           <span className="deskCard__title">{c.title}</span>
-          <span className="deskCard__kicker">{c.kicker}</span>
+          <span className="deskCard__sub">{c.kicker}</span>
         </span>
       </Link>
     </motion.li>
@@ -158,7 +158,7 @@ export function Desk({ work }: { work: WorkItem[] }) {
     return (
       <div className="deskStrip" aria-label="Project cards">
         <ul className="deskStrip__track">
-          {cards.map((c, i) => (
+          {cards.slice(0, 12).map((c, i) => (
             <li key={c.key} className="deskStrip__item" data-d={c.door} style={{ rotate: reduce ? "0deg" : `${i % 2 ? 2.5 : -2.5}deg` }}>
               <Link to={c.to} state={c.state} className="deskCard__link">
                 <span className="deskCard__print">
@@ -166,7 +166,7 @@ export function Desk({ work }: { work: WorkItem[] }) {
                 </span>
                 <span className="deskStrip__caption">
                   <span className="deskCard__title">{c.title}</span>
-                  <span className="deskCard__kicker">{c.kicker}</span>
+                  <span className="deskCard__sub">{c.kicker}</span>
                 </span>
               </Link>
             </li>

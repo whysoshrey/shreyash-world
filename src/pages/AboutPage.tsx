@@ -4,8 +4,16 @@ import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, Reveal } from "../components/site/primitives";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
-import { getWork, pad } from "../lib/projects";
+import { getWork } from "../lib/projects";
 import { DISCIPLINES } from "./HomePage";
+
+const BASE = import.meta.env.BASE_URL;
+const TRIO = [
+  { src: "assets/web/agv-assembled.webp", alt: "Render of the autonomous WIP-movement robot built at Shahi Exports", cap: "Factory floor. The WIP-movement robot, Shahi Exports." },
+  { src: "assets/web/bloomingdales-feedback.webp", alt: "Customer feedback email from Bloomingdale's 59th Street", cap: "Sales floor. Customer feedback, Bloomingdale's 59th Street." },
+  { src: "assets/web/cert-best-grad.webp", alt: "NIFT Certificate of Merit for the Best Graduation Project", cap: "Studio. Best Graduation Project, NIFT Delhi." },
+  { src: "assets/web/art-keyart-mask.webp", alt: "Key art from the Cartier go-to-market redirection", cap: "Campaign. Key art, Cartier go-to-market redirection." },
+];
 
 const EDUCATION = [
   { school: "Parsons School of Design, The New School", degree: "MPS Fashion Management", note: "MANGO Scholarship Award · Featured on the Parsons student-work site" },
@@ -20,9 +28,8 @@ export function AboutPage() {
   return (
     <PageShell title="About — Shreyash Ojha" curtainLabel="About">
       <section className="pageHead about__head">
-        <span className="label">About</span>
         <h1 className="pageHead__title">
-          <Lines animateNow delay={0.3} lines={["Systems,", <em key="s">with taste.</em>]} lineClassName={["", "pageHead__indent"]} />
+          <Lines animateNow delay={0.3} lines={["Systems, with taste"]} />
         </h1>
       </section>
 
@@ -34,6 +41,17 @@ export function AboutPage() {
         >
           {content.site.positioning}. {content.site.valueProp}
         </motion.p>
+
+        <ul className="about__trio">
+          {TRIO.map((t, i) => (
+            <Reveal as="li" key={t.src} delay={0.5 + i * 0.06} className={`about__shot about__shot--${i}`}>
+              <figure>
+                <img src={BASE + t.src} alt={t.alt} loading="eager" />
+                <figcaption>{t.cap}</figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </ul>
 
         <div className="about__cols">
           <Reveal className="about__bio">
@@ -51,11 +69,10 @@ export function AboutPage() {
           </Reveal>
 
           <Reveal className="about__aside" delay={0.1}>
-            <p className="label">Disciplines</p>
+            <h2 className="about__asideTitle">Disciplines</h2>
             <ul className="about__list">
               {DISCIPLINES.map((d, i) => (
                 <li key={d}>
-                  <span className="label">{pad(i + 1)}</span>
                   {d}
                 </li>
               ))}
@@ -66,9 +83,8 @@ export function AboutPage() {
 
       <section className="section" aria-labelledby="edu-title">
         <header className="sectionHead">
-          <span className="label">(01)</span>
           <h2 id="edu-title" className="sectionHead__title">
-            <Lines lines={[<em key="e">Education</em>]} />
+            <Lines lines={["Education"]} />
           </h2>
         </header>
         <ul className="eduList">
@@ -84,9 +100,8 @@ export function AboutPage() {
 
       <section className="section" aria-labelledby="ctx-title">
         <header className="sectionHead">
-          <span className="label">(02)</span>
           <h2 id="ctx-title" className="sectionHead__title">
-            <Lines lines={["Where the", <em key="w">work happened</em>]} />
+            <Lines lines={["Where the work happened"]} />
           </h2>
         </header>
         <ul className="ctxList">

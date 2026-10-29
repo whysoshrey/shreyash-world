@@ -64,7 +64,6 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
         <ol className="steps">
           {exhibit.approach.map((a, i) => (
             <li key={i}>
-              <span className="steps__n">{pad(i + 1)}</span>
               <span>{sentence(a)}</span>
             </li>
           ))}
@@ -118,61 +117,61 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
     <article className="case" data-d={d}>
       {/* ——— Banner ——— */}
       <header className="case__head">
-        <div className="case__crumbs label">
+        <h1 className="case__title">
+          <Lines animateNow delay={0.3} lines={[exhibit.title]} />
+        </h1>
+        <p className="case__lede">{exhibit.context}</p>
+        <nav className="case__crumbs" aria-label="Breadcrumb">
           <Link to="/work" className="uLink">Work</Link>
           <span aria-hidden="true">/</span>
           <Link to={`/work?d=${d}`} className="uLink case__door">
             <Icon name={d as IconName} size={14} /> {door.title}
           </Link>
           <span className="case__count">
-            {pad(item.index)} — {pad(total)}
+            Project {item.index} of {total}
           </span>
-        </div>
-        <h1 className="case__title">
-          <Lines animateNow delay={0.3} lines={[exhibit.title]} />
-        </h1>
-        <motion.dl
-          className="metaStrip"
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0, transition: { delay: 0.65, duration: 1, ease: easeOutExpo } }}
-        >
-          <div>
-            <dt className="label">Context</dt>
-            <dd>{exhibit.context}</dd>
-          </div>
-          <div>
-            <dt className="label">Discipline</dt>
-            <dd>{door.title}</dd>
-          </div>
-          {exhibit.skills ? (
-            <div>
-              <dt className="label">Skills</dt>
-              <dd>{sentence(exhibit.skills)}</dd>
-            </div>
-          ) : null}
-          <div>
-            <dt className="label">Artifacts</dt>
-            <dd className="metaStrip__artifacts">
-              {artifacts.length ? (
-                <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
-                  {artifacts.length} {isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"} ↓
-                </button>
-              ) : (
-                "—"
-              )}
-            </dd>
-          </div>
-        </motion.dl>
+        </nav>
       </header>
 
       <Statement item={item} />
 
+      <div className="case__metaWrap">
+      <motion.dl
+        className="metaStrip"
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: easeOutExpo } }}
+        viewport={{ once: true, margin: "-10% 0px" }}
+      >
+        <div>
+          <dt className="label">Discipline</dt>
+          <dd>{door.title}</dd>
+        </div>
+        {exhibit.skills ? (
+          <div>
+            <dt className="label">Skills</dt>
+            <dd>{sentence(exhibit.skills)}</dd>
+          </div>
+        ) : null}
+        <div>
+          <dt className="label">Artifacts</dt>
+          <dd className="metaStrip__artifacts">
+            {artifacts.length ? (
+              <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
+                {artifacts.length} {isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"} ↓
+              </button>
+            ) : (
+              "—"
+            )}
+          </dd>
+        </div>
+      </motion.dl>
+      </div>
+
       <SectionNav title={exhibit.title} sections={sections.map((s) => ({ id: s.id, label: s.label }))} />
 
-      {sections.map((s, i) => (
+      {sections.map((s) => (
         <section key={s.id} id={s.id} className={`case__section${s.wide ? " case__section--wide" : ""}`} aria-labelledby={`h-${s.id}`}>
           <Reveal className="case__sectionHead">
-            <span className="case__sectionNum">{pad(i + 1)}</span>
             <h2 id={`h-${s.id}`} className="case__sectionTitle">{s.title}</h2>
           </Reveal>
           <Reveal className="case__sectionBody" delay={0.08}>
@@ -183,7 +182,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
 
       {/* ——— More work ——— */}
       <section className="case__related" aria-label="More work">
-        <Carousel label="More work" itemClassName="carousel__item--card">
+        <Carousel heading label="More work" itemClassName="carousel__item--card">
           {related.map((w) => (
             <WorkCard key={w.exhibit.id} item={w} compact viewed={viewed.has(w.exhibit.id)} />
           ))}
@@ -227,7 +226,6 @@ function Statement({ item }: { item: WorkItem }) {
         </motion.div>
       </motion.div>
       <motion.blockquote className="statement__card" style={{ y: cardY }}>
-        <span className="label">Result</span>
         <p>{item.exhibit.proof}</p>
       </motion.blockquote>
     </section>
@@ -269,7 +267,6 @@ function Gallery({ shots }: { shots: Shot[] }) {
               <img src={asset(s.src)} alt={s.caption} loading="lazy" decoding="async" />
             </span>
             <span className="shot__cap">
-              <span className="shot__n label">{pad(i + 1)}</span>
               {s.caption}
             </span>
           </button>
@@ -290,7 +287,7 @@ function Gallery({ shots }: { shots: Shot[] }) {
             <motion.figure key={open} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } }}>
               <img src={asset(shots[open].src)} alt={shots[open].caption} />
               <figcaption>
-                <span className="label">{pad(open + 1)} / {pad(shots.length)}</span> {shots[open].caption}
+                {shots[open].caption} <span className="lightbox__count">{open + 1} of {shots.length}</span>
               </figcaption>
             </motion.figure>
             <div className="lightbox__nav">
@@ -336,7 +333,6 @@ function ImpactTile({ text, index }: { text: string; index: number }) {
   const m = text.match(/(\d[\d,.]*\s?(?:%|kg\/day|kg|s)?)/);
   return (
     <li className="impactTile">
-      <span className="impactTile__n label">{pad(index + 1)}</span>
       {m ? <span className="impactTile__fig">{m[1].trim()}</span> : <Icon name="check" size={28} className="impactTile__icon" />}
       <span className="impactTile__text">{text}</span>
     </li>
@@ -360,7 +356,7 @@ function ArtifactCard({ artifact }: { artifact: Artifact }) {
     <>
       <span className="artifactCard__top">
         <Icon name={icon} size={26} />
-        <span className="label">{kind}</span>
+        <span className="artifactCard__kind">{kind}</span>
       </span>
       <span className="artifactCard__label">{artifact.label}</span>
       <span className="artifactCard__cta">
@@ -436,8 +432,7 @@ function retailSections(): Sec[] {
             {["Clienteling and fit-resolution support", "Product guidance and styling-oriented selling", "Service recovery and customer reassurance", "Cross-sell support without breaking trust"].map(
               (t, i) => (
                 <li key={t}>
-                  <span className="steps__n">{pad(i + 1)}</span>
-                  <span>{t}</span>
+                      <span>{t}</span>
                 </li>
               ),
             )}
@@ -525,9 +520,8 @@ export function NotFoundBody() {
   return (
     <PageShell title="Not found — Shreyash Ojha" curtainLabel="404">
       <section className="pageHead pageHead--center">
-        <span className="label">Error 404</span>
         <h1 className="pageHead__title">
-          <Lines animateNow lines={[<em key="n">Not here.</em>]} />
+          <Lines animateNow lines={["Not here"]} />
         </h1>
         <p className="pageHead__lede">That page doesn’t exist — it may have moved in the redesign.</p>
         <Button to="/" variant="primary" icon={<Arrow dir="e" />}>

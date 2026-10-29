@@ -6,7 +6,7 @@ import { Icon } from "../components/system/Icon";
 import { useViewed, WorkCard } from "../components/system/WorkCard";
 import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
-import { getWork, pad, WORK_DOORS } from "../lib/projects";
+import { getWork, WORK_DOORS } from "../lib/projects";
 import type { DoorKey } from "../lib/types";
 
 export function WorkPage() {
@@ -29,9 +29,8 @@ export function WorkPage() {
   return (
     <PageShell title="Work — Shreyash Ojha" curtainLabel="Work">
       <section className="pageHead">
-        <span className="label">Index of work</span>
         <h1 className="pageHead__title">
-          <Lines animateNow delay={0.3} lines={[<>Work<sup className="pageHead__count">{pad(shown.length)}</sup></>]} />
+          <Lines animateNow delay={0.3} lines={["Selected work"]} />
         </h1>
         <motion.p
           className="pageHead__lede"
@@ -56,7 +55,7 @@ export function WorkPage() {
             <span className="filter__pill" aria-hidden="true" />
             {t.key !== "all" ? <Icon name={t.key} size={15} className="filter__icon" /> : null}
             <span className="filter__label">{t.label}</span>
-            <span className="filter__count">{pad(t.count)}</span>
+            <span className="filter__count">{t.count}</span>
           </button>
         ))}
       </div>

@@ -8,13 +8,18 @@ import type { DoorKey } from "../../lib/types";
 export function Reveal(props: { children: ReactNode; className?: string; delay?: number; as?: "div" | "section" | "li" | "article" }) {
   const { children, className, delay = 0, as = "div" } = props;
   const Tag = motion[as];
+  const reduce = useReducedMotion();
+  if (reduce) {
+    const Plain = as;
+    return <Plain className={className}>{children}</Plain>;
+  }
   return (
     <Tag
       className={className}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 1, ease: easeOutExpo, delay }}
+      transition={{ duration: 0.7, ease: easeOutExpo, delay }}
     >
       {children}
     </Tag>
@@ -23,7 +28,7 @@ export function Reveal(props: { children: ReactNode; className?: string; delay?:
 
 const lineVariants: Variants = {
   hidden: { y: "105%" },
-  show: (c: { i: number; d: number }) => ({ y: "0%", transition: { duration: 1.1, ease: easeOutExpo, delay: c.d + c.i * 0.08 } }),
+  show: (c: { i: number; d: number }) => ({ y: "0%", transition: { duration: 0.8, ease: easeOutExpo, delay: c.d + c.i * 0.06 } }),
 };
 
 /**
@@ -32,6 +37,18 @@ const lineVariants: Variants = {
  */
 export function Lines(props: { lines: ReactNode[]; className?: string; lineClassName?: string[]; animateNow?: boolean; delay?: number }) {
   const { lines, className, lineClassName = [], animateNow = false, delay = 0 } = props;
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return (
+      <span className={`lines ${className ?? ""}`}>
+        {lines.map((line, i) => (
+          <span className={`lines__mask ${lineClassName[i] ?? ""}`} key={i}>
+            <span className="lines__inner">{line}</span>
+          </span>
+        ))}
+      </span>
+    );
+  }
   return (
     <motion.span
       className={`lines ${className ?? ""}`}
@@ -94,7 +111,7 @@ export function ProjectPlate(props: {
   eager?: boolean;
   large?: boolean;
 }) {
-  const { meta, door, label, index, className = "", eager = false, large = false } = props;
+  const { meta, door, className = "", eager = false, large = false } = props;
   const tone = meta.image ? "image" : door;
   return (
     <div className={`plate plate--${tone}${large ? " plate--large" : ""} ${className}`}>
@@ -111,10 +128,6 @@ export function ProjectPlate(props: {
           {meta.figure ? <span className="plate__figure">{meta.figure}</span> : <span className="plate__word">{meta.word}</span>}
         </div>
       )}
-      <div className="plate__chrome" aria-hidden="true">
-        <span>{label}</span>
-        <span>№ {String(index).padStart(2, "0")}</span>
-      </div>
       {meta.image && meta.figure ? (
         <div className="plate__chip" aria-hidden="true">
           <strong>{meta.figure}</strong> {meta.figureNote}

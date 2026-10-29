@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { DOOR_SHORT, pad, type WorkItem } from "../../lib/projects";
+import { DOOR_SHORT, type WorkItem } from "../../lib/projects";
 import { Arrow, ProjectPlate } from "../site/primitives";
 import { Icon } from "./Icon";
 
@@ -39,7 +39,6 @@ export function WorkCard(props: { item: WorkItem; eager?: boolean; viewed?: bool
     <Link to={`/work/${item.exhibit.id}`} className={`workCard${compact ? " workCard--compact" : ""} ${className}`} data-d={d}>
       <ProjectPlate meta={item.meta} door={d} label={DOOR_SHORT[d]} index={item.index} eager={eager} />
       <span className="workCard__meta">
-        <span className="workCard__num">{pad(item.index)}</span>
         <span className="workCard__body">
           <span className="workCard__title">{item.exhibit.title}</span>
           <span className="workCard__ctx">

@@ -60,8 +60,8 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
           <span className="siteHeader__mono" aria-hidden="true">
             S<i>·</i>O
           </span>
-          <span className="siteHeader__mark">{name}</span>
-          <span className="siteHeader__role">{positioning}</span>
+          <span className="siteHeader__mark" aria-hidden={location.pathname === "/" && !pastHero ? true : undefined}>{name}</span>
+          <span className="siteHeader__role" aria-hidden="true">{positioning}</span>
         </Link>
 
         <nav className="siteHeader__nav" aria-label="Primary">
@@ -107,8 +107,8 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
             aria-modal="true"
             aria-label="Site menu"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)", transition: { duration: 0.7, ease: easeOutExpo } }}
-            exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.5, ease: easeOutExpo } }}
+            animate={{ clipPath: "inset(0 0 0% 0)", transition: { duration: 0.45, ease: [0.77, 0, 0.175, 1] } }}
+            exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.3, ease: [0.77, 0, 0.175, 1] } }}
           >
             <nav className="siteMenu__nav" aria-label="Menu">
               {[{ to: "/", label: "Index" }, ...NAV].map((item, i) => (

@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motio
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { easeOutExpo } from "../../lib/motion";
-import { DOOR_SHORT, pad, type WorkItem } from "../../lib/projects";
+import { DOOR_SHORT, type WorkItem } from "../../lib/projects";
 import { Arrow, ProjectPlate } from "./primitives";
 
 /**
@@ -35,13 +35,6 @@ export function WorkList(props: { items: WorkItem[] }) {
       }}
       onPointerLeave={() => setHovered(null)}
     >
-      <div className="workList__head" aria-hidden="true">
-        <span>№</span>
-        <span>Project</span>
-        <span>Context</span>
-        <span>Discipline</span>
-        <span>Key figure</span>
-      </div>
       <ul className={`workList__rows${hovered ? " has-hover" : ""}`}>
         {items.map((item) => (
           <li key={item.exhibit.id} className={hovered?.exhibit.id === item.exhibit.id ? "is-hovered" : undefined}>
@@ -51,7 +44,6 @@ export function WorkList(props: { items: WorkItem[] }) {
               onPointerEnter={() => setHovered(item)}
               onFocus={() => setHovered(null)}
             >
-              <span className="workRow__num">{pad(item.index)}</span>
               <span className="workRow__title">{item.exhibit.title}</span>
               <span className="workRow__context">{item.exhibit.context}</span>
               <span className="workRow__door">{DOOR_SHORT[item.door.key]}</span>

@@ -32,13 +32,14 @@ export function ChapterRail({ chapters }: { chapters: [string, string][] }) {
     };
   }, [chapters]);
 
+  if (!visible) return null;
   return (
-    <nav className={`chapterRail${visible ? " is-visible" : ""}`} aria-label="Page chapters">
+    <nav className="chapterRail is-visible" aria-label="Page chapters">
       <span className="chapterRail__track" aria-hidden="true">
         <motion.span className="chapterRail__fill" style={{ scaleY: scrollYProgress }} />
       </span>
       <ol>
-        {chapters.map(([id, label], i) => (
+        {chapters.map(([id, label]) => (
           <li key={id}>
             <button
               type="button"
@@ -47,7 +48,7 @@ export function ChapterRail({ chapters }: { chapters: [string, string][] }) {
               onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
             >
               <span className="chapterRail__label">
-                <span className="chapterRail__n">{String(i).padStart(2, "0")}</span> {label}
+                {label}
               </span>
               <span className="chapterRail__dot" aria-hidden="true" />
             </button>
@@ -64,7 +65,6 @@ export function Bridge({ to, label }: { to: string; label: string }) {
     <div className="bridge">
       <span className="bridge__line" aria-hidden="true" />
       <button type="button" className="bridge__btn" onClick={() => document.getElementById(to)?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-        <span className="label">Next</span>
         <span className="bridge__label">{label}</span>
         <Arrow dir="s" />
       </button>
