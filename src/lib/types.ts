@@ -29,6 +29,8 @@ export type Artifact = {
 export type Exhibit = {
   id: string;
   title: string;
+  subtitle?: string;
+  href?: string;
   context: string;
   proof: string;
   problem: string;

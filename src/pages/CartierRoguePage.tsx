@@ -5,9 +5,7 @@ import { MaybachLoader } from "../components/MaybachLoader";
 import { ScrollParallaxLayer } from "../components/ScrollParallaxLayer";
 import "../styles/cartier-rogue.css";
 
-const NEW_BASE = `${import.meta.env.BASE_URL}assets/cartier-rogue/new%20photos`;
-const OLD_BASE = `${import.meta.env.BASE_URL}assets/cartier-rogue/old%20photos`;
-const NNBSP = "\u202f";
+const WEB = `${import.meta.env.BASE_URL}assets/web`;
 
 type SupportVisual = {
   src: string;
@@ -31,33 +29,38 @@ type RolloutPhase = {
   visual: SupportVisual;
 };
 
-const oldPath = (filename: string) => `${OLD_BASE}/${encodeURIComponent(filename)}`;
-const oldFile = (time: string) => `Screenshot 2026-02-23 at ${time}${NNBSP}PM.png`;
+// Optimised WebP derivatives of the original PNGs in public/assets/cartier-rogue/{new,old} photos
+const oldFile = (time: string) => `${WEB}/old-${time.replace(/\./g, "-")}.webp`;
 
-const newHeroImages = [
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_4ecb160e-9879-4bbd-9769-71fb41ec1189_1.png`,
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_9096dd56-6bd1-4ff8-9b05-67b4cc0c05f9_1.png`,
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_9096dd56-6bd1-4ff8-9b05-67b4cc0c05f9_2.png`,
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_4ecb160e-9879-4bbd-9769-71fb41ec1189_3.png`,
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_c6d5c6af-2d41-4884-b76e-07b4d712a1b6_3.png`,
-  `${NEW_BASE}/Shreyash_a_victoria_era_lady_in_regal_clothing_and_regal_cart_d9181ea4-ed70-48e3-bbdf-067941ba3824_3.png`,
-  `${NEW_BASE}/Shreyash_slow_motion_240_fps_cinematic_steadycam_track_from_b_199ead9e-9e48-4ccd-849f-1f4305486e74_0.png`,
-] as const;
+const newHeroImages = [0, 1, 2, 3, 4, 5, 6].map((i) => `${WEB}/rogue-${i}.webp`);
 
 const oldSupportImages = {
-  lookbook: oldPath(oldFile("11.50.16")),
-  moodboard: oldPath(oldFile("11.50.28")),
-  braceletA: oldPath(oldFile("11.50.37")),
-  braceletB: oldPath(oldFile("11.50.48")),
-  banner: oldPath(oldFile("11.50.59")),
-  oohNight: oldPath(oldFile("11.51.11")),
-  billboardVar: oldPath(oldFile("11.51.19")),
-  phone: oldPath(oldFile("11.51.32")),
-  streetBillboard: oldPath(oldFile("11.51.40")),
-  busShelter: oldPath(oldFile("11.51.54")),
-  cityScreen: oldPath(oldFile("11.52.01")),
-  airport: oldPath(oldFile("11.52.10")),
+  lookbook: (oldFile("11.50.16")),
+  moodboard: (oldFile("11.50.28")),
+  braceletA: (oldFile("11.50.37")),
+  braceletB: (oldFile("11.50.48")),
+  banner: (oldFile("11.50.59")),
+  oohNight: (oldFile("11.51.11")),
+  billboardVar: (oldFile("11.51.19")),
+  phone: (oldFile("11.51.32")),
+  streetBillboard: (oldFile("11.51.40")),
+  busShelter: (oldFile("11.51.54")),
+  cityScreen: (oldFile("11.52.01")),
+  airport: (oldFile("11.52.10")),
 } as const;
+
+const SECTIONS: [string, string][] = [
+  ["what", "Overview"],
+  ["language", "Language"],
+  ["framework", "Framework"],
+  ["rollout", "Rollout"],
+  ["impact", "Impact"],
+];
+
+/** In-page jumps must not touch the URL hash — the site uses HashRouter. */
+function jumpTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 const reveal = {
   hidden: { opacity: 0, y: 22 },
@@ -284,25 +287,18 @@ export function CartierRoguePage() {
   return (
     <div className="crPage">
       <header className="crHeader">
-        <div className="crBrand">Cartier Rogue</div>
+        <div className="campaignBar__lead">
+          <Link to="/work/cartier-gtm-redirection" className="campaignBar__back">
+            <span aria-hidden="true">←</span> Cartier GTM
+          </Link>
+          <span className="campaignBar__title crBrand">Cartier Rogue</span>
+        </div>
         <nav>
-          <button
-            type="button"
-            className="crBtn"
-            onClick={() =>
-              navigate("/", {
-                state: { returnTo: "cartier_gtm_redirection" },
-              })
-            }
-          >
-            Back to Cartier GTM
-          </button>
-          <a href="#what">Overview</a>
-          <a href="#language">Language</a>
-          <a href="#framework">Framework</a>
-          <a href="#rollout">Rollout</a>
-          <a href="#impact">Impact</a>
-          <Link to="/">Back to Portfolio</Link>
+          {SECTIONS.map(([id, label]) => (
+            <button key={id} type="button" onClick={() => jumpTo(id)}>
+              {label}
+            </button>
+          ))}
         </nav>
       </header>
 
@@ -637,8 +633,11 @@ export function CartierRoguePage() {
               </motion.div>
               <p className="crClosingLine">Heritage, re-authored.</p>
               <div className="crHeroCtas">
-                <Link to="/" className="crBtn">
-                  Back to Portfolio
+                <Link to="/work/cartier-gtm-redirection" className="crBtn">
+                  Back to the case study
+                </Link>
+                <Link to="/work" className="crBtn">
+                  All work
                 </Link>
               </div>
             </div>

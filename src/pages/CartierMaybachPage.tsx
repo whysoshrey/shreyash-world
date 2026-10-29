@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MaybachLoader } from "../components/MaybachLoader";
 import { ScrollParallaxLayer } from "../components/ScrollParallaxLayer";
 import { MaybachColorControls } from "../components/maybach/MaybachColorControls";
@@ -22,6 +22,20 @@ type ConnectionInfo = {
   saveData?: boolean;
 };
 
+const SECTIONS: [string, string][] = [
+  ["overview", "Overview"],
+  ["model", "Model"],
+  ["film", "Film"],
+  ["activation", "Activation"],
+  ["operations", "Operations"],
+  ["impact", "Impact"],
+];
+
+/** In-page jumps must not touch the URL hash — the site uses HashRouter. */
+function jumpTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 const sectionReveal = {
   hidden: { opacity: 0, y: 26 },
   show: {
@@ -39,7 +53,6 @@ const staggerGrid = {
 };
 
 export function CartierMaybachPage() {
-  const navigate = useNavigate();
   const location = useLocation();
   const modelStageRef = useRef<HTMLDivElement | null>(null);
   const [bodyColor, setBodyColor] = useState(DEFAULT_BODY);
@@ -145,25 +158,18 @@ export function CartierMaybachPage() {
   return (
     <div className="cmPage">
       <header className="cmHeader">
-        <div>Cartier × Maybach</div>
+        <div className="campaignBar__lead">
+          <Link to="/work/cartier-gtm-redirection" className="campaignBar__back">
+            <span aria-hidden="true">←</span> Cartier GTM
+          </Link>
+          <span className="campaignBar__title">Cartier × Maybach</span>
+        </div>
         <nav>
-          <button
-            type="button"
-            onClick={() =>
-              navigate("/", {
-                state: { returnTo: "cartier_gtm_redirection" },
-              })
-            }
-          >
-            Back to Cartier GTM
-          </button>
-          <a href="#overview">Overview</a>
-          <a href="#model">Model</a>
-          <a href="#film">Film</a>
-          <a href="#activation">Activation</a>
-          <a href="#operations">Operations</a>
-          <a href="#impact">Impact</a>
-          <Link to="/">Back to Portfolio</Link>
+          {SECTIONS.map(([id, label]) => (
+            <button key={id} type="button" onClick={() => jumpTo(id)}>
+              {label}
+            </button>
+          ))}
         </nav>
       </header>
 
@@ -192,8 +198,8 @@ export function CartierMaybachPage() {
             <span>Focus: Experience + Storytelling + Conversion</span>
           </div>
           <div className="cmHeroActions">
-            <a className="cmHeroLink" href="#model">Jump to 3D Model</a>
-            <a className="cmHeroLink cmHeroLink--secondary" href="#activation">See Activation Plan</a>
+            <button type="button" className="cmHeroLink" onClick={() => jumpTo("model")}>Jump to 3D Model</button>
+            <button type="button" className="cmHeroLink cmHeroLink--secondary" onClick={() => jumpTo("activation")}>See Activation Plan</button>
           </div>
         </ScrollParallaxLayer>
         <ScrollParallaxLayer className="cmChips cmScrollFloat" distance={28} scaleDelta={0.014}>
@@ -504,7 +510,8 @@ export function CartierMaybachPage() {
 
       <footer className="cmFooter">
         <Link to="/">Back to Portfolio</Link>
-        <Link to="/" state={{ returnTo: "cartier_gtm_redirection" }}>Return to Cartier Exhibit</Link>
+        <Link to="/work/cartier-gtm-redirection">Return to Cartier GTM case study</Link>
+        <Link to="/cartier-rogue">Continue to Cartier Rogue →</Link>
       </footer>
 
       <MaybachLoader open={showEntryLoader} text="ENTERING CARTIER × MAYBACH" />
