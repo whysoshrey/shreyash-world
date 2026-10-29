@@ -2,6 +2,8 @@ import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ChapterPager } from "../components/site/Wayfinder";
+import { Footage, Glance, Limits, Process, Results, Scores, Situation, Sources } from "../components/system/Dossier";
+import { DOSSIERS } from "../lib/dossiers";
 import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, ProjectPlate, Reveal } from "../components/site/primitives";
 import { Button } from "../components/system/Button";
@@ -50,13 +52,36 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
   /* ---------- build sections (the "rooms" of this project) ---------- */
   const sections: Sec[] = [];
 
-  if (isRetail) {
+  const dossier = DOSSIERS[exhibit.id];
+  if (dossier) {
+    const shots = [...(dossier.shots ?? []), ...(meta.gallery ?? []).filter((g) => !(dossier.shots ?? []).some((x) => x.src === g.src))];
+    sections.push({ id: "glance", label: "At a glance", title: "At a glance", body: <Glance d={dossier} /> });
+    sections.push({ id: "situation", label: "Situation", title: "The situation", body: <Situation d={dossier} />, wide: true });
+    sections.push({ id: "process", label: "Process", title: "What I did", body: <Process d={dossier} /> });
+    if (dossier.video || shots.length)
+      sections.push({
+        id: "gallery",
+        label: "Pictures",
+        title: "From the work",
+        wide: true,
+        body: (
+          <div className="fromWork">
+            <Footage d={dossier} />
+            {shots.length ? <Gallery shots={shots} /> : null}
+          </div>
+        ),
+      });
+    sections.push({ id: "impact", label: "Results", title: "What changed", body: <Results d={dossier} />, wide: true });
+    if (dossier.scores) sections.push({ id: "scores", label: "Scores", title: dossier.scores.title, body: <Scores d={dossier} />, wide: true });
+    if (dossier.limits?.length) sections.push({ id: "limits", label: "Limits", title: "Limits", body: <Limits d={dossier} /> });
+    if (dossier.sources.length) sections.push({ id: "sources", label: "Sources", title: "Sources", body: <Sources d={dossier} /> });
+  } else if (isRetail) {
     sections.push(...retailSections());
   } else if (exhibit.problem.trim()) {
     sections.push({ id: "brief", label: "Brief", title: "The brief", body: <Brief text={sentence(exhibit.problem)} /> });
   }
 
-  if (!isRetail && exhibit.approach.some((a) => a.trim()))
+  if (!dossier && !isRetail && exhibit.approach.some((a) => a.trim()))
     sections.push({
       id: "approach",
       label: "Approach",
@@ -72,7 +97,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       ),
     });
 
-  if (meta.gallery?.length)
+  if (!dossier && meta.gallery?.length)
     sections.push({
       id: "gallery",
       label: "Gallery",
@@ -81,7 +106,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       body: <Gallery shots={meta.gallery} />,
     });
 
-  if (!isRetail && exhibit.impact.some((a) => a.trim()))
+  if (!dossier && !isRetail && exhibit.impact.some((a) => a.trim()))
     sections.push({
       id: "impact",
       label: "Impact",
@@ -97,7 +122,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
 
   if (isCartier) sections.push({ id: "worlds", label: "Two worlds", title: "Two worlds", body: <CartierWorlds />, wide: true });
 
-  if (artifacts.length && !isCartier)
+  if (!dossier && artifacts.length && !isCartier)
     sections.push({
       id: "artifacts",
       label: "Artifacts",
@@ -118,7 +143,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
     <article className="case" data-d={d}>
       {/* ——— Banner ——— */}
       <header className="case__head">
-        <h1 className="case__title">
+        <h1 className={`case__title${exhibit.title.length > 40 ? " case__title--long" : ""}`}>
           <Lines animateNow delay={0.3} lines={[exhibit.title]} />
         </h1>
         <p className="case__lede">{exhibit.context}</p>
@@ -126,6 +151,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
 
       <Statement item={item} />
 
+      {dossier ? null : (
       <div className="case__metaWrap">
       <motion.dl
         className="metaStrip"
@@ -146,9 +172,9 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
         <div>
           <dt className="label">Artifacts</dt>
           <dd className="metaStrip__artifacts">
-            {artifacts.length ? (
-              <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
-                {artifacts.length} {isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"} ↓
+            {artifacts.length || dossier?.sources.length ? (
+              <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : dossier ? "sources" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
+                {dossier ? `${dossier.sources.length} ${dossier.sources.length === 1 ? "document" : "documents"}` : `${artifacts.length} ${isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"}`} ↓
               </button>
             ) : (
               "—"
@@ -157,6 +183,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
         </div>
       </motion.dl>
       </div>
+      )}
 
       <SectionNav title={exhibit.title} sections={sections.map((s) => ({ id: s.id, label: s.label }))} />
 

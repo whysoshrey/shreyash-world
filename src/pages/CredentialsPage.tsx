@@ -9,12 +9,15 @@ import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { liveArtifacts } from "../lib/projects";
 import type { Exhibit } from "../lib/types";
+import { ENDORSERS } from "../lib/endorsers";
+import { asset } from "../lib/projects";
 
-const ENDORSEMENT_IDS = ["cred-2", "cred-3"];
+const ENDORSEMENT_IDS = ["cred-2", "cred-3", "cred-10"];
 const BASE = import.meta.env.BASE_URL;
 const THUMBS: Record<string, { src: string; alt: string }> = {
   "cred-2": { src: "assets/web/lor-bawa.webp", alt: "First page of Prof. Pritika Bawa's recommendation letter" },
   "cred-3": { src: "assets/web/lor-panghal.webp", alt: "First page of Dr. Deepak Panghal's recommendation letter" },
+  "cred-10": { src: "assets/web/lor-lee.webp", alt: "First page of Christina Lee's recommendation letter on Parsons letterhead" },
   "cred-7": { src: "assets/web/cert-best-grad.webp", alt: "NIFT Certificate of Merit, Best Graduation Project" },
   "cred-4": { src: "assets/web/cert-commercial.webp", alt: "NIFT Certificate of Merit, Most Commercially Viable Project" },
   "cred-6": { src: "assets/web/cert-innovative.webp", alt: "NIFT Certificate of Merit, Most Innovative Project" },
@@ -50,7 +53,7 @@ export function CredentialsPage() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0, transition: { delay: 0.7, duration: 0.9, ease: easeOutExpo } }}
         >
-          <p className="pageHead__lede">Faculty letters from NIFT Delhi, academic awards, and recognition from Parsons School of Design.</p>
+          <p className="pageHead__lede">Faculty letters from NIFT Delhi and Parsons, academic awards, and recognition from Parsons School of Design.</p>
           {resume ? (
             <Button variant="primary" href={liveArtifacts(resume)[0]?.url ?? "#"} icon={<Arrow />}>
               Open résumé ({resume.context})
@@ -58,7 +61,7 @@ export function CredentialsPage() {
           ) : null}
         </motion.div>
         <ul className="credWall">
-          {["cred-7", "cred-2", "cred-4", "cred-3", "cred-6"].map((id, i) => {
+          {["cred-7", "cred-2", "cred-4", "cred-3", "cred-6", "cred-10"].map((id, i) => {
             const t = THUMBS[id];
             const c = creds.find((x) => x.id === id);
             if (!t || !c) return null;
@@ -82,7 +85,15 @@ export function CredentialsPage() {
         </ul>
       </section>
 
-      <CredGroup title="Endorsements" num="e" items={endorsements} open={open} setOpen={setOpen} />
+      <section className="endorsers" aria-labelledby="endorsers-title">
+        <Reveal className="credGroup__head">
+          <h2 id="endorsers-title" className="credGroup__title">Endorsements</h2>
+        </Reveal>
+        <p className="endorsers__lede">Three faculty letters, from the people best placed to judge each side of my work: production technology, fashion management, and brand communication.</p>
+        {endorsements.map((c) => (
+          <EndorserCard key={c.id} c={c} />
+        ))}
+      </section>
       <CredGroup title="Awards and recognition" num="a" items={awards} open={open} setOpen={setOpen} />
     </PageShell>
   );
@@ -162,5 +173,66 @@ function CredGroup(props: { title: string; num: string; items: Exhibit[]; open: 
         })}
       </ul>
     </section>
+  );
+}
+
+/** One endorser: who they are, why their word counts, and what their letter actually vouches for. */
+function EndorserCard({ c }: { c: Exhibit }) {
+  const e = ENDORSERS[c.id];
+  const link = liveArtifacts(c)[0];
+  const thumb = THUMBS[c.id];
+  if (!e) return null;
+  const href = link ? (link.url.startsWith("/") ? asset(link.url) : link.url) : undefined;
+  return (
+    <Reveal as="article" className="endorser">
+      <div id={c.id} className="endorser__letter">
+        {thumb ? (
+          <a href={href} target="_blank" rel="noreferrer" className="endorser__thumb" aria-label={`Open ${e.name}'s full letter`}>
+            <img src={BASE + thumb.src} alt={thumb.alt} loading="lazy" />
+          </a>
+        ) : null}
+        {href ? (
+          <a className="credItem__link" href={href} target="_blank" rel="noreferrer">
+            Read the full letter <Arrow />
+          </a>
+        ) : null}
+      </div>
+      <div className="endorser__body">
+        <h3 className="endorser__name">{e.name}</h3>
+        <p className="endorser__standing">{e.standing}</p>
+        <blockquote className="endorser__quote">
+          <p>“{e.quote}”</p>
+        </blockquote>
+        <div className="endorser__cols">
+          <div>
+            <h4 className="endorser__h">Who {e.name.startsWith("Dr.") ? "he" : "she"} is</h4>
+            <ul className="endorser__list">
+              {e.who.map((w) => (
+                <li key={w}>{w}</li>
+              ))}
+            </ul>
+            <h4 className="endorser__h">Why it carries weight</h4>
+            <p className="endorser__why">{e.why}</p>
+          </div>
+          <div>
+            <h4 className="endorser__h">What the letter vouches for</h4>
+            <ul className="endorser__list">
+              {e.vouches.map((v) => (
+                <li key={v}>{v}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <ul className="endorser__sources" aria-label={`Sources on ${e.name}`}>
+          {e.sources.map((src) => (
+            <li key={src.url}>
+              <a href={src.url} target="_blank" rel="noreferrer">
+                {src.label} <Arrow />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Reveal>
   );
 }

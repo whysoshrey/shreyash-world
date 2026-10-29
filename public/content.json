@@ -38,7 +38,7 @@
     {
       "key": "cred",
       "title": "Credentials",
-      "thesis": "R\u00e9sum\u00e9, endorsements, awards."
+      "thesis": "Résumé, endorsements, awards."
     }
   ],
   "exhibits": {
@@ -46,8 +46,8 @@
       {
         "id": "ops-1",
         "title": "Autonomous WIP Movement Robot",
-        "context": "Shahi Exports \u2014 Industry 4.0 Fellowship",
-        "proof": "Reduced aggregate WIP movement by 22%.",
+        "context": "Shahi Exports — Industry 4.0 Fellowship",
+        "proof": "Cut material movement 22% in a factory pilot.",
         "problem": "production floor WIP transport created delays, fatigue, and variability.",
         "approach": [
           "mapped movement hotspots and constraints.",
@@ -79,7 +79,7 @@
         "id": "ops-2",
         "title": "IoT Needle Time-Tracker",
         "context": "Inzex Textiles - Process Automation",
-        "proof": "Improved output efficiency by 25%.",
+        "proof": "A ₹400 tracker, part of a 25% output gain.",
         "problem": "worker efficiency tracking mechanisms absent in company; slowing decisions. Implemented cost-effective system and embedded in back-end dashboarding for Management.",
         "approach": [
           "defined signal taxonomy + instrumentation plan.",
@@ -101,8 +101,8 @@
       {
         "id": "ops-3",
         "title": "Industrial Waste Elimination",
-        "context": "Welspun India \u2014 Textile Engineering",
-        "proof": "Eliminated 300 kg/day hard waste.",
+        "context": "Welspun India — Textile Engineering",
+        "proof": "Removed ~300 kg a day of unrecyclable hard waste.",
         "problem": "At Welspun Vapi’s Terry Towels weaving unit, our project tackled a high-volume, structurally recurring waste problem in dobby loom production: mock-selvage trimming was generating ~2 kg of hard waste per loom per day, which scaled to nearly 300 kg/day across 168 looms (about 9,000 kg/month and 109,500 kg/year), much of it difficult to recycle because it was a mixed-fibre (polyester-cotton) waste stream.",
         "approach": [
           "identified root cause in loom setup.",
@@ -131,7 +131,7 @@
         "subtitle": "Ops analytics & reporting",
         "href": "https://drive.google.com/file/d/12kj0qrUYZLpH9fwickkwS6nJx9yBX2KV/view?usp=share_link",
         "context": "Ops analytics & reporting",
-        "proof": "Dashboard and backend evidence folder.",
+        "proof": "Three connected dashboards for three Myntra brands.",
         "problem": "Inzex’s reporting workflow relied on fragmented spreadsheets and manual tracking, making it difficult to get a clear, timely view of campaign performance, operational KPIs, and decision-critical trends.",
         "approach": [
           "Designed and deployed a centralized dashboarding workflow that consolidated fragmented operational and marketing data into a structured reporting system, using Excel-based data cleaning, KPI mapping, and visual summaries to make performance tracking faster, clearer, and more decision-ready."
@@ -156,8 +156,8 @@
       {
         "id": "merch-1",
         "title": "Nava Collective - MPS Capstone",
-        "context": "Parsons \u2014 Capstone",
-        "proof": "Centralized marketplace model with GTM + insights.",
+        "context": "Parsons — Capstone",
+        "proof": "A trust-first marketplace, built from an 80-person survey.",
         "problem": "fragmented supply and low discovery for vendors.",
         "approach": [
           "consumer insights + vendor interviews.",
@@ -178,9 +178,9 @@
       {
         "id": "merch-2",
         "title": "Retail Clienteling - Bloomingdales, 59th Street",
-        "context": "Bloomingdale\u2019s 59th Street + event-floor retail execution",
+        "context": "Bloomingdale’s 59th Street + event-floor retail execution",
         "proof": "Proof-led clienteling, fit resolution, and trust-forward service under live floor conditions.",
-        "problem": "customer needs weren\u2019t systematically captured.",
+        "problem": "customer needs weren’t systematically captured.",
         "approach": [
           "logged VOC patterns by fit/color/occasion.",
           "created recap cadence.",
@@ -202,7 +202,7 @@
       {
         "id": "brand-1",
         "title": "Genesis 2.2: Growth + Ops",
-        "context": "Event Ops \u2014 Marketing",
+        "context": "Event Ops — Marketing",
         "proof": "Early-bird sellout in 30 seconds; 150+ attendees.",
         "problem": "need repeatable event growth and ops plan.",
         "approach": [
@@ -225,9 +225,9 @@
       {
         "id": "brand-3",
         "title": "E-Com UX Benchmark of two major Indian companies (12 Parameters)",
-        "context": "NIFT \u2014 Research",
-        "proof": "Compared high-end vs low-end e-comm across 12 parameters.",
-        "problem": "define what \u201cpremium\u201d UX does differently.",
+        "context": "NIFT — Research",
+        "proof": "Ten UX laws, two platforms, one scored comparison.",
+        "problem": "define what “premium” UX does differently.",
         "approach": [
           "created evaluation rubric.",
           "compared platforms.",
@@ -250,7 +250,7 @@
         "subtitle": "Campaign concepts folder",
         "href": "https://drive.google.com/drive/folders/1FyCvnSjlEt29aOEAv7ySClw-y66rjbSL?usp=share_link",
         "context": "Campaign concepts folder",
-        "proof": "Campaign concepts in linked folder.",
+        "proof": "A campaign and media plan for Off-White, cited by its instructor.",
         "problem": "Detailed concept notes are in the linked folder.",
         "approach": [
           "See linked folder for campaign concept artifacts."
@@ -303,7 +303,7 @@
     "cred": [
       {
         "id": "cred-1",
-        "title": "R\u00e9sum\u00e9",
+        "title": "Résumé",
         "context": "One-page PDF",
         "proof": "",
         "problem": "",
@@ -320,8 +320,8 @@
       {
         "id": "cred-2",
         "title": "Prof. Pritika Bawa",
-        "context": "Joint Director, NIFT Delhi",
-        "proof": "Prof. Pritika Bawa\u2019s endorsement carries exceptional weight because of her leadership role at NIFT Delhi and her deep experience in fashion education.",
+        "context": "Joint Director, NIFT Delhi · Fashion Management Studies",
+        "proof": "Taught me in the Master of Fashion Management interdisciplinary major, 2021–2023.",
         "problem": "Her recommendation reflects direct academic evaluation of my performance, discipline, and ability to develop ideas with both design sensitivity and professional clarity.",
         "approach": [
           "What her endorsement validates:",
@@ -343,8 +343,8 @@
       {
         "id": "cred-3",
         "title": "Dr. Deepak Panghal",
-        "context": "Senior Faculty, NIFT Delhi (Fashion Technology / academic leadership)",
-        "proof": "Dr. Deepak Panghal\u2019s endorsement is especially meaningful because it comes from a senior academic perspective rooted in technical rigor and industry-facing fashion education.",
+        "context": "Department of Fashion Technology, NIFT Delhi · Mechatronics, Robotics & Automation",
+        "proof": "Taught me Mechatronics, Additive Manufacturing and Robotics & Automation.",
         "problem": "His recommendation validates my ability to approach fashion problems with systems thinking, structure, and practical execution.",
         "approach": [
           "What his endorsement validates:",
@@ -360,6 +360,22 @@
           {
             "label": "View full letter",
             "url": "https://drive.google.com/file/d/1R0PUb6gxCleJRUYt7_GaUCD3cIUJx4cx/view?usp=share_link"
+          }
+        ]
+      },
+      {
+        "id": "cred-10",
+        "title": "Christina Lee",
+        "context": "Parsons MPS Fashion Management · Communication & Social Media",
+        "proof": "Taught me Communication & Social Media at Parsons; letter dated 15 October 2026.",
+        "problem": "",
+        "approach": [],
+        "impact": [],
+        "skills": "",
+        "artifacts": [
+          {
+            "label": "View full letter",
+            "url": "/assets/web/lor-lee.pdf"
           }
         ]
       },
@@ -388,7 +404,7 @@
         "title": "Most Innovative Project",
         "context": "NIFT Delhi",
         "proof": "Awarded for originality in problem-solving, concept development, and execution.",
-        "problem": "This recognition reflects a strong innovation lens\u2014valuing new thinking, experimentation, and differentiated outcomes in a competitive academic setting.",
+        "problem": "This recognition reflects a strong innovation lens—valuing new thinking, experimentation, and differentiated outcomes in a competitive academic setting.",
         "approach": [
           "Recognition type: Academic Award"
         ],
@@ -427,7 +443,7 @@
         "id": "cred-8",
         "title": "MANGO Scholarship Award",
         "context": "Parsons School of Design",
-        "proof": "Part of the MANGO\u2013Parsons scholarship initiative supporting emerging talent in design and retail-oriented education.",
+        "proof": "Part of the MANGO–Parsons scholarship initiative supporting emerging talent in design and retail-oriented education.",
         "problem": "This recognition reflects academic merit and potential within a globally connected fashion-learning ecosystem.",
         "approach": [
           "Recognition type: Scholarship"
@@ -447,7 +463,7 @@
         "id": "cred-9",
         "title": "Featured on Parsons Student Work Website",
         "context": "Parsons School of Design",
-        "proof": "Selected for institutional student-work visibility, recognizing the project\u2019s quality, clarity, and relevance within Parsons\u2019 broader academic and creative community.",
+        "proof": "Selected for institutional student-work visibility, recognizing the project’s quality, clarity, and relevance within Parsons’ broader academic and creative community.",
         "problem": "This feature serves as both academic recognition and public-facing validation.",
         "approach": [
           "Recognition type: Institutional Feature"

@@ -25,7 +25,7 @@ export const DISCIPLINES = [
 
 /** Results, each lifted verbatim from a project's proof line, written as sentences rather than a stat row. */
 const EVIDENCE = [
-  { value: "22%", text: "less aggregate WIP movement on the production floor", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
+  { value: "22%", text: "less material movement in a factory pilot", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
   { value: "25%", text: "better output efficiency with an IoT needle time-tracker", where: "Inzex Textiles", id: "ops-2" },
   { value: "300", unit: " kg", text: "of hard waste eliminated every day across 168 looms", where: "Welspun India", id: "ops-3" },
   { value: "30", unit: " s", text: "to sell out the early-bird release, with 150+ attendees", where: "Genesis 2.2", id: "brand-1" },

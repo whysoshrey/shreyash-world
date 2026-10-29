@@ -35,7 +35,7 @@ const g = (file: string, caption: string, ratio: string) => ({ src: `/assets/web
 export const PROJECT_META: Record<string, ProjectMeta> = {
   "ops-1": {
     figure: "22%",
-    figureNote: "reduction in aggregate WIP movement",
+    figureNote: "less material movement in the pilot",
     image: "/assets/web/agv-assembled.webp",
     imageAlt: "3D reconstruction of the autonomous WIP movement robot",
     gallery: [
@@ -49,7 +49,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
   "merch-1": { word: "Marketplace", figureNote: "Parsons capstone" },
   "merch-2": { word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
   "brand-1": { figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },
-  "brand-3": { figure: "12", figureNote: "parameters benchmarked" },
+  "brand-3": { figure: "10", figureNote: "UX laws, two platforms" },
   "offwhite-human": { word: "HUMAN", figureNote: "Off-White campaign concepts" },
   "cartier-gtm-redirection": {
     word: "Cartier",
