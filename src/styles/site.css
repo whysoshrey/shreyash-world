@@ -4030,3 +4030,36 @@ a { text-underline-offset: 0.18em; }
 .docViewer__item { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-2); color: var(--blue); font: 500 17px/1.3 var(--sans); text-align: left; cursor: pointer; }
 .docViewer__item:hover { background: var(--blue); color: var(--cream); }
 @media (max-width: 640px) { .docViewer { padding: 0; } .docViewer__panel { height: 100dvh; border-radius: 0; } }
+
+/* =========================================================
+   Phones (iOS Safari / Android Chrome)
+   ========================================================= */
+
+/* Notch and home indicator: the page uses viewport-fit=cover, so side margins must clear the notch in landscape */
+:root { --pad: max(clamp(18px, 3.6vw, 56px), env(safe-area-inset-left), env(safe-area-inset-right)); }
+.siteFooter { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+@media (max-width: 640px) {
+  .docViewer__bar { padding-top: calc(10px + env(safe-area-inset-top)); padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+  .docViewer__body { margin-bottom: env(safe-area-inset-bottom); }
+}
+
+/* Small labels: nothing under 12px on a phone */
+@media (max-width: 760px) {
+  :root { --fs-label: 12px; }
+  .lead__statusLabel, .role__kind, .inBrief dt { font-size: 12px; }
+}
+
+/* Touch: subtle tap feedback instead of the grey flash, and 44px hit areas (Apple HIG) without changing the look */
+a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 134, 0.12); }
+@media (pointer: coarse) {
+  .siteHeader__brand, .menuBtn, .backBtn, .filter, .btn, .credItem__link, .cmSwatch, .cmLightToggle, .cmResetBtn,
+  .docViewer__btn, .endorser__sources a { min-height: 44px; }
+  .menuBtn { min-width: 44px; }
+  /* text links: grow the hit area vertically, give the space back with negative margins */
+  .siteFooter__nav a, .crumbs a, .textBtn { padding-block: 11px; margin-block: -11px; }
+  .uLink, .journeyList__name a, .case__crumbs a { padding-block: 12px; }
+}
+@media (pointer: coarse) {
+  .siteHeader__brand { min-width: 44px; }
+  .cmSwatchGrid .cmSwatch { min-height: 44px; } /* beats the Maybach page's own 42px rule, which loads later */
+}
