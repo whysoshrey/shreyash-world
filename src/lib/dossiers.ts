@@ -3,8 +3,9 @@
  * (reports, decks and dissertation on Drive) and the latest résumé.
  *
  * Evidence rules, carried over from the career-profile assessment:
- *  - "What changed" figures say how they were obtained. Factory results after the original reports were
- *    measured by the on-floor team, with Shreyash observing and recording; the source records are not public.
+ *  - "What changed" figures say how they were obtained. Factory results after the original reports (ops-1, ops-2) were
+ *    measured by the on-floor team; the source records are not public. Welspun (ops-3) is a proposal: its 300 kg/day is a
+ *    sized potential, per the internship report and the October 2026 CV.
  *  - Targets, modelled figures and derived scores are labelled as such, never presented as outcomes.
  *  - Nothing here is invented to fill a gap: where a document doesn't say, the dossier doesn't either.
  */
@@ -112,7 +113,7 @@ export const DOSSIERS: Record<string, Dossier> = {
     status: "Internship build · output gain reported by the floor team",
     glance: {
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
-      when: "June – July 2022 (internship); written up in May 2024",
+      when: "June – July 2023 (internship); written up in May 2024",
       where: "INZEX Textiles, sewing floor",
       tools: "NodeMCU ESP8266, HC-SR04 ultrasonic sensor, Arduino IDE, Google Apps Script, Google Sheets",
     },
@@ -166,12 +167,12 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "ops-3": {
-    status: "Internship analysis · removal measured by the floor team",
+    status: "Internship analysis · proposal; the 300 kg/day is a potential, not a measured result",
     glance: {
       role: "Manufacturing intern: plant-wide waste analysis and the proposal to remove mock selvage",
       when: "June 2022",
       where: "Welspun India, terry towel unit, Vapi",
-      with: "Loom engineering mentor; later implementation and measurement by the floor team",
+      with: "Loom engineering mentor",
       tools: "Process mapping, waste costing, loom mechanics; NEDGraphics, DPCS and MDM in the development workflow",
     },
     situation: {
@@ -205,19 +206,19 @@ export const DOSSIERS: Record<string, Dossier> = {
           "A tuck-in device weaves the cut weft ends back into the fabric, so no mock selvage is needed. Welspun already used these on shirting looms at Anjar, but never on terry looms. I flagged the risks (edge thickness and density, loom running, towel hemming) and set out the investment and savings to test.",
       },
       {
-        title: "Saw it through to measurement",
+        title: "Sized the potential",
         body:
-          "Loom engineers ran the trials. After implementation, the floor team measured the targeted waste stream before and after, with me observing and recording.",
+          "Each dobby loom produced about 2 kg of mock-selvage hard waste a day. Across the unit's 168 looms, that is the roughly 300 kg a day the proposal would remove.",
       },
     ],
     results: [
-      { value: "≈ 300 kg", label: "of hard waste removed a day", how: "The mock-selvage stream only, measured by the floor team before and after" },
-      { value: "109,500 kg", label: "a year, annualised", how: "300 kg × 365 days; at 300 working days it would be 90,000 kg" },
+      { value: "≈ 300 kg", label: "a day of hard waste the proposal targets", how: "Reduction potential: ≈2 kg per loom × 168 looms, from the internship report; not a measured result" },
+      { value: "109,500 kg", label: "a year, if implemented", how: "300 kg × 365 days; at 300 working days it would be 90,000 kg" },
       { value: "₹372.9M", label: "of waste costed across five units", how: "Sum of the unit-wise costs in the internship report; the report does not state the period" },
     ],
     limits: [
-      "The reduction covers the mock-selvage stream, not all plant waste.",
-      "Installation was done by the factory's engineers, not by me.",
+      "This was a proposal: the figures are a sized potential, and no implemented result is claimed.",
+      "The potential covers the mock-selvage stream only, not all plant waste.",
     ],
     shots: [
       s("welspun-selvage", "Mock-selvage trimmings: mixed polyester and cotton, unrecyclable", "563 / 745"),
@@ -236,7 +237,7 @@ export const DOSSIERS: Record<string, Dossier> = {
     status: "Internship build · no business outcome claimed",
     glance: {
       role: "IE / data intern: built the sales and inventory dashboards",
-      when: "June – July 2022",
+      when: "June – July 2023",
       where: "INZEX Textiles, Myntra PPMP fulfilment",
       tools: "Excel, Google Sheets connector, Google Data Studio",
     },

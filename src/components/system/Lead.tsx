@@ -24,7 +24,7 @@ type Print = {
 const PRINTS: Print[] = [
   { key: "rogue", to: ROGUE_PATH, caption: "Cartier Rogue, campaign concept", depth: 0.9, rotate: 4, img: "/assets/web/art-keyart-mask.webp", alt: "Cartier Rogue key art: a model in a jewelled mask holding a raw crystal" },
   { key: "agv", to: "/work/ops-1", caption: "Autonomous WIP robot, Shahi Exports", depth: 0.55, rotate: -5, img: "/assets/web/agv-assembled.webp", alt: "Render of the autonomous WIP-movement robot" },
-  { key: "waste", to: "/work/ops-3", caption: "Welspun India", depth: 0.75, rotate: -2.5, figure: "300 kg", note: "of hard waste eliminated every day" },
+  { key: "waste", to: "/work/ops-3", caption: "Welspun India", depth: 0.75, rotate: -2.5, figure: "300 kg", note: "a day: proposed waste reduction" },
   { key: "maybach", to: "/work/cartier-gtm-redirection/maybach", caption: "Cartier × Maybach concept, film still", depth: 0.4, rotate: 3, img: "/assets/web/art-film-maybach.webp", alt: "Film still of the Cartier × Maybach car at night" },
 ];
 

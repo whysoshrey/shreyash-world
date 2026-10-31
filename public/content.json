@@ -1,13 +1,13 @@
 {
   "site": {
     "name": "Shreyash Ojha",
-    "positioning": "Fashion Operations & Applied AI",
+    "positioning": "Fashion Retail Strategy · Consumer Research · Apparel Value Chain",
     "valueProp": "I build measurable operating systems across merchandising, process, and analytics.",
     "cta": "ENTER",
     "links": [
       {
         "label": "CV",
-        "href": "https://drive.google.com/file/d/1q6yvgEcV94BP1M0EG4xHfAK5YTfpdh-X/view?usp=share_link"
+        "href": "./Shreyash_Ojha_CV.pdf"
       },
       {
         "label": "LinkedIn",
@@ -20,9 +20,9 @@
     ],
     "email": "shreyashojha93@gmail.com",
     "status": {
-      "location": "Based in India",
-      "open": "Open to roles in India, Europe, Japan and remote",
-      "roles": "Fashion operations · Merchandising & analytics · AI evaluation"
+      "location": "Based in Mumbai, India",
+      "open": "Open to global relocation",
+      "roles": "Retail strategy & consumer insights · Merchandising & planning · Apparel operations"
     }
   },
   "doors": [
@@ -76,7 +76,7 @@
             "url": "https://drive.google.com/drive/folders/1SZzDFrsrTxFyBJGu6FtnUU6okATvaoGv?usp=share_link"
           },
           {
-            "label": "Presentation at Bharat Tex 2024 (Min. of Textiles, Government of India)",
+            "label": "Presentation at Bharat Tex 2025 (Min. of Textiles, Government of India)",
             "url": "https://drive.google.com/file/d/1QU_vI47lLPdXV8sfeGPbfxwZ-jTlaZ04/view?usp=share_link"
           }
         ]
@@ -106,9 +106,9 @@
       },
       {
         "id": "ops-3",
-        "title": "Industrial Waste Elimination",
+        "title": "Industrial Waste Reduction",
         "context": "Welspun India — Textile Engineering",
-        "proof": "Removed ~300 kg a day of unrecyclable hard waste.",
+        "proof": "Traced 79% of plant waste to weaving and proposed a fix with ~300 kg/day reduction potential.",
         "problem": "At Welspun Vapi’s Terry Towels weaving unit, our project tackled a high-volume, structurally recurring waste problem in dobby loom production: mock-selvage trimming was generating ~2 kg of hard waste per loom per day, which scaled to nearly 300 kg/day across 168 looms (about 9,000 kg/month and 109,500 kg/year), much of it difficult to recycle because it was a mixed-fibre (polyester-cotton) waste stream.",
         "approach": [
           "identified root cause in loom setup.",
@@ -116,8 +116,8 @@
           "documented SOP + checks."
         ],
         "impact": [
-          "300 kg/day waste eliminated.",
-          "annualized savings documented."
+          "~300 kg/day hard-waste reduction potential (proposal, not a measured result).",
+          "~109,500 kg/year if implemented."
         ],
         "skills": "Process engineering, SOPs, measurement.",
         "artifacts": [

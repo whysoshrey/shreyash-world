@@ -37,12 +37,12 @@ void END;
 const EVENTS: Ev[] = [
   { at: 2020.6, kind: "edu", side: "down", lane: 0, title: "NIFT Delhi", note: "B.F.Tech begins · 2020" },
   { at: 2022.42, kind: "role", side: "up", lane: 0, title: "Welspun India", note: "manufacturing intern · Jun '22", to: "/work/ops-3" },
-  { at: 2022.5, kind: "role", side: "down", lane: 0, title: "INZEX Textiles", note: "IE / data & IoT intern · Jun–Jul '22", to: "/work/ops-2" },
+  { at: 2023.45, kind: "role", side: "down", lane: 0, title: "INZEX Textiles", note: "IE / data & IoT intern · Jun–Jul '23", to: "/work/ops-2" },
   { at: 2024.0, kind: "role", side: "up", lane: 0, title: "Shahi Exports", note: "Industry 4.0 fellow · Jan–Jul '24", to: "/work/ops-1" },
   { at: 2024.66, kind: "edu", side: "down", lane: 0, title: "Parsons, New York", note: "MPS Fashion Management · Fall '24" },
   { at: 2025.1, kind: "ny", side: "up", lane: 1, title: "A Space, In Between", note: "fashion management intern · Feb–May '25" },
   { at: 2025.45, kind: "edu", side: "down", lane: 1, title: "Nava Collective", note: "capstone, featured by Parsons · '25", to: "/work/merch-1" },
-  { at: 2025.67, kind: "ny", side: "up", lane: 0, title: "Handshake AI", note: "research fellow, fashion & retail · Sep '25" },
+  { at: 2025.67, kind: "ny", side: "up", lane: 0, title: "Handshake AI", note: "research fellow, fashion & retail · Sep '25–Sep '26" },
   { at: 2025.79, kind: "ny", side: "down", lane: 0, title: "Bloomingdale's", note: "59th Street · Oct '25–Jan '26", to: "/work/merch-2" },
 ];
 
@@ -55,7 +55,7 @@ const PIVOTS = [
 type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string };
 const ROLES: Role[] = [
   {
-    when: "Sep 2025 – present",
+    when: "Sep 2025 – Sep 2026",
     org: "Handshake AI",
     role: "Research Fellow, Fashion & Retail",
     anchor: "ai-evaluation",
@@ -100,7 +100,7 @@ const ROLES: Role[] = [
     links: [{ to: "/work/ops-1", label: "WIP robot case" }],
   },
   {
-    when: "Jun – Jul 2022",
+    when: "Jun – Jul 2023",
     org: "INZEX Textiles",
     role: "IE / Data & IoT Intern",
     place: "Sewing floor and Myntra fulfilment",
@@ -120,7 +120,7 @@ const ROLES: Role[] = [
     place: "Terry towel unit, Vapi",
     lines: [
       "Costed waste across five units and found weaving behind 79% of it; proposed tuck-in edges for 168 dobby looms.",
-      "After implementation, about 300 kg a day of unrecyclable hard waste removed.",
+      "Sized the proposal's potential at about 300 kg a day of unrecyclable hard waste (≈109,500 kg a year).",
     ],
     links: [{ to: "/work/ops-3", label: "Waste case" }],
   },
@@ -164,12 +164,12 @@ export function AboutPage() {
             animate={{ opacity: 1, y: 0, transition: { delay: 0.6, duration: 0.6, ease: easeOutExpo } }}
           >
             I trained in apparel production at NIFT Delhi and in fashion management at Parsons. In between, I've built a robot and
-            a sensor for sewing floors, cut waste on a weaving floor, sold designer menswear on 59th Street, and now teach AI models
+            a sensor for sewing floors, traced waste on a weaving floor, sold designer menswear on 59th Street, and taught AI models
             fashion judgement.
           </motion.p>
           <p className="aboutIntro__status">
-            <span>Fashion operations · retail analytics · applied AI</span>
-            <span>Open to roles · relocation welcome</span>
+            <span>Fashion retail strategy · consumer research · apparel value chain</span>
+            <span>Based in Mumbai · open to global relocation</span>
           </p>
         </div>
         <motion.figure

@@ -24,20 +24,21 @@ export const DISCIPLINES = [
 ];
 
 /** Results, each lifted verbatim from a project's proof line, written as sentences rather than a stat row. */
-const EVIDENCE = [
+const EVIDENCE: { value: string; unit?: string; text: string; where: string; id: string; to?: string }[] = [
   { value: "22%", text: "less material movement in a factory pilot", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
   { value: "25%", text: "better output efficiency with an IoT needle time-tracker", where: "Inzex Textiles", id: "ops-2" },
-  { value: "300", unit: " kg", text: "of hard waste eliminated every day across 168 looms", where: "Welspun India", id: "ops-3" },
   { value: "30", unit: " s", text: "to sell out the early-bird release, with 150+ attendees", where: "Genesis 2.2", id: "brand-1" },
+  { value: "96%", text: "review consistency in fashion-retail AI evaluation, with repeat errors down 22%", where: "Handshake AI research fellowship", id: "ai-evaluation", to: "/about#ai-evaluation" },
 ];
 
 /** Role paths. Every proof line repeats a figure or fact already published elsewhere on the site. */
 const PATHS: { label: string; proof: string; to: string; d: string }[] = [
-  { label: "Operations & Industry 4.0", proof: "22% less material movement in a factory pilot · 300 kg/day of hard waste removed", to: "/work?d=ops", d: "ops" },
-  { label: "Merchandising & analytics", proof: "Sales and inventory dashboards for three Myntra brands · clienteling at Bloomingdale's", to: "/work?d=merch", d: "merch" },
+  { label: "Retail strategy & consumer insights", proof: "Survey research and ANOVA behind a Parsons marketplace capstone · demand signals logged on Bloomingdale's floor", to: "/work/merch-1", d: "merch" },
+  { label: "Merchandising & planning", proof: "Sales and inventory dashboards for three Myntra brands, built for allocation, replenishment and OTB decisions", to: "/work?d=merch", d: "merch" },
+  { label: "Apparel operations", proof: "22% less material movement in a factory pilot · a ₹400 IoT tracker that fed a 25% output gain", to: "/work?d=ops", d: "ops" },
   { label: "AI evaluation", proof: "Fashion-retail model evaluation across 35+ taxonomies · review consistency raised to 96%", to: "/about#ai-evaluation", d: "ai" },
   { label: "Brand & campaigns", proof: "Early-bird sellout in 30 seconds · Off-White and Cartier campaign concepts", to: "/work?d=brand", d: "brand" },
-];
+]
 
 /** The three disciplines, presented as the three swatches of the palette. */
 const SWATCH: Record<Exclude<DoorKey, "cred">, { name: string; code: string }> = {
@@ -49,7 +50,7 @@ const SWATCH: Record<Exclude<DoorKey, "cred">, { name: string; code: string }> =
 export function HomePage() {
   const { content } = useContentState();
   return (
-    <PageShell title="Shreyash Ojha — Fashion Operations & Applied AI" curtainLabel="Index" tone="cover">
+    <PageShell title="Shreyash Ojha — Fashion Retail Strategy · Consumer Research · Apparel Value Chain" curtainLabel="Index" tone="cover">
       {content ? <Home content={content} /> : null}
     </PageShell>
   );
@@ -156,12 +157,12 @@ function Home({ content }: { content: Content }) {
       <section id="evidence" className="section results" aria-labelledby="ev-title">
         <header className="sectionHead">
           <h2 id="ev-title" className="sectionHead__title">Measured, not claimed</h2>
-          <p className="sectionHead__aside">Every figure comes from a project on this site. Follow one to see how it was measured.</p>
+          <p className="sectionHead__aside">Every figure comes from work on this site. Follow one to see how it was measured.</p>
         </header>
         <ul className="results__list">
           {EVIDENCE.map((e, i) => (
             <Reveal as="li" key={e.id} delay={i * 0.06}>
-              <Link to={`/work/${e.id}`} className="result">
+              <Link to={e.to ?? `/work/${e.id}`} className="result">
                 <span className="result__value">
                   <CountUp value={e.value} />
                   {e.unit ?? ""}
@@ -329,7 +330,7 @@ function Home({ content }: { content: Content }) {
             </div>
             <div>
               <dt>Presented at</dt>
-              <dd>Bharat Tex 2024, Ministry of Textiles, Government of India</dd>
+              <dd>Bharat Tex 2025, Ministry of Textiles, Government of India</dd>
             </div>
           </dl>
         </Reveal>

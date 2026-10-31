@@ -148,7 +148,7 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
         </h1>
         <p className="case__lede">{exhibit.context}</p>
         <InBrief
-          role={dossier ? shortRole(dossier.glance.role) : undefined}
+          role={dossier ? shortRole(dossier.glance.role) : isCartier ? "Visual moodboarding, ideation and feasibility checks" : undefined}
           when={dossier?.glance.when}
           status={dossier ? dossier.status : isCartier ? "Speculative concept · not client work" : undefined}
         />

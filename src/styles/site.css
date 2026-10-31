@@ -3963,14 +3963,14 @@ a { text-underline-offset: 0.18em; }
 /* NV-01 — paths by role */
 .paths { position: relative; z-index: 4; margin: clamp(36px, 5vw, 64px) var(--pad) 0; }
 .paths__title { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin: 0 0 12px; }
-.paths__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
+.paths__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
 .path { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 18px 18px 20px 0; height: 100%; text-decoration: none; color: var(--blue); border-bottom: 1px solid var(--rule); }
 .paths__list li + li .path { padding-left: 18px; border-left: 1px solid var(--rule); }
 .path__label { font-family: var(--serif); font-size: clamp(22px, 1.9vw, 28px); line-height: 1.05; }
 .path__proof { grid-column: 1 / -1; font-size: 14px; line-height: 1.4; color: var(--ink-2); }
 .path__arrow { grid-row: 1; grid-column: 2; align-self: start; transition: transform var(--dur-2, 0.2s) var(--ease-out, ease); }
 @media (hover: hover) and (pointer: fine) { .path:hover .path__arrow { transform: translateX(4px); } .path:hover .path__label { color: var(--red); } }
-@media (max-width: 1023px) { .paths__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .paths__list li:nth-child(3) .path { padding-left: 0; border-left: 0; } }
+@media (max-width: 1023px) { .paths__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .paths__list li:nth-child(odd) .path { padding-left: 0; border-left: 0; } }
 @media (max-width: 599px) { .paths__list { grid-template-columns: 1fr; } .paths__list li + li .path { padding-left: 0; border-left: 0; } }
 
 /* SM-01 — in brief, under the case title */
@@ -3998,3 +3998,9 @@ a { text-underline-offset: 0.18em; }
 
 /* SY-01 — the state names on /system sit on paper, not on blue */
 .sysStates__blue td:first-child code { color: var(--ink-2); }
+
+/* CV-aligned headline is longer: keep it clear of the prints */
+.lead__tag { font-size: clamp(17px, 1.55vw, 24px); line-height: 1.15; max-width: 24em; }
+
+/* A11-03 — WCAG 2.5.8: chapter-rail targets at least 24px tall */
+.chapterRail__item { min-height: 24px; min-width: 24px; }

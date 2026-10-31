@@ -44,7 +44,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
     ],
   },
   "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },
-  "ops-3": { figure: "300", figureNote: "kg / day of hard waste eliminated" },
+  "ops-3": { figure: "300", figureNote: "kg / day reduction potential (proposal)" },
   "inzex-dashboards": { word: "Reporting", figureNote: "Ops analytics & backend" },
   "merch-1": { word: "Marketplace", figureNote: "Parsons capstone" },
   "merch-2": { word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
