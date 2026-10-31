@@ -1,4 +1,5 @@
 import { AnimatePresence, MotionConfig } from "framer-motion";
+import { DocViewer } from "./components/site/DocViewer";
 import { Suspense, lazy, useEffect, useRef } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigationType, useParams } from "react-router-dom";
 import { LoadingScreen, PageShell } from "./components/site/PageShell";
@@ -124,6 +125,7 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <ContentProvider>
         <AnimatedRoutes />
+        <DocViewer />
       </ContentProvider>
     </MotionConfig>
   );

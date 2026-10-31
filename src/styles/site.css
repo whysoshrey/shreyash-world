@@ -4012,3 +4012,21 @@ a { text-underline-offset: 0.18em; }
 .role__logo--bloomingdales { max-width: min(160px, 100%); }
 .role__logo--inzex { max-height: 22px; }
 @media (max-width: 760px) { .role__side { flex-direction: row; align-items: center; justify-content: space-between; width: 100%; } .role__logo { max-height: 26px; max-width: 120px; } .role__logo--inzex { max-height: 17px; } }
+
+/* In-page viewer for Google Drive documents, folders and hosted videos */
+.docViewer { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: clamp(0px, 3vw, 40px); background: rgba(15, 36, 102, 0.72); backdrop-filter: blur(4px); }
+.docViewer__panel { width: min(1180px, 100%); height: min(92vh, 1000px); display: flex; flex-direction: column; background: var(--paper); border-radius: 6px; overflow: hidden; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35); }
+.docViewer__bar { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 18px; border-bottom: 1px solid var(--rule); }
+.docViewer__title { flex: 1; min-width: 0; margin: 0; font-family: var(--serif); font-size: clamp(18px, 1.6vw, 24px); color: var(--blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.docViewer__btn { flex: none; min-height: 40px; padding: 8px 14px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper-2); color: var(--blue); font: 600 14px/1 var(--sans); cursor: pointer; }
+.docViewer__btn:hover { background: var(--blue); color: var(--cream); }
+.docViewer__body { position: relative; flex: 1; min-height: 0; background: rgb(28, 32, 35); }
+/* Drive draws its "open in new window" button 12–52 px from the top; the frame starts 64 px higher so it sits under our header */
+.docViewer__body { overflow: hidden; }
+.docViewer__frame { position: absolute; left: 0; right: 0; top: -64px; width: 100%; height: calc(100% + 64px); border: 0; }
+.docViewer__note { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: #e8e6df; font-size: 15px; }
+.docViewer__video { width: 100%; height: 100%; background: #000; object-fit: contain; }
+.docViewer__list { list-style: none; margin: 0; padding: clamp(16px, 3vw, 40px); height: 100%; overflow: auto; background: var(--paper); display: grid; align-content: start; gap: 10px; }
+.docViewer__item { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-2); color: var(--blue); font: 500 17px/1.3 var(--sans); text-align: left; cursor: pointer; }
+.docViewer__item:hover { background: var(--blue); color: var(--cream); }
+@media (max-width: 640px) { .docViewer { padding: 0; } .docViewer__panel { height: 100dvh; border-radius: 0; } }
