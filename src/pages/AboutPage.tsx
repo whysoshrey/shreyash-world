@@ -52,11 +52,12 @@ const PIVOTS = [
 ];
 
 /* ---------- the work: reverse chronological, with what was actually done ---------- */
-type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string };
+type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string; logo?: string };
 const ROLES: Role[] = [
   {
     when: "Sep 2025 – Sep 2026",
     org: "Handshake AI",
+    logo: "handshake",
     role: "Research Fellow, Fashion & Retail",
     anchor: "ai-evaluation",
     kind: "AI evaluation",
@@ -70,6 +71,7 @@ const ROLES: Role[] = [
   {
     when: "Oct 2025 – Jan 2026",
     org: "Bloomingdale's, 59th Street",
+    logo: "bloomingdales",
     role: "Seasonal Sales Associate, Men's Designer & Sportswear",
     place: "New York",
     lines: [
@@ -81,6 +83,7 @@ const ROLES: Role[] = [
   {
     when: "Feb – May 2025",
     org: "A Space, In Between",
+    logo: "asib",
     role: "Fashion Management Intern",
     place: "Tokyo / remote",
     lines: [
@@ -91,6 +94,7 @@ const ROLES: Role[] = [
   {
     when: "Jan – Jul 2024",
     org: "Shahi Exports",
+    logo: "shahi",
     role: "Industry 4.0 Research Fellow",
     place: "NIFT Delhi, Shahi Chair",
     lines: [
@@ -102,6 +106,7 @@ const ROLES: Role[] = [
   {
     when: "Jun – Jul 2023",
     org: "INZEX Textiles",
+    logo: "inzex",
     role: "IE / Data & IoT Intern",
     place: "Sewing floor and Myntra fulfilment",
     lines: [
@@ -116,6 +121,7 @@ const ROLES: Role[] = [
   {
     when: "Jun 2022",
     org: "Welspun India",
+    logo: "welspun",
     role: "Manufacturing Intern",
     place: "Terry towel unit, Vapi",
     lines: [
@@ -257,7 +263,19 @@ export function AboutPage() {
           {ROLES.map((r, i) => (
             <Reveal as="li" key={r.org} delay={Math.min(i, 3) * 0.04} className="role">
               {r.anchor ? <span id={r.anchor} className="anchorTarget" aria-hidden="true" /> : null}
-              <p className="role__when">{r.when}</p>
+              <div className="role__side">
+                <p className="role__when">{r.when}</p>
+                {r.logo ? (
+                  <img
+                    className={`role__logo role__logo--${r.logo}`}
+                    src={`${BASE}assets/web/logos/logo-${r.logo}.png`}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
+              </div>
               <div className="role__main">
                 {r.kind ? <p className="role__kind">{r.kind}</p> : null}
                 <h3 className="role__org">{r.org}</h3>
