@@ -32,6 +32,8 @@ type DeskCard = {
   fit?: "cover" | "contain";
   pos?: string;
   item?: WorkItem;
+  /** true when another card already links to the same place (kept out of the tab order) */
+  dup?: boolean;
 };
 
 function buildCards(work: WorkItem[]): DeskCard[] {
@@ -85,7 +87,16 @@ function buildCards(work: WorkItem[]): DeskCard[] {
   ];
   // Loosen the rows: compress vertically and jitter each card so the prints overlap like a real table.
   const JITTER = [0, 4, -3, 5, -2, 3, -4, 2, -5, 4, -1, 5, -3, 2, 3, -4, 1, -2, 5, -3, 2, -5, 4, -1, 3, -2, 1, 4];
-  return (cards.filter(Boolean) as DeskCard[]).map((c, i) => ({
+  // KB-01: one keyboard stop per destination. Project plates are canonical; a picture that links to a route
+  // already reachable from another card stays clickable but leaves the tab order.
+  const live = cards.filter(Boolean) as DeskCard[];
+  const plates = new Set(live.filter((c) => c.item).map((c) => c.to));
+  const seen = new Set<string>();
+  return live.map((c, i) => {
+    const dup = !c.item && (plates.has(c.to) || seen.has(c.to));
+    if (!c.item) seen.add(c.to);
+    return { ...c, dup, i };
+  }).map(({ i, ...c }) => ({
     ...c,
     y: Math.max(0, c.y * 0.74 + JITTER[i % JITTER.length]),
     x: c.x + (i % 3 === 0 ? 0.8 : i % 3 === 1 ? -0.6 : 0),
@@ -124,6 +135,8 @@ function DeskItem({ c, i, progress, active, setActive }: { c: DeskCard; i: numbe
         onFocus={() => setActive(c.key)}
         onBlur={() => setActive(null)}
         aria-label={`${c.title} — ${c.kicker}`}
+        tabIndex={c.dup ? -1 : undefined}
+        aria-hidden={c.dup ? true : undefined}
       >
         <span className="deskCard__print">
           <CardFace c={c} />

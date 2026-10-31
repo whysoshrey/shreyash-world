@@ -31,6 +31,14 @@ const EVIDENCE = [
   { value: "30", unit: " s", text: "to sell out the early-bird release, with 150+ attendees", where: "Genesis 2.2", id: "brand-1" },
 ];
 
+/** Role paths. Every proof line repeats a figure or fact already published elsewhere on the site. */
+const PATHS: { label: string; proof: string; to: string; d: string }[] = [
+  { label: "Operations & Industry 4.0", proof: "22% less material movement in a factory pilot · 300 kg/day of hard waste removed", to: "/work?d=ops", d: "ops" },
+  { label: "Merchandising & analytics", proof: "Sales and inventory dashboards for three Myntra brands · clienteling at Bloomingdale's", to: "/work?d=merch", d: "merch" },
+  { label: "AI evaluation", proof: "Fashion-retail model evaluation across 35+ taxonomies · review consistency raised to 96%", to: "/about#ai-evaluation", d: "ai" },
+  { label: "Brand & campaigns", proof: "Early-bird sellout in 30 seconds · Off-White and Cartier campaign concepts", to: "/work?d=brand", d: "brand" },
+];
+
 /** The three disciplines, presented as the three swatches of the palette. */
 const SWATCH: Record<Exclude<DoorKey, "cred">, { name: string; code: string }> = {
   ops: { name: "Blue", code: "P 105-8 C" },
@@ -87,7 +95,46 @@ function Home({ content }: { content: Content }) {
           </>
         }
         foot={DISCIPLINES.join(" · ")}
+        status={
+          site.status ? (
+            <>
+              {/* RO-01: role sought, location and availability on the first screen */}
+              <p className="lead__roles">
+                <span className="lead__statusLabel">Seeking</span> {site.status.roles}
+              </p>
+              <p className="lead__where">
+                {site.status.location} · {site.status.open}
+                {site.email ? (
+                  <>
+                    {" · "}
+                    <a href={`mailto:${site.email}`} className="lead__email">
+                      {site.email}
+                    </a>
+                  </>
+                ) : null}
+              </p>
+            </>
+          ) : null
+        }
       />
+
+      {/* ——— NV-01 / AI-01: paths by the role a reviewer is hiring for ——— */}
+      <nav className="paths" aria-labelledby="paths-title">
+        <h2 id="paths-title" className="paths__title">
+          Hiring for…
+        </h2>
+        <ul className="paths__list">
+          {PATHS.map((p) => (
+            <li key={p.label}>
+              <Link to={p.to} className="path" data-d={p.d}>
+                <span className="path__label">{p.label}</span>
+                <span className="path__proof">{p.proof}</span>
+                <Arrow dir="e" className="path__arrow" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* ——— The desk: every project as a print ——— */}
       <div className="cover">
@@ -214,7 +261,7 @@ function Home({ content }: { content: Content }) {
                     </span>
                     <span className="swatch__thesis">{door.thesis}</span>
                     <span className="swatch__count">
-                      {content.exhibits[door.key].length} projects <Arrow dir="e" />
+                      {work.filter((w) => w.door.key === door.key || w.exhibit.also?.includes(door.key)).length} projects <Arrow dir="e" />
                     </span>
                   </span>
                 </Link>

@@ -19,11 +19,13 @@ export function WorkPage() {
   if (!content) return <PageShell title="Work — Shreyash Ojha">{null}</PageShell>;
 
   const work = getWork(content);
-  const shown = filter === "all" ? work : work.filter((w) => w.door.key === filter);
+  // NV-01: a project can also be listed under a second discipline (e.g. the INZEX dashboards under merchandising)
+  const inDoor = (w: (typeof work)[number], k: DoorKey) => w.door.key === k || Boolean(w.exhibit.also?.includes(k));
+  const shown = filter === "all" ? work : work.filter((w) => inDoor(w, filter));
   const activeDoor = filter === "all" ? null : content.doors.find((d) => d.key === filter);
   const tabs: { key: DoorKey | "all"; label: string; count: number }[] = [
     { key: "all", label: "All", count: work.length },
-    ...WORK_DOORS.map((k) => ({ key: k, label: content.doors.find((d) => d.key === k)?.title ?? k, count: content.exhibits[k].length })),
+    ...WORK_DOORS.map((k) => ({ key: k, label: content.doors.find((d) => d.key === k)?.title ?? k, count: work.filter((w) => inDoor(w, k)).length })),
   ];
 
   return (

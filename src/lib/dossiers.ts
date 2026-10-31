@@ -16,6 +16,8 @@ export type Shot = { src: string; caption: string; ratio: string };
 export type Source = { label: string; url: string };
 
 export type Dossier = {
+  /** SM-01: how far the evidence goes, in plain words (measured, reported, modelled, coursework, concept) */
+  status: string;
   glance: { role: string; when: string; where: string; with?: string; tools: string };
   situation: { lede: string; facts: Fact[] };
   steps: Step[];
@@ -34,6 +36,7 @@ const drive = (id: string) => `https://drive.google.com/file/d/${id}/view`;
 export const DOSSIERS: Record<string, Dossier> = {
   /* ------------------------------------------------------------------ */
   "ops-1": {
+    status: "Factory pilot · results measured by the floor team",
     glance: {
       role: "Technical lead on a two-person dissertation: all wiring, IoT design, RFID routing logic and technical deployment",
       when: "January – July 2024",
@@ -106,6 +109,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "ops-2": {
+    status: "Internship build · output gain reported by the floor team",
     glance: {
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
       when: "June – July 2022 (internship); written up in May 2024",
@@ -162,6 +166,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "ops-3": {
+    status: "Internship analysis · removal measured by the floor team",
     glance: {
       role: "Manufacturing intern: plant-wide waste analysis and the proposal to remove mock selvage",
       when: "June 2022",
@@ -228,6 +233,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "inzex-dashboards": {
+    status: "Internship build · no business outcome claimed",
     glance: {
       role: "IE / data intern: built the sales and inventory dashboards",
       when: "June – July 2022",
@@ -263,6 +269,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "merch-1": {
+    status: "Academic capstone · prototype; conversion figure modelled",
     glance: {
       role: "Research, business model, product requirements and prototype",
       when: "2024 – 2025",
@@ -295,6 +302,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "merch-2": {
+    status: "Seasonal role · sales figures self-reported",
     glance: {
       role: "Seasonal sales associate, Men's Designer & Sportswear",
       when: "October 2025 – January 2026",
@@ -325,6 +333,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "brand-1": {
+    status: "Student-run event · figures as reported",
     glance: {
       role: "Head of Marketing and Event Operations; produced the reel soundtrack and designed the event website",
       when: "B.F.Tech second year (the artwork is dated 2022)",
@@ -361,6 +370,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "brand-3": {
+    status: "Coursework · scores derived from a qualitative review",
     glance: {
       role: "Sole analyst",
       when: "NIFT Delhi, Master of Fashion Management interdisciplinary coursework",
@@ -409,6 +419,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "offwhite-human": {
+    status: "Coursework · speculative brief; targets, not results",
     glance: {
       role: "Concept, social strategy and media plan (final project)",
       when: "Parsons MPS, Communication & Social Media",

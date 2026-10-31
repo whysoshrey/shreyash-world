@@ -58,7 +58,7 @@ export function SiteHeader(props: { name: string; positioning: string; links: Si
       </a>
       <header className={`siteHeader${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}${location.pathname === "/" && !pastHero ? " is-quiet" : ""}`}>
         <div className="siteHeader__start">
-        <Link to="/" className="siteHeader__brand" aria-label={`${name} — home`}>
+        <Link to="/" className="siteHeader__brand" aria-label={`S·O ${name}, home`}>
           <span className="siteHeader__mono" aria-hidden="true">
             S<i>·</i>O
           </span>

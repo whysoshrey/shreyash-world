@@ -17,7 +17,13 @@
         "label": "GitHub",
         "href": "https://github.com/whysoshrey"
       }
-    ]
+    ],
+    "email": "shreyashojha93@gmail.com",
+    "status": {
+      "location": "Based in India",
+      "open": "Open to roles in India, Europe, Japan and remote",
+      "roles": "Fashion operations · Merchandising & analytics · AI evaluation"
+    }
   },
   "doors": [
     {
@@ -137,7 +143,7 @@
           "Designed and deployed a centralized dashboarding workflow that consolidated fragmented operational and marketing data into a structured reporting system, using Excel-based data cleaning, KPI mapping, and visual summaries to make performance tracking faster, clearer, and more decision-ready."
         ],
         "impact": [
-          "Reporting and analytics outcomes are documented in the linked folder."
+          "Sales and inventory joined into one self-refreshing view; no business outcome is claimed on its own."
         ],
         "skills": "Analytics, reporting, backend operations.",
         "artifacts": [
@@ -149,6 +155,9 @@
             "label": "Presentation",
             "url": "https://drive.google.com/file/d/15TQBIFJWAZmWEVpdmxsUZ_AUCwMg6Su5/view?usp=sharing"
           }
+        ],
+        "also": [
+          "merch"
         ]
       }
     ],
@@ -177,9 +186,9 @@
       },
       {
         "id": "merch-2",
-        "title": "Retail Clienteling - Bloomingdales, 59th Street",
+        "title": "Retail Clienteling - Bloomingdale's, 59th Street",
         "context": "Bloomingdale’s 59th Street + event-floor retail execution",
-        "proof": "Proof-led clienteling, fit resolution, and trust-forward service under live floor conditions.",
+        "proof": "6–7 repeat clients and $7K–8K peak-day sales in one season, as reported.",
         "problem": "customer needs weren’t systematically captured.",
         "approach": [
           "logged VOC patterns by fit/color/occasion.",
@@ -187,7 +196,8 @@
           "aligned with floor priorities."
         ],
         "impact": [
-          "improved clienteling consistency."
+          "6–7 repeat clients built over the season, as reported.",
+          "$7K–8K peak-day sales across 12+ designer brands, as reported."
         ],
         "skills": "Clienteling, retail ops, structured notes.",
         "artifacts": [
@@ -224,7 +234,7 @@
       },
       {
         "id": "brand-3",
-        "title": "E-Com UX Benchmark of two major Indian companies (12 Parameters)",
+        "title": "E-Com UX Benchmark: Myntra vs. Urbanic (10 UX Laws)",
         "context": "NIFT — Research",
         "proof": "Ten UX laws, two platforms, one scored comparison.",
         "problem": "define what “premium” UX does differently.",
@@ -234,7 +244,7 @@
           "summarized patterns."
         ],
         "impact": [
-          "actionable UX design principles."
+          "A scored comparison across ten UX laws; scores derived from qualitative review."
         ],
         "skills": "UX analysis, research, writing.",
         "artifacts": [
@@ -256,7 +266,7 @@
           "See linked folder for campaign concept artifacts."
         ],
         "impact": [
-          "Concept outcomes and references are documented in the linked folder."
+          "A campaign and media plan with targets (not results), cited in the instructor's recommendation letter."
         ],
         "skills": "Brand strategy, campaign design.",
         "artifacts": [
@@ -274,7 +284,7 @@
         "id": "cartier-gtm-redirection",
         "title": "Cartier GTM Redirection",
         "context": "Brand & Product Experiences",
-        "proof": "GTM redirection concept and execution direction.",
+        "proof": "A speculative go-to-market concept for Cartier, told through two worlds: the Rogue campaign and a Cartier × Maybach mobile gallery.",
         "problem": "Needed a clearer go-to-market direction aligned to brand positioning and campaign outcomes.",
         "approach": [
           "Reframed GTM narrative and channel priorities.",
@@ -282,8 +292,8 @@
           "Structured execution flow for launch readiness."
         ],
         "impact": [
-          "Clearer strategic direction for GTM execution.",
-          "Improved decision readiness across campaign stakeholders."
+          "Delivered a campaign platform across editorial, out-of-home, digital and experiential touchpoints (Cartier Rogue).",
+          "Delivered a mobile-gallery activation concept with a film and an interactive 3D vehicle model (Cartier × Maybach)."
         ],
         "skills": "GTM strategy, brand direction, campaign planning.",
         "artifacts": [

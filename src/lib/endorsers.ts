@@ -34,7 +34,6 @@ export const ENDORSERS: Record<string, Endorser> = {
     ],
     quote: "Exceptional academic curiosity and solution-oriented thought process.",
     sources: [
-      { label: "NIFT Delhi continuing-education programme list naming her as coordinator", url: "https://nift.ac.in/delhi/sites/delhi/files/2022-07/List%20of%20Diploma%20Courses%20(1).pdf" },
       { label: "Research profile, NIFT New Delhi", url: "https://www.researchgate.net/profile/Pritika-Bawa" },
     ],
   },
@@ -60,7 +59,8 @@ export const ENDORSERS: Record<string, Endorser> = {
     sources: [
       { label: "Google Scholar profile", url: "https://scholar.google.com/citations?user=1gshpOgAAAAJ" },
       { label: "i-SMART wins H&M Foundation innovation challenge (Online Clothing Study)", url: "https://onlineclothingstudy.com/i-smart-by-nift-won-h-innovation-award/" },
-      { label: "NIFT faculty and student research team page", url: "https://nift.ac.in/node/1098" },
+      { label: "NIFT patents list naming him as inventor, Fashion Technology, New Delhi", url: "https://www.nift.ac.in/patents-ipr" },
+      { label: "NIFT: i-SMART by Dr. Panghal and Dr. Jana wins the H&M Foundation STITCH for RMG award", url: "https://nift.ac.in/index.php/i-smart-nift-won-hm-global-innovation-award-stitch-rmg" },
     ],
   },
   "cred-10": {

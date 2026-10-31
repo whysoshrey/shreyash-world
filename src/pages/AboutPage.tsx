@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { PageShell } from "../components/site/PageShell";
 import { Arrow, Lines, Reveal } from "../components/site/primitives";
 import { useContentState } from "../lib/content";
@@ -51,12 +52,14 @@ const PIVOTS = [
 ];
 
 /* ---------- the work: reverse chronological, with what was actually done ---------- */
-type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[] };
+type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string };
 const ROLES: Role[] = [
   {
     when: "Sep 2025 – present",
     org: "Handshake AI",
     role: "Research Fellow, Fashion & Retail",
+    anchor: "ai-evaluation",
+    kind: "AI evaluation",
     place: "Remote",
     lines: [
       "Write fashion-retail prompts and evaluate and revise frontier-model output across 35+ taxonomies: garment attributes, product-page copy, size and fit, claims, merchandising logic.",
@@ -137,6 +140,14 @@ const TOOLKIT: [string, string[]][] = [
 export function AboutPage() {
   const { content } = useContentState();
   const still = Boolean(useReducedMotion());
+  const location = useLocation();
+  const hashId = location.hash.replace("#", "");
+  // AI-01: deep links such as /about#ai-evaluation land on the entry once the page has rendered
+  useEffect(() => {
+    if (!hashId || !content) return;
+    const t = window.setTimeout(() => document.getElementById(hashId)?.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }), 500);
+    return () => window.clearTimeout(t);
+  }, [hashId, content, still]);
   if (!content) return <PageShell title="About — Shreyash Ojha">{null}</PageShell>;
 
   return (
@@ -245,8 +256,10 @@ export function AboutPage() {
         <ol className="roles__list">
           {ROLES.map((r, i) => (
             <Reveal as="li" key={r.org} delay={Math.min(i, 3) * 0.04} className="role">
+              {r.anchor ? <span id={r.anchor} className="anchorTarget" aria-hidden="true" /> : null}
               <p className="role__when">{r.when}</p>
               <div className="role__main">
+                {r.kind ? <p className="role__kind">{r.kind}</p> : null}
                 <h3 className="role__org">{r.org}</h3>
                 <p className="role__role">
                   {r.role} · {r.place}

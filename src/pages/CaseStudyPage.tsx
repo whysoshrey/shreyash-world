@@ -109,8 +109,8 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
   if (!dossier && !isRetail && exhibit.impact.some((a) => a.trim()))
     sections.push({
       id: "impact",
-      label: "Impact",
-      title: "Impact",
+      label: isCartier ? "Delivered" : "Impact",
+      title: isCartier ? "What it delivered" : "Impact",
       body: (
         <ul className="impactTiles">
           {exhibit.impact.map((a, i) => (
@@ -147,6 +147,11 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
           <Lines animateNow delay={0.3} lines={[exhibit.title]} />
         </h1>
         <p className="case__lede">{exhibit.context}</p>
+        <InBrief
+          role={dossier ? shortRole(dossier.glance.role) : undefined}
+          when={dossier?.glance.when}
+          status={dossier ? dossier.status : isCartier ? "Speculative concept · not client work" : undefined}
+        />
       </header>
 
       <Statement item={item} />
@@ -172,9 +177,9 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
         <div>
           <dt className="label">Artifacts</dt>
           <dd className="metaStrip__artifacts">
-            {artifacts.length || dossier?.sources.length ? (
-              <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : dossier ? "sources" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
-                {dossier ? `${dossier.sources.length} ${dossier.sources.length === 1 ? "document" : "documents"}` : `${artifacts.length} ${isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"}`} ↓
+            {artifacts.length ? (
+              <button type="button" className="btn btn--link" onClick={() => document.getElementById(isCartier ? "worlds" : "artifacts")?.scrollIntoView({ behavior: "smooth" })}>
+                {`${artifacts.length} ${isCartier ? "case worlds" : artifacts.length === 1 ? "artifact" : "artifacts"}`} ↓
               </button>
             ) : (
               "—"
@@ -199,6 +204,8 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       ))}
 
       <ChapterPager />
+
+      <ContactBand />
 
       {/* ——— More work ——— */}
       <section className="case__related" aria-label="More work">
@@ -549,5 +556,52 @@ export function NotFoundBody() {
         </Button>
       </section>
     </PageShell>
+  );
+}
+
+/* ---------- SM-01: the recruiter summary under the title ---------- */
+function shortRole(role: string) {
+  return role.split(/[:;]/)[0].trim();
+}
+
+function InBrief(props: { role?: string; when?: string; status?: string }) {
+  const rows = ([
+    ["My role", props.role],
+    ["When", props.when],
+    ["Evidence", props.status],
+  ] as [string, string | undefined][]).filter(([, v]) => v);
+  if (!rows.length) return null;
+  return (
+    <dl className="inBrief" aria-label="In brief">
+      {rows.map(([k, v]) => (
+        <div key={k} className="inBrief__row">
+          <dt>{k}</dt>
+          <dd>{v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/* ---------- CV-02: a contact prompt once the evidence has been read ---------- */
+function ContactBand() {
+  const { content } = useContentState();
+  const site = content?.site;
+  if (!site?.email) return null;
+  const cv = site.links.find((l) => l.label === "CV");
+  return (
+    <aside className="contactBand" aria-label="Contact">
+      <p className="contactBand__lede">Hiring for {site.status ? site.status.roles.toLowerCase().replace(/ · /g, ", ") : "a related role"}?</p>
+      <p className="contactBand__links">
+        <a href={`mailto:${site.email}`} className="uLink">
+          {site.email}
+        </a>
+        {cv ? (
+          <a href={cv.href} target="_blank" rel="noreferrer" className="uLink">
+            Résumé <Arrow />
+          </a>
+        ) : null}
+      </p>
+    </aside>
   );
 }

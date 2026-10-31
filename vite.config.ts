@@ -9,6 +9,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // PF-01: keep Vite's preload helper (and rollup's commonjs helpers) out of the three.js chunks;
+          // otherwise the entry imports them from "drei" and every page modulepreloads three, r3f and drei.
+          if (id.indexOf("vite/preload-helper") !== -1 || id.indexOf("commonjsHelpers") !== -1) return "runtime";
           if (id.indexOf("node_modules") === -1) return;
 
           if (id.indexOf("@react-three/fiber") !== -1) {

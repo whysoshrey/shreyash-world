@@ -22,10 +22,10 @@ type Print = {
 };
 
 const PRINTS: Print[] = [
-  { key: "rogue", to: ROGUE_PATH, caption: "Cartier Rogue, key art", depth: 0.9, rotate: 4, img: "/assets/web/art-keyart-mask.webp", alt: "Cartier Rogue key art: a model in a jewelled mask holding a raw crystal" },
+  { key: "rogue", to: ROGUE_PATH, caption: "Cartier Rogue, campaign concept", depth: 0.9, rotate: 4, img: "/assets/web/art-keyart-mask.webp", alt: "Cartier Rogue key art: a model in a jewelled mask holding a raw crystal" },
   { key: "agv", to: "/work/ops-1", caption: "Autonomous WIP robot, Shahi Exports", depth: 0.55, rotate: -5, img: "/assets/web/agv-assembled.webp", alt: "Render of the autonomous WIP-movement robot" },
   { key: "waste", to: "/work/ops-3", caption: "Welspun India", depth: 0.75, rotate: -2.5, figure: "300 kg", note: "of hard waste eliminated every day" },
-  { key: "maybach", to: "/work/cartier-gtm-redirection/maybach", caption: "Cartier × Maybach, film still", depth: 0.4, rotate: 3, img: "/assets/web/art-film-maybach.webp", alt: "Film still of the Cartier × Maybach car at night" },
+  { key: "maybach", to: "/work/cartier-gtm-redirection/maybach", caption: "Cartier × Maybach concept, film still", depth: 0.4, rotate: 3, img: "/assets/web/art-film-maybach.webp", alt: "Film still of the Cartier × Maybach car at night" },
 ];
 
 function useLayer(depth: number, scroll: MotionValue<number>, px: MotionValue<number>, py: MotionValue<number>, still: boolean) {
@@ -36,7 +36,7 @@ function useLayer(depth: number, scroll: MotionValue<number>, px: MotionValue<nu
   return { x, y: ty };
 }
 
-export function Lead(props: { tag: string; name: ReactNode; value: string; actions: ReactNode; foot: string }) {
+export function Lead(props: { tag: string; name: ReactNode; value: string; actions: ReactNode; foot: string; status?: ReactNode }) {
   const ref = useRef<HTMLElement | null>(null);
   const still = Boolean(useReducedMotion());
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -74,6 +74,7 @@ export function Lead(props: { tag: string; name: ReactNode; value: string; actio
         <h1 id="hero-name" className="lead__name">{props.name}</h1>
         <p className="lead__value">{props.value}</p>
         <div className="lead__actions">{props.actions}</div>
+        {props.status ? <div className="lead__status">{props.status}</div> : null}
       </motion.div>
 
       <ul className="lead__prints" aria-label="From the work">

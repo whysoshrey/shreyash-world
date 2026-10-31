@@ -32,8 +32,8 @@ export function PageShell(props: {
         aria-hidden="true"
         variants={{
           initial: { scaleY: 1, transformOrigin: "50% 0%" },
-          enter: { scaleY: 0, transformOrigin: "50% 0%", transition: { duration: 0.55, ease: [0.77, 0, 0.175, 1], delay: 0.04 } },
-          exit: { scaleY: 1, transformOrigin: "50% 100%", transition: { duration: 0.32, ease: [0.77, 0, 0.175, 1] } },
+          enter: { scaleY: 0, transformOrigin: "50% 0%", transition: { duration: 0.26, ease: [0.77, 0, 0.175, 1] } },
+          exit: { scaleY: 1, transformOrigin: "50% 100%", transition: { duration: 0.12, ease: [0.77, 0, 0.175, 1] } },
         }}
       >
         <motion.span
@@ -72,8 +72,22 @@ export function SiteFooter(props: { tone?: "ink" | "paper" }) {
           <span className="siteFooter__dot">.</span>
         </h2>
         <p className="siteFooter__lede">{site.valueProp}</p>
+        {site.status ? (
+          <p className="siteFooter__status">
+            {site.status.location} · {site.status.open}
+          </p>
+        ) : null}
       </div>
       <ul className="siteFooter__links">
+        {/* CT-01: a direct email route */}
+        {site.email ? (
+          <li>
+            <a href={`mailto:${site.email}`} className="bigLink bigLink--email">
+              <span>{site.email}</span>
+              <Arrow />
+            </a>
+          </li>
+        ) : null}
         {site.links.map((l) => (
           <li key={l.label}>
             <a href={l.href} target="_blank" rel="noreferrer" className="bigLink">

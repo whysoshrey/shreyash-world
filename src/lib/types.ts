@@ -11,6 +11,10 @@ export type Site = {
   valueProp: string;
   cta: string;
   links: SiteLink[];
+  /** public contact address (taken from the candidate's CV) */
+  email?: string;
+  /** user-stated location, regions and the roles sought */
+  status?: { location: string; open: string; roles: string };
 };
 
 export type Door = {
@@ -38,6 +42,8 @@ export type Exhibit = {
   impact: string[];
   skills: string;
   artifacts: Artifact[];
+  /** other disciplines this project should also be listed under in filters */
+  also?: DoorKey[];
 };
 
 export type Content = {
