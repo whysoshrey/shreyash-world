@@ -110,12 +110,14 @@ const ROLES: Role[] = [
     role: "IE / Data & IoT Intern",
     place: "Sewing floor and Myntra fulfilment",
     lines: [
-      "Four projects: Myntra fulfilment analysis, sales and inventory dashboards, WIP visibility, and a ₹400 IoT needle-runtime tracker.",
-      "Tracking contributed to a 25% output gain reported by the floor team.",
+      "Four projects: an IoT needle-runtime tracker (₹400 a machine), a sewing-line layout redesign scored with a WIP movement point system, Myntra PPMP sales and inventory dashboards, and a study of NIFT's i-SMART operator skill rating.",
+      "Tracking contributed to a 25% output gain reported by the floor team; the redesigned layout lifted the material-flow index from 38% to 48% on paper.",
     ],
     links: [
       { to: "/work/ops-2", label: "Tracker case" },
+      { to: "/work/inzex-line-layout", label: "Line layout case" },
       { to: "/work/inzex-dashboards", label: "Dashboards case" },
+      { to: "/work/inzex-ismart", label: "Skill rating study" },
     ],
   },
   {

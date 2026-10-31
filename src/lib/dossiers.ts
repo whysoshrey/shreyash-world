@@ -115,6 +115,7 @@ export const DOSSIERS: Record<string, Dossier> = {
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
       when: "June – July 2023 (internship); written up in May 2024",
       where: "INZEX Textiles, sewing floor",
+      with: "Internship report co-authored with Kanishk Singh",
       tools: "NodeMCU ESP8266, HC-SR04 ultrasonic sensor, Arduino IDE, Google Apps Script, Google Sheets",
     },
     situation: {
@@ -239,6 +240,7 @@ export const DOSSIERS: Record<string, Dossier> = {
       role: "IE / data intern: built the sales and inventory dashboards",
       when: "June – July 2023",
       where: "INZEX Textiles, Myntra PPMP fulfilment",
+      with: "Internship report co-authored with Kanishk Singh",
       tools: "Excel, Google Sheets connector, Google Data Studio",
     },
     situation: {
@@ -266,6 +268,110 @@ export const DOSSIERS: Record<string, Dossier> = {
       "The original report is behind a sign-in, so headline sales figures are not shown here.",
     ],
     sources: [{ label: "Dashboard presentation (18 slides)", url: drive("15TQBIFJWAZmWEVpdmxsUZ_AUCwMg6Su5") }],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "inzex-line-layout": {
+    status: "Internship proposal · the flow index is calculated on the redesigned layout; no measurement after a change is reported",
+    glance: {
+      role: "Line analysis and layout redesign (internship project)",
+      when: "June – July 2023",
+      where: "INZEX Textiles, denim sewing line (5-pocket jeans)",
+      with: "Internship report co-authored with Kanishk Singh",
+      tools: "Precedence diagram, heuristic line balancing, WIP movement point scoring",
+    },
+    situation: {
+      lede:
+        "Operation times on the denim line varied widely: some operators sat idle while others queued work, and bundles travelled back and forth across several tables. The floor could hold at most 49 workstations, so the fix had to come from the arrangement, not from more machines.",
+      facts: [
+        { value: "21", label: "operations, from bundle to button-hole" },
+        { value: "49", label: "workstations the floor can hold" },
+        { value: "20", label: "WIP moves mapped between operations" },
+        { value: "1 of 20", label: "moves went to an adjacent machine" },
+      ],
+    },
+    steps: [
+      {
+        title: "Mapped the current flow",
+        body: "Drew the precedence of all 21 operations and, from production data, plotted every move of work-in-progress between machines on the floor plan: 12 straight moves across tables, 7 diagonal and 1 adjacent.",
+      },
+      {
+        title: "Scored every move",
+        body: "Gave each move a point score by distance and direction: 4 points to the adjacent machine, 2 for each table crossed in front, and diagonal moves scored as the hypotenuse of the two. The existing layout came to 104.5 points.",
+      },
+      {
+        title: "Turned it into an index",
+        body: "Material-flow index = (2 × machines) ÷ total points. With 20 machines, the existing layout scored 40 ÷ 104.5 = 38.2%.",
+      },
+      {
+        title: "Re-sequenced the line",
+        body: "Rearranged operations so that work passes to the nearest machine in sequence, then scored the proposed layout with the same rules: 83 points.",
+      },
+    ],
+    results: [
+      { value: "104.5 → 83", label: "WIP movement points", how: "Same scoring rules, existing vs. proposed layout" },
+      { value: "38.2% → 48.2%", label: "material-flow index", how: "(2 × 20 machines) ÷ points: about 10 points better on the drawing" },
+    ],
+    limits: [
+      "Both scores are calculated from layout drawings; the report does not include a measurement after the line was rearranged.",
+      "The point weights (4 for an adjacent move, 2 per table crossed) are the project's own convention, not an industry standard.",
+    ],
+    shots: [
+      s("inzex-layout-before", "Before: 20 moves, most jumping across tables (104.5 points)", "1600 / 800"),
+      s("inzex-layout-after", "After: the re-sequenced layout (83 points)", "1600 / 800"),
+    ],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "inzex-ismart": {
+    status: "Internship study · no implementation results reported",
+    glance: {
+      role: "Research and recommendations (internship project)",
+      when: "June – July 2023",
+      where: "INZEX Textiles, sewing floor; a study of NIFT Delhi's i-SMART system",
+      with: "Internship report co-authored with Kanishk Singh. i-SMART was developed at NIFT Delhi by Dr. Deepak Panghal and Dr. Prabir Jana",
+      tools: "Operator rating methods, ABC skill matrix, i-SMART (rotary-encoder sensing, template stitching, cloud scoring)",
+    },
+    situation: {
+      lede:
+        "Operator rating is one of the most contested parts of industrial engineering. Most floors judge sewing skill by output quality and completion time, which leaves out speed, handling time and needle running time, and depends on who is watching.",
+      facts: [
+        { value: "8", label: "traditional rating methods compared" },
+        { value: "3", label: "skill bands in the ABC matrix" },
+        { value: "5", label: "fabric templates stitched per i-SMART test" },
+        { value: "2", label: "scores per operator: process and quality" },
+      ],
+    },
+    steps: [
+      {
+        title: "Compared rating methods",
+        body: "Laid out eight traditional rating systems, from speed rating to Portnoff, with what each considers, its advantages and where it falls short.",
+      },
+      {
+        title: "Set out the skill bands",
+        body: "Described the ABC skill matrix: multi-skilled A operators, single-operation B operators who can move up, and C operators who work one machine and need continuing training.",
+      },
+      {
+        title: "Studied how i-SMART works",
+        body: "A magnetic rotary encoder on the machine's main shaft records speed while the operator stitches five fabric templates; the scanned templates and process data produce a process rating and a quality rating.",
+      },
+      {
+        title: "Recommended improvements",
+        body: "Wider data sources, refined scoring models, measures of soft skills, structured user feedback, and links to HR performance and learning systems.",
+      },
+    ],
+    results: [
+      { value: "5", label: "recommendations for i-SMART", how: "Proposed in the report; not tested" },
+    ],
+    limits: [
+      "A desk study of an existing NIFT Delhi system: the report does not record i-SMART being installed or tested at INZEX.",
+    ],
+    shots: [
+      s("inzex-ismart-methods", "From the report: eight traditional rating methods compared", "797 / 1009"),
+      s("inzex-ismart-system", "From the report: i-SMART hardware and how it works", "756 / 953"),
+    ],
+    sources: [],
   },
 
   /* ------------------------------------------------------------------ */

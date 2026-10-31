@@ -159,6 +159,40 @@
         "also": [
           "merch"
         ]
+      },
+      {
+        "id": "inzex-line-layout",
+        "title": "Sewing-Line Layout: WIP Point System",
+        "context": "Inzex Textiles — Industrial Engineering",
+        "proof": "Re-sequenced a 21-operation denim line, lifting its material-flow index from 38% to 48% on the redesigned layout.",
+        "problem": "Bundles on the denim line travelled back and forth across several tables, operation times were uneven, and some operators sat idle while others queued work.",
+        "approach": [
+          "mapped every WIP move on the floor plan.",
+          "scored each move by distance and direction.",
+          "re-sequenced machines and re-scored the layout."
+        ],
+        "impact": [
+          "Material-flow index 38.2% → 48.2% on the proposed layout (calculated, not measured after a change)."
+        ],
+        "skills": "Line balancing, precedence diagrams, layout planning.",
+        "artifacts": []
+      },
+      {
+        "id": "inzex-ismart",
+        "title": "Operator Skill Rating: i-SMART Study",
+        "context": "Inzex Textiles — Industrial Engineering",
+        "proof": "Compared eight ways of rating sewing operators and studied how NIFT's i-SMART system scores skill objectively.",
+        "problem": "Sewing skill was judged mainly on output quality and completion time, leaving out speed, handling time and needle running time.",
+        "approach": [
+          "compared traditional rating methods.",
+          "described the ABC skill matrix.",
+          "studied i-SMART and recommended improvements."
+        ],
+        "impact": [
+          "A desk study with five recommendations; no implementation results reported."
+        ],
+        "skills": "Work measurement, operator rating, industrial engineering research.",
+        "artifacts": []
       }
     ],
     "merch": [
