@@ -39,8 +39,8 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
     image: "/assets/web/agv-assembled.webp",
     imageAlt: "3D reconstruction of the autonomous WIP movement robot",
     gallery: [
-      g("agv-assembled", "Assembled — interactive 3D reconstruction", "740 / 540"),
-      g("agv-exploded", "Exploded view — chassis, electronics bay, payload plate", "750 / 720"),
+      g("agv-assembled", "Assembled — rendered from the 3D model", "740 / 540"),
+      g("agv-exploded", "Exploded view — drive, plates, electronics, deck and casing", "750 / 720"),
     ],
   },
   "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },

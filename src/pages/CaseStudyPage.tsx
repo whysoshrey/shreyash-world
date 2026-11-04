@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ChapterPager } from "../components/site/Wayfinder";
 import { Footage, Glance, Limits, Process, Results, Scores, Situation, Sources } from "../components/system/Dossier";
@@ -16,6 +16,8 @@ import { useContentState } from "../lib/content";
 import { easeOutExpo } from "../lib/motion";
 import { ACTION_ROUTES, asset, DOOR_SHORT, getWork, isExternal, liveArtifacts, pad, sentence, type WorkItem } from "../lib/projects";
 import type { Artifact } from "../lib/types";
+
+const AgvModel = lazy(() => import("../components/agv/AgvModel"));
 
 export function CaseStudyPage() {
   const { id } = useParams();
@@ -58,6 +60,41 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
     sections.push({ id: "glance", label: "At a glance", title: "At a glance", body: <Glance d={dossier} /> });
     sections.push({ id: "situation", label: "Situation", title: "The situation", body: <Situation d={dossier} />, wide: true });
     sections.push({ id: "process", label: "Process", title: "What I did", body: <Process d={dossier} /> });
+    if (dossier.model3d)
+      sections.push({
+        id: "model",
+        label: "3D model",
+        title: "The robot, in 3D",
+        wide: true,
+        body: (
+          <Suspense fallback={<div className="agv__stage" aria-hidden="true" />}>
+            <AgvModel />
+          </Suspense>
+        ),
+      });
+    if (dossier.specs?.rows.length)
+      sections.push({
+        id: "specs",
+        label: "Specification",
+        title: "Specification",
+        wide: true,
+        body: (
+          <div>
+            <dl className="agvSpecs">
+              {dossier.specs.rows.map((r) => (
+                <div key={r.label}>
+                  <dt>{r.label}</dt>
+                  <dd>
+                    {r.value}
+                    {r.note ? <small>{r.note}</small> : null}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {dossier.specs.note ? <p className="agvSpecs__note">{dossier.specs.note}</p> : null}
+          </div>
+        ),
+      });
     if (dossier.video || shots.length)
       sections.push({
         id: "gallery",

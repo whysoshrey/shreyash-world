@@ -28,6 +28,10 @@ export type Dossier = {
   limits?: string[];
   video?: { src: string; poster: string; caption: string };
   shots?: Shot[];
+  /** interactive 3D model section (ACME robot only) */
+  model3d?: boolean;
+  /** design specification table, with how each number was arrived at */
+  specs?: { rows: { label: string; value: string; note?: string }[]; note?: string };
   sources: Source[];
 };
 
@@ -42,7 +46,7 @@ export const DOSSIERS: Record<string, Dossier> = {
       role: "Technical lead on a two-person dissertation: all wiring, IoT design, RFID routing logic and technical deployment",
       when: "January – July 2024",
       where: "Shahi Exports, Industry 4.0 Research Fellowship (Shahi Chair, NIFT Delhi)",
-      with: "Dissertation co-authored with a classmate; post-pilot measurement by the factory floor team",
+      with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal; post-pilot measurement by the factory floor team",
       tools: "Arduino Mega, ESP32 web interface, PN532 RFID reader, line sensor, ultrasonic sensor on a servo, Arduino C++, HTML/JS",
     },
     situation: {
@@ -64,12 +68,12 @@ export const DOSSIERS: Record<string, Dossier> = {
       {
         title: "Chose a navigation method a factory can maintain",
         body:
-          "Compared approaches and rejected magnetic guide tape. Settled on a painted line for path-keeping plus RFID tags at loading, unloading and junction points. A graph-based shortest-path planner was researched and then dropped as too complex for the floor.",
+          "Researched LiDAR/visual SLAM and magnetic guide tape, and rejected both: SLAM needs far more computing power and money than a fixed floor layout justifies, and tape is costly to lay and change. Settled on a painted line for path-keeping plus RFID tags at loading, unloading and junction points; at each tag a lookup table tells the robot to go straight, turn left, turn right or stop. A graph-based shortest-path planner (Dijkstra) was left for a later version.",
       },
       {
         title: "Built the robot",
         body:
-          "Four 12 V geared motors and a 20 kg payload deck. An Arduino Mega handles control, and an ESP32 hosts a web page from which one operator calls the robot to a station. An ultrasonic sensor sweeps on a servo for obstacles, with a kill switch and an LCD for status.",
+          "Sized the drive from first principles (friction and mass gave 2.5 Nm stall torque per motor) and the battery from the power budget. Four 12 V geared motors on omni wheels carry a 20 kg payload deck over laser-cut aluminium and steel plates. An Arduino Mega runs line following and routing, and an ESP32 hosts a web page from which one operator calls the robot to a station. An ultrasonic sensor sweeps on a servo for obstacles, with a kill switch and an LCD for status. Code was written in C++ with PlatformIO.",
       },
       {
         title: "Broke it, diagnosed it, fixed it",
@@ -99,13 +103,27 @@ export const DOSSIERS: Record<string, Dossier> = {
       s("acme-build", "Wiring and drive train, seen from above", "720 / 1280"),
       s("acme-bench", "Bench testing the control code against the chassis", "1600 / 900"),
       s("acme-drawings", "Fabrication drawings for the chassis", "1776 / 806"),
-      s("agv-exploded", "Exploded view: chassis, electronics bay, payload plate", "750 / 720"),
+      s("agv-exploded", "Exploded view from the 3D model: drive, plates, electronics, deck and casing", "750 / 720"),
     ],
     sources: [
       { label: "ACME dissertation, NIFT Delhi, May 2024 (99 pages)", url: drive("1cWLt55gFnziJ50tH_0GH9FJ-ZZaMy0_Q") },
       { label: "Presentation at Bharat Tex", url: drive("1QU_vI47lLPdXV8sfeGPbfxwZ-jTlaZ04") },
-      { label: "Interactive 3D reconstruction of the robot", url: "/projects/acme-agv-3d.html" },
     ],
+    model3d: true,
+    specs: {
+      rows: [
+        { label: "Payload", value: "20 kg", note: "Design requirement; a full crate is 40 kg" },
+        { label: "Robot mass", value: "≈ 5 kg", note: "Estimate used for the torque sums" },
+        { label: "Torque per motor", value: "2.5 Nm stall", note: "1.875 Nm rated; from μ = 0.7 / 0.5 and 5 cm wheels" },
+        { label: "Supply", value: "12 V", note: "One voltage for motors and battery" },
+        { label: "Power budget", value: "≈ 20 W", note: "4 × 12 V × 0.3 A = 14.4 W, plus a buffer" },
+        { label: "Battery", value: "5 Ah", note: "Sized for 2–3 hours on a charge" },
+        { label: "Speed with load", value: "≈ 0.2 m/s", note: "40 RPM; the 1 m/s design target was traded for stability" },
+        { label: "Build cost", value: "₹15,000", note: "Estimate, plus about ₹5,000 a year upkeep" },
+        { label: "Plates", value: "4 mm aluminium · 1 mm steel", note: "CNC laser-cut from AutoCAD drawings" },
+      ],
+      note: "Design figures and estimates from the dissertation (May 2024), not pilot measurements. The prototype’s 61 m average round trip takes about 305 s at 0.2 m/s; loading time and payback could not be measured on the prototype.",
+    },
   },
 
   /* ------------------------------------------------------------------ */
