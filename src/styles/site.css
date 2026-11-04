@@ -4133,3 +4133,34 @@ a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 
   .agv__btn--icon { width: 44px; }
   .agv__parts button { min-height: 44px; padding: 0 14px; }
 }
+
+/* ===================================================== Cartier Rogue — Oxblood / Apricot Glow / Electric Cyan */
+.page--campaign:has(.crPage) {
+  --paper: #4A0F14; --paper-2: #5a1a20; --paper-3: #6b252b;
+  --blue: #F4E2D2;            /* body text: warm ivory */
+  --cream: #4A0F14;           /* text on light blocks */
+  --red: #19D3FF;             /* accent / active */
+  --ink: #F4E2D2; --ink-2: rgba(244, 226, 210, 0.78); --ink-3: rgba(244, 226, 210, 0.58);
+  --rule: rgba(246, 178, 122, 0.22); --rule-strong: rgba(246, 178, 122, 0.5);
+  --accent: #19D3FF;
+  background: radial-gradient(1100px 620px at 85% 12%, rgba(25, 211, 255, 0.07), transparent 60%),
+              radial-gradient(900px 600px at 8% 40%, rgba(246, 178, 122, 0.06), transparent 60%), #4A0F14;
+  color: var(--blue);
+}
+.page--campaign:has(.crPage) .crPage h1 { color: #19D3FF; text-shadow: 0 0 48px rgba(25, 211, 255, 0.25); }
+.page--campaign:has(.crPage) .crPage :is(h2, h3) { color: #F6B27A; }
+.page--campaign:has(.crPage) :is(.crTagline, .crClosingLine, .crSubtitle) { color: #F6B27A; font-style: italic; }
+.page--campaign:has(.crPage) :is(.crChipRow, .crTagRow) span { background: rgba(246, 178, 122, 0.1); color: #F6B27A; border-color: rgba(246, 178, 122, 0.3); }
+.page--campaign:has(.crPage) .crBtn { background: transparent; color: #F4E2D2; box-shadow: inset 0 0 0 1px rgba(246, 178, 122, 0.45); }
+.page--campaign:has(.crPage) .crBtn--gold { background: #19D3FF; color: #4A0F14; box-shadow: none; font-weight: 600; }
+@media (hover: hover) {
+  .page--campaign:has(.crPage) .crBtn:hover { background: #F6B27A; color: #4A0F14; }
+}
+.page--campaign:has(.crPage) :is(.crNewHeroFrame, .crPhaseVisual) { box-shadow: 0 0 90px rgba(25, 211, 255, 0.12), 0 30px 60px -24px rgba(14, 2, 4, 0.7); }
+.page--campaign:has(.crPage) .crSupportCard.is-contain img { background: #5a1a20; }
+.page--campaign:has(.crPage) :is(.crFrameworkCard, .crPhaseCard, .crActivationCard, .crImpactColumns article) { background: rgba(246, 178, 122, 0.07); border-color: rgba(246, 178, 122, 0.2); }
+.page--campaign:has(.crPage) .crActivationCard.crVideo { background: #2c080c; }
+.page--campaign:has(.crPage) .crActivationCard.crVideo :is(h3, p) { color: #F4E2D2; }
+.page--campaign:has(.crPage) .crImpactOverlay { background: #2c080c; }
+.page--campaign:has(.crPage) .crImpactOverlay :is(h2, h3) { color: #19D3FF; }
+.page--campaign:has(.crPage) .crImpactOverlay p { color: #F4E2D2; }
