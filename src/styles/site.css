@@ -4134,33 +4134,83 @@ a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 
   .agv__parts button { min-height: 44px; padding: 0 14px; }
 }
 
-/* ===================================================== Cartier Rogue — Oxblood / Apricot Glow / Electric Cyan */
+/* ===================================================== Cartier Rogue — Cartier maison language in Oxblood / Apricot Glow / Electric Cyan
+   Borrowed from cartier.com: 0 radius, no shadows or glows, hairline rules for separation, tracked uppercase sans for
+   labels/nav/buttons, sentence-case editorial serif for reading text, generous whitespace, full-bleed imagery, and a
+   single "voltage" colour (here Electric Cyan) reserved for the headline and the one key action. */
 .page--campaign:has(.crPage) {
-  --paper: #4A0F14; --paper-2: #5a1a20; --paper-3: #6b252b;
-  --blue: #F4E2D2;            /* body text: warm ivory */
-  --cream: #4A0F14;           /* text on light blocks */
-  --red: #19D3FF;             /* accent / active */
-  --ink: #F4E2D2; --ink-2: rgba(244, 226, 210, 0.78); --ink-3: rgba(244, 226, 210, 0.58);
-  --rule: rgba(246, 178, 122, 0.22); --rule-strong: rgba(246, 178, 122, 0.5);
-  --accent: #19D3FF;
-  background: radial-gradient(1100px 620px at 85% 12%, rgba(25, 211, 255, 0.07), transparent 60%),
-              radial-gradient(900px 600px at 8% 40%, rgba(246, 178, 122, 0.06), transparent 60%), #4A0F14;
-  color: var(--blue);
+  --paper: #4A0F14; --paper-2: #3d0b10; --paper-3: #5a1a20;
+  --blue: #F4E2D2; --cream: #4A0F14; --red: #19D3FF;
+  --ink: #F4E2D2; --ink-2: rgba(244, 226, 210, 0.78); --ink-3: rgba(244, 226, 210, 0.56);
+  --rule: rgba(246, 178, 122, 0.24); --rule-strong: rgba(246, 178, 122, 0.55); --accent: #19D3FF;
+  --cr-apricot: #F6B27A; --cr-cyan: #19D3FF; --cr-ivory: #F4E2D2; --cr-deep: #33090d;
+  --cr-label: 500 12px/1.5 var(--sans);
+  background: #4A0F14; color: var(--cr-ivory);
 }
-.page--campaign:has(.crPage) .crPage h1 { color: #19D3FF; text-shadow: 0 0 48px rgba(25, 211, 255, 0.25); }
-.page--campaign:has(.crPage) .crPage :is(h2, h3) { color: #F6B27A; }
-.page--campaign:has(.crPage) :is(.crTagline, .crClosingLine, .crSubtitle) { color: #F6B27A; font-style: italic; }
-.page--campaign:has(.crPage) :is(.crChipRow, .crTagRow) span { background: rgba(246, 178, 122, 0.1); color: #F6B27A; border-color: rgba(246, 178, 122, 0.3); }
-.page--campaign:has(.crPage) .crBtn { background: transparent; color: #F4E2D2; box-shadow: inset 0 0 0 1px rgba(246, 178, 122, 0.45); }
-.page--campaign:has(.crPage) .crBtn--gold { background: #19D3FF; color: #4A0F14; box-shadow: none; font-weight: 600; }
+.page--campaign:has(.crPage) .crPage * { border-radius: 0 !important; box-shadow: none !important; text-shadow: none !important; }
+
+/* type: one cyan headline, apricot serif sub-heads, ivory reading text in serif */
+.page--campaign:has(.crPage) .crPage h1 { color: var(--cr-cyan); font-weight: 400; letter-spacing: -0.01em; }
+.page--campaign:has(.crPage) .crPage :is(h2, h3) { color: var(--cr-apricot); font-weight: 400; }
+.page--campaign:has(.crPage) .crPage h3 { font-size: clamp(22px, 1.8vw, 28px); }
+.page--campaign:has(.crPage) :is(.crTagline, .crClosingLine, .crSubtitle, .crSectionSub) { color: var(--cr-apricot); font-style: italic; }
+.page--campaign:has(.crPage) :is(.crLead, .crFrameworkCard p, .crPhaseCard p, .crActivationCard p, .crImpactColumns p) {
+  font-family: var(--serif); font-size: clamp(19px, 1.35vw, 22px); line-height: 1.45; color: var(--cr-ivory);
+}
+.page--campaign:has(.crPage) .crKicker {
+  display: block; font: var(--cr-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--cr-apricot); margin: 0 0 22px;
+}
+.page--campaign:has(.crPage) :is(.crCardLabel, .crPhaseTitle) {
+  font: var(--cr-label); letter-spacing: 0.2em; text-transform: uppercase; color: var(--cr-apricot);
+}
+
+/* sections: whitespace and a hairline, nothing else */
+.page--campaign:has(.crPage) .crSection { border-top: 1px solid var(--rule); padding-top: clamp(64px, 8vw, 128px); padding-bottom: clamp(64px, 8vw, 128px); background: none; }
+.page--campaign:has(.crPage) .crSection:first-of-type { border-top: 0; }
+
+/* chips → a quiet tracked list separated by hairlines */
+.page--campaign:has(.crPage) :is(.crChipRow, .crTagRow) { gap: 0; margin-top: 28px; }
+.page--campaign:has(.crPage) :is(.crChipRow, .crTagRow) span {
+  background: none; border: 0; border-left: 1px solid var(--rule-strong); padding: 0 14px; min-height: 0;
+  font: var(--cr-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--cr-apricot);
+}
+.page--campaign:has(.crPage) :is(.crChipRow, .crTagRow) span:first-child { border-left: 0; padding-left: 0; }
+
+/* cards → open editorial blocks with a top rule */
+.page--campaign:has(.crPage) :is(.crFrameworkCard, .crPhaseCard, .crActivationCard, .crImpactColumns article) {
+  background: none; border: 0; border-top: 1px solid var(--rule-strong); padding: 22px 0 8px;
+}
+.page--campaign:has(.crPage) .crFrameworkCards { column-gap: clamp(24px, 3vw, 48px); row-gap: 36px; }
+.page--campaign:has(.crPage) .crActivationCard.crVideo { background: var(--cr-deep); padding: clamp(28px, 3vw, 48px); border-top: 0; }
+.page--campaign:has(.crPage) .crActivationCard.crVideo :is(h3, p) { color: var(--cr-ivory); }
+
+/* imagery: full-bleed, square, no frame; captions as tracked labels */
+.page--campaign:has(.crPage) :is(.crNewHeroFrame, .crSupportCard, .crEvidenceCard, .crPhaseVisual) { border: 0; background: none; }
+.page--campaign:has(.crPage) .crSupportCard.is-contain img { background: var(--cr-deep); }
+.page--campaign:has(.crPage) :is(.crSupportCard, .crEvidenceCard, .crPhaseVisual) figcaption {
+  font: var(--cr-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); padding-top: 12px;
+}
+.page--campaign:has(.crPage) :is(.crFullHero, .crFrameworkHero, .crRolloutHero) figcaption { background: linear-gradient(180deg, transparent, rgba(30, 4, 7, 0.82)); }
+
+/* buttons: square, tracked uppercase; cyan is the single key action */
+.page--campaign:has(.crPage) .crBtn {
+  background: transparent; color: var(--cr-ivory); border: 1px solid var(--cr-ivory); min-height: 48px; padding: 0 28px;
+  font: 500 13px/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase;
+}
+.page--campaign:has(.crPage) .crBtn--gold { background: var(--cr-cyan); border-color: var(--cr-cyan); color: #2a0609; }
 @media (hover: hover) {
-  .page--campaign:has(.crPage) .crBtn:hover { background: #F6B27A; color: #4A0F14; }
+  .page--campaign:has(.crPage) .crBtn:hover { background: var(--cr-ivory); border-color: var(--cr-ivory); color: #2a0609; }
 }
-.page--campaign:has(.crPage) :is(.crNewHeroFrame, .crPhaseVisual) { box-shadow: 0 0 90px rgba(25, 211, 255, 0.12), 0 30px 60px -24px rgba(14, 2, 4, 0.7); }
-.page--campaign:has(.crPage) .crSupportCard.is-contain img { background: #5a1a20; }
-.page--campaign:has(.crPage) :is(.crFrameworkCard, .crPhaseCard, .crActivationCard, .crImpactColumns article) { background: rgba(246, 178, 122, 0.07); border-color: rgba(246, 178, 122, 0.2); }
-.page--campaign:has(.crPage) .crActivationCard.crVideo { background: #2c080c; }
-.page--campaign:has(.crPage) .crActivationCard.crVideo :is(h3, p) { color: #F4E2D2; }
-.page--campaign:has(.crPage) .crImpactOverlay { background: #2c080c; }
-.page--campaign:has(.crPage) .crImpactOverlay :is(h2, h3) { color: #19D3FF; }
-.page--campaign:has(.crPage) .crImpactOverlay p { color: #F4E2D2; }
+
+/* rollout rail and impact */
+.page--campaign:has(.crPage) .crPhaseRail li::before { background: var(--cr-apricot); }
+.page--campaign:has(.crPage) .crImpactOverlay { background: var(--cr-deep); }
+.page--campaign:has(.crPage) .crImpactOverlay :is(h2, h3) { color: var(--cr-apricot); }
+.page--campaign:has(.crPage) .crImpactOverlay p { color: var(--cr-ivory); }
+
+/* site chrome on this page */
+.page--campaign:has(.crPage) .sectionNav { border-bottom: 1px solid var(--rule); }
+.page--campaign:has(.crPage) .sectionNav a { font: var(--cr-label); letter-spacing: 0.16em; text-transform: uppercase; }
+.page--campaign:has(.crPage) .siteFooter { background: var(--cr-deep); color: var(--cr-ivory); }
+.page--campaign:has(.crPage) .siteFooter :is(h2, .siteFooter__title, .bigLink, a, p, span, .label) { color: var(--cr-ivory); }
+.page--campaign:has(.crPage) .siteFooter__dot { color: var(--cr-cyan); }
