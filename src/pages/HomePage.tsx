@@ -25,8 +25,8 @@ export const DISCIPLINES = [
 
 /** Results, each lifted verbatim from a project's proof line, written as sentences rather than a stat row. */
 const EVIDENCE: { value: string; unit?: string; text: string; where: string; id: string; to?: string }[] = [
-  { value: "22%", text: "less material movement in a factory pilot", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
-  { value: "25%", text: "better output efficiency with an IoT needle time-tracker", where: "Inzex Textiles", id: "ops-2" },
+  { value: "16", text: "sewing lines mapped for cut-bundle transport, and a working robot shown at Bharat Tex 2025", where: "Autonomous WIP robot · Shahi Exports", id: "ops-1" },
+  { value: "₹400", text: "or less per machine for an IoT needle tracker that logs every pedal press", where: "Inzex Textiles", id: "ops-2" },
   { value: "30", unit: " s", text: "to sell out the early-bird release, with 150+ attendees", where: "Genesis 2.2", id: "brand-1" },
   { value: "96%", text: "review consistency in fashion-retail AI evaluation, with repeat errors down 22%", where: "Handshake AI research fellowship", id: "ai-evaluation", to: "/about#ai-evaluation" },
 ];
@@ -35,7 +35,7 @@ const EVIDENCE: { value: string; unit?: string; text: string; where: string; id:
 const PATHS: { label: string; proof: string; to: string; d: string }[] = [
   { label: "Retail strategy & consumer insights", proof: "Survey research and ANOVA behind a Parsons marketplace capstone · demand signals logged on Bloomingdale's floor", to: "/work/merch-1", d: "merch" },
   { label: "Merchandising & planning", proof: "Sales and inventory dashboards for three Myntra brands, built for allocation, replenishment and OTB decisions", to: "/work?d=merch", d: "merch" },
-  { label: "Apparel operations", proof: "22% less material movement in a factory pilot · a ₹400 IoT tracker that fed a 25% output gain", to: "/work?d=ops", d: "ops" },
+  { label: "Apparel operations", proof: "A cut-bundle robot shown at Bharat Tex 2025 · a ₹400 IoT needle tracker · material-flow index 38% → 48% on a redesigned line", to: "/work?d=ops", d: "ops" },
   { label: "AI evaluation", proof: "Fashion-retail model evaluation across 35+ taxonomies · review consistency raised to 96%", to: "/about#ai-evaluation", d: "ai" },
   { label: "Brand & campaigns", proof: "Early-bird sellout in 30 seconds · Off-White and Cartier campaign concepts", to: "/work?d=brand", d: "brand" },
 ]

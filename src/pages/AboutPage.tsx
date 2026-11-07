@@ -40,10 +40,10 @@ const EVENTS: Ev[] = [
   { at: 2023.45, kind: "role", side: "down", lane: 0, title: "INZEX Textiles", note: "IE / data & IoT intern · Jun–Jul '23", to: "/work/ops-2" },
   { at: 2024.0, kind: "role", side: "up", lane: 0, title: "Shahi Exports", note: "Industry 4.0 fellow · Jan–Jul '24", to: "/work/ops-1" },
   { at: 2024.66, kind: "edu", side: "down", lane: 0, title: "Parsons, New York", note: "MPS Fashion Management · Fall '24" },
-  { at: 2025.1, kind: "ny", side: "up", lane: 1, title: "A Space, In Between", note: "fashion management intern · Feb–May '25" },
+  { at: 2025.18, kind: "ny", side: "up", lane: 1, title: "A Space, In Between", note: "fashion management intern · Mar–Jun '25" },
   { at: 2025.45, kind: "edu", side: "down", lane: 1, title: "Nava Collective", note: "capstone, featured by Parsons · '25", to: "/work/merch-1" },
-  { at: 2025.67, kind: "ny", side: "up", lane: 0, title: "Handshake AI", note: "research fellow, fashion & retail · Sep '25–Sep '26" },
-  { at: 2025.79, kind: "ny", side: "down", lane: 0, title: "Bloomingdale's", note: "59th Street · Oct '25–Jan '26", to: "/work/merch-2" },
+  { at: 2025.67, kind: "ny", side: "up", lane: 0, title: "Handshake AI", note: "research fellow, fashion & retail · Sep '25–Oct '26" },
+  { at: 2025.72, kind: "ny", side: "down", lane: 0, title: "Bloomingdale's", note: "59th Street · Sep '25–Jan '26", to: "/work/merch-2" },
 ];
 
 const PIVOTS = [
@@ -55,7 +55,7 @@ const PIVOTS = [
 type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string; logo?: string };
 const ROLES: Role[] = [
   {
-    when: "Sep 2025 – Sep 2026",
+    when: "Sep 2025 – Oct 2026",
     org: "Handshake AI",
     logo: "handshake",
     role: "Research Fellow, Fashion & Retail",
@@ -69,10 +69,10 @@ const ROLES: Role[] = [
     ],
   },
   {
-    when: "Oct 2025 – Jan 2026",
+    when: "Sep 2025 – Jan 2026",
     org: "Bloomingdale's, 59th Street",
     logo: "bloomingdales",
-    role: "Seasonal Sales Associate, Men's Designer & Sportswear",
+    role: "Brand Representative, Men's Designer & Sportswear (Seasonal)",
     place: "New York",
     lines: [
       "$3K–3.5K average and $7K–8K peak-day sales across 12+ designer brands, through needs discovery, fit and size substitution and cross-category selling.",
@@ -81,14 +81,14 @@ const ROLES: Role[] = [
     links: [{ to: "/work/merch-2", label: "Clienteling case" }],
   },
   {
-    when: "Feb – May 2025",
+    when: "Mar – Jun 2025",
     org: "A Space, In Between",
     logo: "asib",
     role: "Fashion Management Intern",
-    place: "Tokyo / remote",
+    place: "New York",
     lines: [
       "Competitor research and product storytelling for wholesale and digital merchandising.",
-      "Turned findings into requirements for a plus-size platform; wireframed a 24-screen onboarding and body-data journey in Figma, cutting onboarding steps by 25%, with 18 UX and content recommendations.",
+      "Turned findings into requirements for a plus-size platform; designed a 24-screen onboarding and body-data journey in Figma and React/Next.js, cutting onboarding steps by 25%, with 18 UX and content recommendations.",
     ],
   },
   {
@@ -98,8 +98,8 @@ const ROLES: Role[] = [
     role: "Industry 4.0 Research Fellow",
     place: "NIFT Delhi, Shahi Chair",
     lines: [
-      "Built and piloted an autonomous robot to move cut bundles from cutting to sewing: wiring, RFID routing logic, IoT integration and deployment.",
-      "Pilot: 22% less material movement, 18% shorter transfer cycles, 92% route reliability; 12-month ROI case presented to management, production and engineering.",
+      "Mapped cut-bundle transport to 16 sewing lines (64 loadings a day, one shared lift) through process mapping and costing.",
+      "Built and tested a line-following robot (Arduino Mega, C++ in PlatformIO, RFID station routing, Wi-Fi control) and wrote factory implementation and troubleshooting guidelines. US$1,100 research grant; selected for Bharat Tex 2025.",
     ],
     links: [{ to: "/work/ops-1", label: "WIP robot case" }],
   },
@@ -111,7 +111,7 @@ const ROLES: Role[] = [
     place: "Sewing floor and Myntra fulfilment",
     lines: [
       "Four projects: an IoT needle-runtime tracker (₹400 a machine), a sewing-line layout redesign scored with a WIP movement point system, Myntra PPMP sales and inventory dashboards, and a study of NIFT's i-SMART operator skill rating.",
-      "Tracking contributed to a 25% output gain reported by the floor team; the redesigned layout lifted the material-flow index from 38% to 48% on paper.",
+      "The tracker logs every pedal press to Google Sheets through Apps Script; the redesigned layout lifted the material-flow index from 38% to 48% on paper.",
     ],
     links: [
       { to: "/work/ops-2", label: "Tracker case" },
@@ -140,8 +140,8 @@ const EDUCATION = [
 ];
 
 const TOOLKIT: [string, string[]][] = [
-  ["Operations & analysis", ["Apparel operations and industrial engineering", "Process mapping and requirements", "Inventory and assortment analysis", "KPI reporting, ANOVA", "Excel, Power BI, Google Data Studio"]],
-  ["Build", ["Python, SQL, SQLite, FastAPI", "TypeScript, JavaScript", "Arduino, ESP8266/ESP32, RFID, sensors", "Google Apps Script"]],
+  ["Operations & analysis", ["Apparel operations and industrial engineering", "Process mapping and requirements", "Inventory and assortment analysis", "KPI reporting, ANOVA", "Advanced Excel, Google Data Studio"]],
+  ["Build", ["Arduino C++, ESP8266/ESP32, RFID, sensors", "Python, SQL, FastAPI", "Google Apps Script", "TypeScript, JavaScript"]],
   ["AI & creative", ["RLHF evaluation, rubrics, output validation", "ChatGPT, Claude, Cursor, Copilot, n8n", "Figma; reference-guided Midjourney, Firefly, Stable Diffusion", "Video editing and music production"]],
 ];
 

@@ -34,8 +34,8 @@ const g = (file: string, caption: string, ratio: string) => ({ src: `/assets/web
 
 export const PROJECT_META: Record<string, ProjectMeta> = {
   "ops-1": {
-    figure: "22%",
-    figureNote: "less material movement in the pilot",
+    figure: "16",
+    figureNote: "sewing lines mapped; robot shown at Bharat Tex 2025",
     image: "/assets/web/agv-assembled.webp",
     imageAlt: "3D reconstruction of the autonomous WIP movement robot",
     gallery: [
@@ -43,7 +43,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
       g("agv-exploded", "Exploded view — drive, plates, electronics, deck and casing", "750 / 720"),
     ],
   },
-  "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },
+  "ops-2": { figure: "₹400", figureNote: "or less in hardware per machine" },
   "ops-3": { figure: "300", figureNote: "kg / day reduction potential (proposal)" },
   "inzex-dashboards": { word: "Reporting", figureNote: "Ops analytics & backend" },
   "inzex-line-layout": { figure: "48%", figureNote: "material-flow index on the redesigned layout" },

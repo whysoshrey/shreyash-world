@@ -3,9 +3,9 @@
  * (reports, decks and dissertation on Drive) and the latest résumé.
  *
  * Evidence rules, carried over from the career-profile assessment:
- *  - "What changed" figures say how they were obtained. Factory results after the original reports (ops-1, ops-2) were
- *    measured by the on-floor team; the source records are not public. Welspun (ops-3) is a proposal: its 300 kg/day is a
- *    sized potential, per the internship report and the October 2026 CV.
+ *  - "What changed" figures say how they were obtained, and only figures found in the project's own documents are used.
+ *    Unsourced post-report factory figures were removed in November 2026. Welspun (ops-3) is a proposal: its 300 kg/day
+ *    is a sized potential, per the internship report.
  *  - Targets, modelled figures and derived scores are labelled as such, never presented as outcomes.
  *  - Nothing here is invented to fill a gap: where a document doesn't say, the dossier doesn't either.
  */
@@ -41,12 +41,12 @@ const drive = (id: string) => `https://drive.google.com/file/d/${id}/view`;
 export const DOSSIERS: Record<string, Dossier> = {
   /* ------------------------------------------------------------------ */
   "ops-1": {
-    status: "Factory pilot · results measured by the floor team",
+    status: "Dissertation prototype · built and tested; shown at Bharat Tex 2025",
     glance: {
       role: "Technical lead on a two-person dissertation: all wiring, IoT design, RFID routing logic and technical deployment",
       when: "January – July 2024",
       where: "Shahi Exports, Industry 4.0 Research Fellowship (Shahi Chair, NIFT Delhi)",
-      with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal; post-pilot measurement by the factory floor team",
+      with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal",
       tools: "Arduino Mega, ESP32 web interface, PN532 RFID reader, line sensor, ultrasonic sensor on a servo, Arduino C++, HTML/JS",
     },
     situation: {
@@ -81,15 +81,14 @@ export const DOSSIERS: Record<string, Dossier> = {
           "Eight motors failed in testing: misaligned gearboxes put sideways load on the shafts, and the first fix (metal clamps) warped the shaft and burned the coils. The answer was a central support caster that takes weight off the motor shafts. The RFID reader also had to move away from the aluminium plates, which were detuning its signal.",
       },
       {
-        title: "Piloted it and made the business case",
+        title: "Wrote it up for the factory",
         body:
-          "After the dissertation, the robot moved into a floor pilot. The floor team measured it while I observed and recorded. I mapped 14 workflows and analysed 15,000+ movement events, built a 12-month ROI case, and presented the trade-offs to senior management, production and engineering.",
+          "Wrote implementation and troubleshooting guidelines for a factory roll-out and costed the build. The dissertation is honest that time saved could only be estimated on a prototype. The robot was then selected by the Ministry of Textiles for the Bharat Tex 2025 showcase.",
       },
     ],
     results: [
-      { value: "22%", label: "less material movement", how: "Pilot vs. existing process, measured by the floor team" },
-      { value: "18%", label: "shorter transfer cycles", how: "Same start and end points, before vs. pilot" },
-      { value: "92%", label: "route reliability", how: "Routes completed in pilot runs; not a long-run uptime figure" },
+      { value: "2025", label: "Bharat Tex showcase", how: "Selected by the Ministry of Textiles, Government of India" },
+      { value: "8", label: "motor failures diagnosed and designed out", how: "Root cause found in gearbox side-load; fixed with a central support caster" },
       { value: "3", label: "NIFT awards, October 2024", how: "Best Graduation Project, Most Innovative Project, Most Commercially Viable Project" },
     ],
     limits: [
@@ -128,7 +127,7 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "ops-2": {
-    status: "Internship build · output gain reported by the floor team",
+    status: "Internship build · tested on a working machine",
     glance: {
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
       when: "June – July 2023 (internship); written up in May 2024",
@@ -173,12 +172,11 @@ export const DOSSIERS: Record<string, Dossier> = {
       },
     ],
     results: [
-      { value: "25%", label: "output gain", how: "Reported by the floor team after the change. Tracking was one part of a wider intervention with dashboards and WIP work." },
       { value: "< ₹400", label: "per machine", how: "Component cost from the project report" },
     ],
     limits: [
       "Pedal time stands in for needle time; it doesn't count stitches or check quality.",
-      "The 25% gain belongs to the whole operating change, not to the sensor alone.",
+      "Tested on one machine during the internship; no line-wide output change was measured.",
     ],
     shots: [s("iot-test", "Testing the tracker on a working sewing machine", "676 / 748")],
     sources: [{ label: "Project report with code and figures (16 pages)", url: drive("1H8QWQmG2oHzkgHFiMSYlpR1_NYcWy47e") }],

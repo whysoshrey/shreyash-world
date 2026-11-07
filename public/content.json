@@ -53,16 +53,16 @@
         "id": "ops-1",
         "title": "Autonomous WIP Movement Robot",
         "context": "Shahi Exports — Industry 4.0 Fellowship",
-        "proof": "Cut material movement 22% in a factory pilot.",
+        "proof": "Mapped cut-bundle transport for 16 sewing lines and built a working RFID-routed robot, shown at Bharat Tex 2025.",
         "problem": "production floor WIP transport created delays, fatigue, and variability.",
         "approach": [
-          "mapped movement hotspots and constraints.",
-          "designed robot routing + control logic.",
-          "piloted and iterated with operators."
+          "mapped the cutting-to-sewing route: 16 lines, 64 loadings a day, one shared lift.",
+          "designed line-following + RFID station routing in Arduino C++.",
+          "built, broke and fixed the prototype; wrote factory implementation guidelines."
         ],
         "impact": [
-          "22% reduction in aggregate movement.",
-          "improved throughput stability."
+          "working prototype selected by the Ministry of Textiles for Bharat Tex 2025.",
+          "Best Graduation, Most Innovative and Most Commercially Viable Project at NIFT Delhi."
         ],
         "skills": "Systems design, experimentation, stakeholder ops.",
         "artifacts": [
@@ -85,16 +85,16 @@
         "id": "ops-2",
         "title": "IoT Needle Time-Tracker",
         "context": "Inzex Textiles - Process Automation",
-        "proof": "A ₹400 tracker, part of a 25% output gain.",
-        "problem": "worker efficiency tracking mechanisms absent in company; slowing decisions. Implemented cost-effective system and embedded in back-end dashboarding for Management.",
+        "proof": "A sub-₹400 tracker that logs every pedal press to Google Sheets.",
+        "problem": "worker efficiency tracking absent on the floor; industrial monitoring too costly per machine. Built a low-cost logger feeding a cloud sheet for management.",
         "approach": [
-          "defined signal taxonomy + instrumentation plan.",
-          "built Power BI dashboards + operating cadence.",
-          "trained team on weekly review rhythm."
+          "chose pedal time as a proxy for needle running time.",
+          "built the sensor on a NodeMCU ESP8266 in Arduino C++.",
+          "logged events to Google Sheets through an Apps Script web app."
         ],
         "impact": [
-          "25% output efficiency improvement.",
-          "reduced rework and variance."
+          "under ₹400 of hardware per machine.",
+          "no manual entries: every pedal press logged automatically."
         ],
         "skills": "IoT thinking, analytics, operating cadence.",
         "artifacts": [
