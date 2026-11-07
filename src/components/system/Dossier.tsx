@@ -2,14 +2,17 @@ import { asset } from "../../lib/projects";
 import type { Dossier } from "../../lib/dossiers";
 import { Arrow, Reveal } from "../site/primitives";
 
-/** The operational record of a project: who, when, where, with what. */
-export function Glance({ d }: { d: Dossier }) {
+/** The operational record of a project: what, who, where, when, why, and with what. */
+export function Glance({ d, g: given }: { d?: Dossier; g?: Partial<Dossier["glance"]> }) {
+  const g = given ?? d?.glance ?? {};
   const rows: [string, string | undefined][] = [
-    ["Role", d.glance.role],
-    ["When", d.glance.when],
-    ["Where", d.glance.where],
-    ["With", d.glance.with],
-    ["Tools", d.glance.tools],
+    ["What", g.what],
+    ["My role", g.role],
+    ["With", g.with],
+    ["Where", g.where],
+    ["When", g.when],
+    ["Why", g.why],
+    ["Tools", g.tools],
   ];
   return (
     <dl className="glance">

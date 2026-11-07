@@ -157,6 +157,23 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       ),
     });
 
+  if (isCartier)
+    sections.push({
+      id: "glance",
+      label: "At a glance",
+      title: "At a glance",
+      body: (
+        <Glance
+          g={{
+            what: "A speculative go-to-market concept for Cartier told through two worlds: the Rogue campaign platform and a Cartier × Maybach mobile gallery.",
+            role: "Visual moodboarding, ideation, creative direction and feasibility checks",
+            where: "Speculative brand concept; not client work",
+            why: "To show how a heritage maison could reach a younger, culture-led luxury buyer without diluting its codes, across editorial, out-of-home, digital and experiential touchpoints.",
+            tools: "Campaign platform design, GTM and channel planning, campaign visuals, 3D vehicle model and film",
+          }}
+        />
+      ),
+    });
   if (isCartier) sections.push({ id: "worlds", label: "Two worlds", title: "Two worlds", body: <CartierWorlds />, wide: true });
 
   if (!dossier && artifacts.length && !isCartier)

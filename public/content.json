@@ -447,19 +447,19 @@
       },
       {
         "id": "tory-burch-digital",
-        "title": "Tory Burch: Digital Intervention Audit",
-        "context": "Parsons — Technology & Innovation",
-        "proof": "Audited Tory Burch's digital stack and named seven areas for intervention, from virtual try-on to AI demand forecasting.",
-        "problem": "a strong e-commerce early mover lagging tech-forward peers on personalisation and in-store technology.",
+        "title": "Tory Burch: Technology Strategy & Virtual Fashion",
+        "context": "Parsons — Technology & Intervention",
+        "proof": "A store-floor technology audit turned into three interventions (AI clienteling, blockchain traceability, RFID allocation) and three wearable-tech product concepts.",
+        "problem": "store tools cost selling time, stock didn't match across channels, and customers couldn't trace products.",
         "approach": [
-          "reviewed e-commerce, supply chain, stores, product, social, sustainability and data.",
-          "benchmarked against tech-forward luxury peers.",
-          "prioritised AR try-on, AI personalisation and blockchain traceability."
+          "interviewed the SoHo flagship's store manager and audited Tête, SAP and Microsoft Suite.",
+          "benchmarked Gucci, live-stream selling and blockchain provenance.",
+          "designed AI, blockchain and RFID interventions plus three product concepts."
         ],
         "impact": [
-          "a seven-area digital roadmap for a US luxury brand."
+          "a full intervention plan and three rendered concepts: rainproof light cape, Kira smart bracelet, Aurora sneakers."
         ],
-        "skills": "Digital retail strategy, e-commerce, luxury.",
+        "skills": "Retail technology strategy, clienteling, inventory systems, product concepting.",
         "artifacts": []
       }
     ],

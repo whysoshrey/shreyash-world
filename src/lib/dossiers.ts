@@ -19,7 +19,8 @@ export type Source = { label: string; url: string };
 export type Dossier = {
   /** SM-01: how far the evidence goes, in plain words (measured, reported, modelled, coursework, concept) */
   status: string;
-  glance: { role: string; when: string; where: string; with?: string; tools: string };
+  /** who / what / where / when / why: every project answers all five */
+  glance: { what: string; role: string; when: string; where: string; with?: string; why: string; tools: string };
   situation: { lede: string; facts: Fact[] };
   steps: Step[];
   results: Result[];
@@ -43,9 +44,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "ops-1": {
     status: "Factory pilot · results measured by the floor team",
     glance: {
+      what: "An autonomous robot that carries cut bundles from the cutting room to the sewing lines, plus the route study behind it.",
       role: "Technical lead on a two-person dissertation: all wiring, IoT design, RFID routing logic and technical deployment",
       when: "January – July 2024",
       where: "Shahi Exports, Industry 4.0 Research Fellowship (Shahi Chair, NIFT Delhi)",
+      why: "One shared lift fed 16 lines; when it was busy, helpers left their machines to carry 60 kg loads, stalling output.",
       with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal; post-pilot measurement by the factory floor team",
       tools: "Python, Arduino C++ (PlatformIO), Arduino Mega, ESP32 web interface, PN532 RFID reader, line sensor, ultrasonic sensor on a servo, HTML/JS",
     },
@@ -130,9 +133,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "ops-2": {
     status: "Internship build · output gain reported by the floor team",
     glance: {
+      what: "A sub-₹400 sensor on each sewing machine that logs needle running time to a cloud sheet automatically.",
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
       when: "June – July 2023 (internship); written up in May 2024",
       where: "INZEX Textiles, sewing floor",
+      why: "Supervisors judged efficiency by walking the line; industrial monitors cost too much to fit every machine.",
       with: "Internship report co-authored with Kanishk Singh",
       tools: "Python, NodeMCU ESP8266, HC-SR04 ultrasonic sensor, Arduino IDE, Google Apps Script, Google Sheets",
     },
@@ -188,9 +193,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "ops-3": {
     status: "Internship analysis · proposal; the 300 kg/day is a potential, not a measured result",
     glance: {
+      what: "A plant-wide waste audit across five units and a loom-level proposal to remove mock selvage.",
       role: "Manufacturing intern: plant-wide waste analysis and the proposal to remove mock selvage",
       when: "June 2022",
       where: "Welspun India, terry towel unit, Vapi",
+      why: "Waste was never costed unit by unit, so the plant could not see where it was losing the most material.",
       with: "Loom engineering mentor",
       tools: "Process mapping, waste costing, loom mechanics; NEDGraphics, DPCS and MDM in the development workflow",
     },
@@ -255,9 +262,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "inzex-dashboards": {
     status: "Internship build · no business outcome claimed",
     glance: {
+      what: "Connected sales and inventory dashboards for three Myntra brands, filterable by date, brand, SKU and city.",
       role: "IE / data intern: built the sales and inventory dashboards",
       when: "June – July 2023",
       where: "INZEX Textiles, Myntra PPMP fulfilment",
+      why: "Sales and stock sat in separate exports, so every allocation or replenishment question meant rebuilding tables by hand.",
       with: "Internship report co-authored with Kanishk Singh",
       tools: "Excel, Google Sheets connector, Google Data Studio",
     },
@@ -292,9 +301,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "inzex-line-layout": {
     status: "Internship proposal · the flow index is calculated on the redesigned layout; no measurement after a change is reported",
     glance: {
+      what: "A re-sequenced 21-operation denim line, scored with a WIP movement point system.",
       role: "Line analysis and layout redesign (internship project)",
       when: "June – July 2023",
       where: "INZEX Textiles, denim sewing line (5-pocket jeans)",
+      why: "Uneven operation times left some operators idle and others queued, with bundles crossing back and forth between tables.",
       with: "Internship report co-authored with Kanishk Singh",
       tools: "Precedence diagram, heuristic line balancing, WIP movement point scoring",
     },
@@ -345,9 +356,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "inzex-ismart": {
     status: "Internship study · no implementation results reported",
     glance: {
+      what: "A study of eight operator-rating methods and NIFT's sensor-based i-SMART skill rating, with recommendations.",
       role: "Research and recommendations (internship project)",
       when: "June – July 2023",
       where: "INZEX Textiles, sewing floor; a study of NIFT Delhi's i-SMART system",
+      why: "Rating sewing skill by eye is subjective; an objective score drives fairer pay, training and line balancing.",
       with: "Internship report co-authored with Kanishk Singh. i-SMART was developed at NIFT Delhi by Dr. Deepak Panghal and Dr. Prabir Jana",
       tools: "Operator rating methods, ABC skill matrix, i-SMART (rotary-encoder sensing, template stitching, cloud scoring)",
     },
@@ -396,9 +409,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "mango-intervention": {
     status: "Coursework · strategy proposal built on store visits and interviews",
     glance: {
+      what: "A store-to-systems intervention plan for Mango covering operations, circularity and social responsibility.",
       role: "Sole author: store visits, floor-team interviews, research and the intervention plan",
       when: "September – October 2024",
       where: "Parsons MPS Fashion Management, Company Intervention report",
+      why: "Mango is scaling fast against Zara and H&M, but its stores ran on manual billing and its sustainability work was invisible to shoppers.",
       tools: "Store observation, interviews, competitor and financial research, supply-chain and circularity frameworks",
     },
     situation: {
@@ -430,9 +445,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "doen-impact": {
     status: "Coursework · team strategy for a real brand, built on its public catalogue",
     glance: {
+      what: "An environmental and social impact strategy for DÔEN: fibre audit, material swaps, vendor compliance and end of life.",
       role: "Team member on material analysis, strategy and research (Team BRAVO, four people)",
       when: "February – May 2025",
       where: "Parsons PMFM 5050 Manufacturing & Production",
+      why: "DÔEN has public 2030 targets, yet conventional cotton, polyester and rayon still sit in its mix.",
       with: "Ada Creighton, Khushi Agrawal and Neha Lizbeth Peter; Prof. Bjorn Bengtsson",
       tools: "Catalogue fibre audit (spreadsheet), material impact data (Textile Exchange, Higg), vendor survey, circularity frameworks",
     },
@@ -464,9 +481,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "nir-sorting": {
     status: "Research methods study · ANOVA on published spectral data",
     glance: {
+      what: "A statistical test of whether NIR spectroscopy can sort blended fabrics into their own recycling stream.",
       role: "Co-researcher: framing, statistics and analysis",
       when: "December 2023",
       where: "NIFT Delhi, Research Methodology jury",
+      why: "Sorting lines reject blends they cannot recognise, so a large share of textile waste never gets recycled.",
       with: "Afan Thabreez K P and Charuvi Ranjan",
       tools: "One-way ANOVA, NIR spectroscopy (EVK Helios EQ32, 930–1700 nm), literature review",
     },
@@ -498,9 +517,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "solid-waste-review": {
     status: "Coursework · literature and case review",
     glance: {
+      what: "A map of where a garment unit creates solid waste, and a review of the systems that reduce it.",
       role: "Sole author",
       when: "September 2023",
       where: "NIFT Delhi, Designing a Manufacturing Setup (Sustainability)",
+      why: "Waste builds up at every production step, and most fixes stop at biodegradability instead of closing the loop.",
       with: "Under Dr. Prabir Jana",
       tools: "Process waste mapping, waste hierarchy, zero-waste and 3R frameworks, case research",
     },
@@ -526,9 +547,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "wfx-plm": {
     status: "Coursework · software evaluation",
     glance: {
+      what: "A lifecycle map of WFX PLM with real deployments, and a 43-point feature audit of the ZenTao planning tool.",
       role: "Co-author of the PLM study; author of the ZenTao audit",
       when: "April – October 2023",
       where: "NIFT Delhi, Apparel Merchandising and project management coursework",
+      why: "Merchandisers run on PLM and planning software; choosing the right one, and knowing its gaps, protects T&A calendars and margins.",
       with: "PLM study with Arvantika Dhawan and Yahowanissi Tirkey; Prof. Archana Gandhi",
       tools: "WFX Cloud PLM, ZenTao, PERT/CPM, critical path and resource planning",
     },
@@ -557,9 +580,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "auto-packing": {
     status: "Coursework · design, not built",
     glance: {
+      what: "A two-conveyor station that counts 20 pieces into a box, ejects it and seals it, specified down to sensors and code.",
       role: "Co-designer: system logic, sensors and control parameters",
       when: "Spring 2023",
       where: "NIFT Delhi, Mechatronics",
+      why: "End-of-line packing in apparel is still counted and sealed by hand: slow, tiring and error-prone.",
       with: "Arvantika Dhawan and Charuvi Ranjan",
       tools: "Arduino Uno, HC-SR04 ultrasonic and IR sensors, proximity sensor, stepper and servo motors, pneumatics, I2C",
     },
@@ -583,23 +608,49 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "tory-burch-digital": {
-    status: "Coursework · digital audit",
+    status: "Coursework · strategy and product concepts built on research and a store-manager interview",
     glance: {
-      role: "Sole author",
-      when: "October 2024",
-      where: "Parsons, Technology & Innovation mid-term",
-      tools: "Digital maturity review, competitor benchmarking",
+      what: "A technology assessment and intervention strategy for Tory Burch (AI clienteling, blockchain traceability, RFID inventory) plus three wearable-tech product concepts.",
+      role: "Co-author and co-presenter: brand and market research, current-technology assessment, strategy proposals and virtual-fashion concepts",
+      with: "Kami Wang and Walker Perry; Prof. Dyese Matthews",
+      where: "Parsons MPS Fashion Management, PMFM 5030 Technology & Intervention; research included an interview with the SoHo flagship's store manager",
+      when: "September – December 2024 (mid-term audit in October, final report and presentation in December)",
+      why: "Tory Burch is a $1.5 bn brand mid-rebrand, yet store teams said its tools (Tête, SAP, Microsoft Suite) cost selling time, mismatch stock across channels and give customers no traceability.",
+      tools: "SWOT and competitor mapping, customer-journey and supply-chain review, stakeholder interview, AI / blockchain / RFID solution design, concept renders (Midjourney)",
     },
     situation: {
       lede:
-        "Tory Burch moved early into e-commerce for a luxury label and has a strong social presence, but trails tech-forward peers on personalisation, virtual try-on and in-store technology.",
-      facts: [{ value: "7", label: "areas reviewed" }],
+        "Tory Burch sells handbags, ready-to-wear, footwear and accessories to 25–45 year-old professional women, positioned as accessible luxury against Michael Kors, Coach and Kate Spade. Its 'Toryssaince' rebrand was winning younger shoppers, but in store the clienteling app took associates off the floor, SAP stock counts did not match between online and stores, and a customer could not see where a product came from.",
+      facts: [
+        { value: "$1.5 bn", label: "estimated annual revenue" },
+        { value: "100+", label: "stores across four regions" },
+        { value: "20–30%", label: "of revenue from e-commerce" },
+        { value: "3", label: "core systems assessed: Tête, SAP, Microsoft Suite" },
+      ],
     },
     steps: [
-      { title: "Reviewed the stack", body: "E-commerce, supply chain and inventory, stores, product innovation, social and digital marketing, sustainability and data analytics." },
-      { title: "Named the gaps", body: "AR virtual try-on, AI personalisation, AI demand forecasting, blockchain traceability, smart mirrors and wearable or smart-fabric products." },
+      { title: "Mapped the brand and the market", body: "Mission and values (the 'Empowering Women' platform, Foundation, HERproject, responsible-cotton targets), target customer, accessible-luxury positioning against Michael Kors, Coach and Kate Spade, and a full SWOT." },
+      { title: "Audited the technology, with the people who use it", body: "Reviewed the customer journey and supply chain, then interviewed the SoHo flagship's store manager: Tête helps clienteling but eats selling time and is not always accurate; SAP mismatches inventory across channels and offers no traceability; store-to-store and store-to-corporate messaging is unreliable." },
+      { title: "Benchmarked against the leaders", body: "Gucci's virtual try-on, digital showroom and private online appointments (over 55% of its sales from under-35s), live-stream selling for Chinese shoppers, and the research on AI and blockchain for supply-chain provenance." },
+      { title: "Designed three interventions", body: "1) AI inside Tête: personalised recommendations, automatic client-to-associate assignment, automated responses and ticketing, AI styling and AR/VR try-on. 2) Blockchain traceability with a 'Track Product Journey' scan in the app. 3) RFID tags with AI regional demand analysis for real-time stock, smarter allocation and region-specific campaigns." },
+      { title: "Designed the product side", body: "Three virtual-fashion concepts tied to the brand: a rainproof light cape in recycled nylon with LED lighting, heating and app control; a touchscreen Kira smart bracelet with seasonal patterns sold as limited drops; and Aurora high-tech sneakers with an LED sole, GPS tracking, auto-locking laces and posture tracking, built around women's safety and wellness." },
     ],
-    results: [{ value: "7", label: "intervention areas", how: "Coursework recommendations" }],
+    results: [
+      { value: "3", label: "technology interventions", how: "AI clienteling, blockchain traceability, RFID with AI allocation; coursework proposals" },
+      { value: "3", label: "wearable-tech product concepts", how: "Cape, Kira smart bracelet, Aurora sneakers; rendered, not manufactured" },
+      { value: "1", label: "store-manager interview", how: "SoHo flagship; the basis of the operational diagnosis" },
+    ],
+    limits: [
+      "A course project: proposals were not commissioned or tested by Tory Burch.",
+      "Revenue, store and channel figures are public estimates cited in the report.",
+    ],
+    shots: [
+      s("tb-aurora", "Aurora sneaker concept: LED sole, GPS and auto-locking laces (rendered with Midjourney)", "1 / 1"),
+      s("tb-cape", "Rainproof light cape concept with embedded LED strips", "1 / 1"),
+      s("tb-cape-spec", "The cape's spec view: recycled waterproof shell, heating and app control", "1 / 1"),
+      s("tb-kira", "Kira smart bracelet: a touchscreen take on the brand's best-selling bangle", "1 / 1"),
+      s("tb-aurora-night", "Aurora at night: visibility as a safety feature", "1 / 1"),
+    ],
     sources: [],
   },
 
@@ -607,9 +658,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "merch-1": {
     status: "Academic capstone · prototype; conversion figure modelled",
     glance: {
+      what: "Nava Collective: a trust-first marketplace for independent streetwear and upcycling labels, from survey to working prototype.",
       role: "Research, business model, product requirements and prototype",
       when: "2024 – 2025",
       where: "Parsons MPS Fashion Management capstone",
+      why: "Small labels get buried on big marketplaces, and buyers struggle to trust makers they cannot find.",
       tools: "Survey design, ANOVA, pricing and willingness-to-pay analysis, Figma, React/Next.js, Python/FastAPI, SQLite",
     },
     situation: {
@@ -640,9 +693,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "merch-2": {
     status: "Seasonal role · sales figures self-reported",
     glance: {
-      role: "Seasonal sales associate, Men's Designer & Sportswear",
-      when: "October 2025 – January 2026",
+      what: "Selling and clienteling across 12+ designer menswear brands on a flagship floor through peak season.",
+      role: "Brand Representative, Men's Designer & Sportswear (seasonal)",
+      when: "September 2025 – January 2026",
       where: "Bloomingdale's, 59th Street, New York",
+      why: "Designer customers compare fit, price and stock across brands in one visit; capturing what they ask for is merchandising data.",
       tools: "Needs discovery, fit and size resolution, cross-category selling, clienteling notes",
     },
     situation: {
@@ -671,9 +726,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "brand-1": {
     status: "Student-run event · figures as reported",
     glance: {
+      what: "The launch marketing and event operations for Genesis 2.2, NIFT Delhi's freshers' event.",
       role: "Head of Marketing and Event Operations; produced the reel soundtrack and designed the event website",
       when: "B.F.Tech second year (the artwork is dated 2022)",
       where: "Genesis 2.2, NIFT Delhi's freshers' event, run each year by the second-year cohort",
+      why: "Students pick events on excitement and safety; the campaign had to earn both to sell tickets.",
       tools: "Instagram reels and posts, word-of-mouth seeding, ticketing website (Figma, HTML/CSS/JS), music production",
     },
     situation: {
@@ -708,9 +765,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "brand-3": {
     status: "Coursework · scores derived from a qualitative review",
     glance: {
+      what: "A side-by-side UX benchmark of Myntra and Urbanic against ten UX laws, with scores.",
       role: "Sole analyst",
       when: "NIFT Delhi, Master of Fashion Management interdisciplinary coursework",
       where: "Myntra vs. Urbanic, desktop experience",
+      why: "To show what a stronger fashion e-commerce experience does differently, and where each platform loses shoppers.",
       tools: "Heuristic evaluation across ten UX laws, structured scoring",
     },
     situation: {
@@ -757,9 +816,11 @@ export const DOSSIERS: Record<string, Dossier> = {
   "offwhite-human": {
     status: "Coursework · speculative brief; targets, not results",
     glance: {
+      what: "HUMAN: a speculative campaign and media plan for Off-White, built on Virgil Abloh's construction marks.",
       role: "Concept, social strategy and media plan (final project)",
       when: "Parsons MPS, Communication & Social Media",
       where: "Speculative brief for Off-White; not commissioned by the brand",
+      why: "To bring the brand's voice back to the street as something useful, not just another product drop.",
       tools: "Campaign concept, cross-platform content plan, paid / earned / shared / owned media mix, KPI design",
     },
     situation: {

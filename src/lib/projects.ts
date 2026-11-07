@@ -59,7 +59,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
   "solid-waste-review": { glyph: "cycle", word: "3R", figureNote: "Waste systems review" },
   "wfx-plm": { glyph: "gantt", figure: "43", figureNote: "planning features audited" },
   "auto-packing": { glyph: "conveyor", figure: "20", figureNote: "pieces counted and sealed per box" },
-  "tory-burch-digital": { glyph: "phone", figure: "7", figureNote: "digital intervention areas" },
+  "tory-burch-digital": { glyph: "phone", figure: "3 + 3", figureNote: "interventions + product concepts", image: "/assets/web/tb-aurora.webp", imageAlt: "Render of the Aurora high-tech sneaker concept for Tory Burch" },
   "merch-1": { glyph: "market", word: "Marketplace", figureNote: "Parsons capstone" },
   "merch-2": { glyph: "hanger", logo: "bloomingdales", logoAlt: "Bloomingdale's", word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
   "brand-1": { glyph: "ticket", figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },
