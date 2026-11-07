@@ -6,9 +6,33 @@ import type { ReactNode } from "react";
 
 export type GlyphKey =
   | "needle" | "loom" | "dashboard" | "layout" | "gauge" | "storefront" | "fibres" | "spectrum"
-  | "cycle" | "gantt" | "conveyor" | "phone" | "market" | "hanger" | "ticket" | "screens" | "human";
+  | "cycle" | "gantt" | "conveyor" | "phone" | "market" | "hanger" | "ticket" | "screens" | "human" | "agv" | "jewel";
 
 const G: Record<GlyphKey, ReactNode> = {
+  /* WIP robot: deck, crate, wheels, RFID tag on the route line */
+  agv: (
+    <>
+      <rect className="f" x="120" y="110" width="160" height="80" />
+      <path d="M140 110v80M260 110v80M120 150h160" />
+      <path d="M80 200h240v50H80z" />
+      <rect className="a" x="100" y="214" width="34" height="18" />
+      <circle cx="110" cy="270" r="22" /><circle cx="290" cy="270" r="22" />
+      <path d="M60 320h280" strokeDasharray="10 8" />
+      <rect className="a" x="186" y="306" width="28" height="28" />
+      <path d="M300 214q14 10 0 22M314 204q26 20 0 42" />
+    </>
+  ),
+  /* Jewellery campaign: a generic gem-set bangle in a spotlight */
+  jewel: (
+    <>
+      <path className="f" d="M200 60l-110 280h220z" />
+      <ellipse cx="200" cy="230" rx="110" ry="54" />
+      <ellipse cx="200" cy="222" rx="86" ry="38" />
+      {[120, 150, 182, 218, 250, 280].map((x, i) => <circle key={x} className={i % 2 ? "" : "a"} cx={x} cy={262 - Math.abs(200 - x) * 0.32} r="7" />)}
+      <path d="M200 120l12 20-12 20-12-20z" />
+      <path className="a" d="M150 110l8 8M250 110l-8 8M200 92v12" />
+    </>
+  ),
   /* IoT needle tracker: machine head, needle, sensor and signal */
   needle: (
     <>

@@ -4215,23 +4215,30 @@ a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 
 .page--campaign:has(.crPage) .siteFooter :is(h2, .siteFooter__title, .bigLink, a, p, span, .label) { color: var(--cr-ivory); }
 .page--campaign:has(.crPage) .siteFooter__dot { color: var(--cr-cyan); }
 
-/* ---------- Plate iconography: hairline illustrations for projects without photography ---------- */
+/* ---------- Plate iconography: hairline illustrations for projects without photography ----------
+   The plate is split into zones so the drawing and the stamp never overlap at any card size:
+   portrait plates stack art (top) over stamp (bottom); wide plates put the stamp left, art right.
+   All sizes use container units, so a desk snapshot scales exactly like a full card. */
 .plate__art {
   position: absolute;
-  inset: 9% 12% 22% 12%;
+  inset: 16% 14% 40% 14%;
   display: grid;
   place-items: center;
   transition: transform 1.2s var(--ease);
 }
-.plate--large .plate__art {
-  inset: 8% 30% 14% 30%;
+.plate:has(.plate__logo) .plate__art {
+  top: 22%;
+}
+.plate--large .plate__art,
+.plate--large:has(.plate__logo) .plate__art {
+  inset: 12% 8% 12% 50%;
 }
 .plate__glyph {
   width: 100%;
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2.4;
+  stroke-width: 1.6px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -4241,8 +4248,14 @@ a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 
 }
 .plate__glyph .a {
   stroke: var(--plate-accent, #f2d98c);
-  stroke-width: 3.2;
+  stroke-width: 2.2px;
 }
+/* constant line weight at every plate size, so small desk prints stay legible */
+.plate__glyph path, .plate__glyph rect, .plate__glyph circle, .plate__glyph ellipse {
+  vector-effect: non-scaling-stroke;
+}
+.plate--large .plate__glyph { stroke-width: 2px; }
+.plate--large .plate__glyph .a { stroke-width: 2.8px; }
 .plate__glyph .t {
   fill: currentColor;
   stroke: none;
@@ -4255,49 +4268,62 @@ a, button, summary, [role="button"] { -webkit-tap-highlight-color: rgba(22, 48, 
 .plate--brand { --plate-accent: #e2553f; }
 .plate__stamp {
   position: absolute;
-  left: 16px;
-  bottom: 36px;
+  left: 7cqw;
+  right: 7cqw;
+  bottom: 7cqw;
   z-index: 2;
+  padding-top: 3.5cqw;
+  border-top: 1px solid currentColor;
+  border-top-color: color-mix(in srgb, currentColor 35%, transparent);
   font-family: var(--serif);
   line-height: 0.85;
   letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 .plate__stampFigure {
-  font-size: clamp(40px, 4.6vw, 78px);
+  font-size: min(19cqw, 120px);
   font-variant-numeric: lining-nums;
 }
 .plate__stampWord {
   font-style: italic;
-  font-size: clamp(26px, 2.6vw, 44px);
+  font-size: min(11cqw, 72px);
 }
 .plate--large .plate__stamp {
-  left: 28px;
-  bottom: 44px;
+  left: 5cqw;
+  right: auto;
+  bottom: 6cqw;
+  max-width: 40cqw;
+  border-top: 0;
+  padding-top: 0;
 }
 .plate--large .plate__stampFigure {
-  font-size: clamp(64px, 9vw, 160px);
+  font-size: min(15cqw, 220px);
 }
 .plate--large .plate__stampWord {
-  font-size: clamp(40px, 5vw, 96px);
+  font-size: min(8cqw, 130px);
 }
 .plate__logo {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 5cqw;
+  right: 5cqw;
   z-index: 2;
   background: #f6f1e7;
-  padding: 7px 10px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1.6cqw 2.2cqw;
   line-height: 0;
 }
 .plate .plate__logo img {
   position: static;
   width: auto;
-  height: 18px;
+  height: max(12px, 5.5cqw);
+  max-width: 38cqw;
   object-fit: contain;
 }
 .plate--large .plate__logo img {
-  height: 30px;
+  height: min(3.2cqw, 36px);
+}
+/* with a logo in the top-right corner, the top note moves out of its way */
+.plate:has(.plate__logo) .plate__note {
+  right: 46cqw;
 }
 .workCard:hover .plate__art {
   transform: scale(1.05);

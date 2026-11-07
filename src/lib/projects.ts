@@ -38,6 +38,7 @@ const g = (file: string, caption: string, ratio: string) => ({ src: `/assets/web
 
 export const PROJECT_META: Record<string, ProjectMeta> = {
   "ops-1": {
+    glyph: "agv",
     figure: "22%",
     figureNote: "less material movement in the pilot",
     image: "/assets/web/agv-assembled.webp",
@@ -65,6 +66,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
   "brand-3": { glyph: "screens", figure: "10", figureNote: "UX laws, two platforms" },
   "offwhite-human": { glyph: "human", word: "HUMAN", figureNote: "Off-White campaign concepts" },
   "cartier-gtm-redirection": {
+    glyph: "jewel",
     word: "Cartier",
     figureNote: "Rogue · Maybach",
     image: "/assets/web/rogue-3.webp",
