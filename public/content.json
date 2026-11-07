@@ -53,16 +53,16 @@
         "id": "ops-1",
         "title": "Autonomous WIP Movement Robot",
         "context": "Shahi Exports — Industry 4.0 Fellowship",
-        "proof": "Mapped cut-bundle transport for 16 sewing lines and built a working RFID-routed robot, shown at Bharat Tex 2025.",
+        "proof": "Cut material movement 22% in a factory pilot.",
         "problem": "production floor WIP transport created delays, fatigue, and variability.",
         "approach": [
-          "mapped the cutting-to-sewing route: 16 lines, 64 loadings a day, one shared lift.",
-          "designed line-following + RFID station routing in Arduino C++.",
-          "built, broke and fixed the prototype; wrote factory implementation guidelines."
+          "mapped movement hotspots and constraints.",
+          "designed robot routing + control logic.",
+          "piloted and iterated with operators."
         ],
         "impact": [
-          "working prototype selected by the Ministry of Textiles for Bharat Tex 2025.",
-          "Best Graduation, Most Innovative and Most Commercially Viable Project at NIFT Delhi."
+          "22% reduction in aggregate movement.",
+          "improved throughput stability."
         ],
         "skills": "Systems design, experimentation, stakeholder ops.",
         "artifacts": [
@@ -85,16 +85,16 @@
         "id": "ops-2",
         "title": "IoT Needle Time-Tracker",
         "context": "Inzex Textiles - Process Automation",
-        "proof": "A sub-₹400 tracker that logs every pedal press to Google Sheets.",
-        "problem": "worker efficiency tracking absent on the floor; industrial monitoring too costly per machine. Built a low-cost logger feeding a cloud sheet for management.",
+        "proof": "A ₹400 tracker, part of a 25% output gain.",
+        "problem": "worker efficiency tracking mechanisms absent in company; slowing decisions. Implemented cost-effective system and embedded in back-end dashboarding for Management.",
         "approach": [
-          "chose pedal time as a proxy for needle running time.",
-          "built the sensor on a NodeMCU ESP8266 in Arduino C++.",
-          "logged events to Google Sheets through an Apps Script web app."
+          "defined signal taxonomy + instrumentation plan.",
+          "built Power BI dashboards + operating cadence.",
+          "trained team on weekly review rhythm."
         ],
         "impact": [
-          "under ₹400 of hardware per machine.",
-          "no manual entries: every pedal press logged automatically."
+          "25% output efficiency improvement.",
+          "reduced rework and variance."
         ],
         "skills": "IoT thinking, analytics, operating cadence.",
         "artifacts": [
@@ -193,6 +193,74 @@
         ],
         "skills": "Work measurement, operator rating, industrial engineering research.",
         "artifacts": []
+      },
+      {
+        "id": "nir-sorting",
+        "title": "NIR Fabric Sorting for Recycling",
+        "context": "NIFT Delhi — Research Methodology",
+        "proof": "One-way ANOVA showed blends and pure fibres differ enough under NIR to be sorted separately, not rejected.",
+        "problem": "NIR sorting lines reject blends, finished and aged fabrics as unrecognised, so they drop out of recycling.",
+        "approach": [
+          "framed the hypothesis on cotton, polyester, polycotton and polycotton-elastane spectra.",
+          "ran one-way ANOVA on 72 specimens × 18 readings in the 1300–1400 nm band.",
+          "read the peak shifts: cotton 1384 nm, polyester 1352, polycotton 1350, with elastane 1360."
+        ],
+        "impact": [
+          "F = 61.23 against a critical 2.73: blends form their own category, with about 95% separable."
+        ],
+        "skills": "Research design, statistics (ANOVA), textile science, circularity.",
+        "artifacts": []
+      },
+      {
+        "id": "solid-waste-review",
+        "title": "Solid Waste Management in Textiles",
+        "context": "NIFT Delhi — Designing a Manufacturing Setup",
+        "proof": "Mapped where a garment unit makes solid waste and benchmarked 3R, zero-waste and upcycling models from Patagonia to Saitex.",
+        "problem": "waste arises at every stage, from fabric store to finishing, but most fixes stop at biodegradability.",
+        "approach": [
+          "traced waste by source: fabric store, cutting, bundling, sewing floor, wet and chemical processing.",
+          "compared the waste hierarchy, zero-waste and 3R frameworks.",
+          "benchmarked Patagonia, Evrnu, Saitex and Brazil's fabric banks."
+        ],
+        "impact": [
+          "a case for incentivised, closed-loop waste systems; groundwork for the Welspun waste study."
+        ],
+        "skills": "Sustainable manufacturing, waste mapping, circular-economy benchmarking.",
+        "artifacts": []
+      },
+      {
+        "id": "wfx-plm",
+        "title": "PLM & Planning Tools: WFX and ZenTao",
+        "context": "NIFT Delhi — Apparel Merchandising & Project Management",
+        "proof": "Mapped WFX PLM across the full product lifecycle and audited ZenTao against a 43-point planning checklist.",
+        "problem": "merchandising teams need one system from tech pack to reorder, and planners need the right scheduling features.",
+        "approach": [
+          "mapped WFX features to six lifecycle stages, from tech pack and BOM to reorders.",
+          "reviewed Benetton India, Gokaldas Exports, Triburg and Villa deployments.",
+          "audited ZenTao for Gantt, PERT, critical path, resources and cost tracking."
+        ],
+        "impact": [
+          "a PLM selection brief and a feature gap list (no CPM, resource levelling or PERT time estimates in ZenTao)."
+        ],
+        "skills": "PLM, merchandising systems, production planning, software evaluation.",
+        "artifacts": []
+      },
+      {
+        "id": "auto-packing",
+        "title": "Automatic Counting & Sealing System",
+        "context": "NIFT Delhi — Mechatronics",
+        "proof": "Designed a two-conveyor station that counts 20 garments into a box, ejects it and seals it.",
+        "problem": "end-of-line packing in apparel is manual, slow and error-prone.",
+        "approach": [
+          "specified sensors and actuators: ultrasonic and IR counting, proximity stop, pneumatic ejection.",
+          "wrote the Arduino Uno control logic and an I2C bus plan.",
+          "set the control parameters: count threshold, stop distance, motor delay."
+        ],
+        "impact": [
+          "a full mechatronic design, specified to prototype stage."
+        ],
+        "skills": "Mechatronics, Arduino, sensor and actuator selection, packing automation.",
+        "artifacts": []
       }
     ],
     "merch": [
@@ -240,6 +308,40 @@
             "url": "/assets/cartier-rogue/merch/Bloomingdales_Customer_Feedback_Crop.jpeg"
           }
         ]
+      },
+      {
+        "id": "mango-intervention",
+        "title": "Reimagining Mango's Systems",
+        "context": "Parsons — Company Intervention",
+        "proof": "Store audits and floor-team interviews turned into a three-part plan for Mango: circularity, operations and social responsibility.",
+        "problem": "a fast-growing high-street brand running manual billing, reference-based stock control and circularity programmes customers never saw.",
+        "approach": [
+          "walked Mango's New York stores and interviewed the floor management team.",
+          "mapped issues across sustainability, operations and social justice.",
+          "proposed RFID self-checkout, AI allocation, cross-docking and a 2030 materials roadmap."
+        ],
+        "impact": [
+          "a future-scenario roadmap benchmarked against Zara, H&M and Decathlon's RFID checkout."
+        ],
+        "skills": "Retail operations audit, store observation, supply-chain and circularity strategy.",
+        "artifacts": []
+      },
+      {
+        "id": "doen-impact",
+        "title": "DÔEN: Environmental & Social Impact Strategy",
+        "context": "Parsons — Manufacturing & Production",
+        "proof": "Audited DÔEN's fibre mix and built a short-, medium- and long-term material, compliance and end-of-life strategy.",
+        "problem": "a natural-fibre brand with 2030 targets still relying on conventional cotton, polyester and rayon.",
+        "approach": [
+          "broke the catalogue down by fibre: organic cotton 25.4%, cotton 14.8%, wool blends 8%, silk 8%, polyester 5.3%.",
+          "matched each fibre to a lower-impact swap (BCI, GRS recycled polyester, TENCEL).",
+          "surveyed vendor compliance and traceability; proposed repair, upcycling and rental."
+        ],
+        "impact": [
+          "a phased material roadmap toward DÔEN's 2030 SDG commitments."
+        ],
+        "skills": "Fibre and material strategy, sourcing, social compliance, circularity.",
+        "artifacts": []
       }
     ],
     "brand": [
@@ -342,6 +444,23 @@
             "actionId": "cartier_rogue_route"
           }
         ]
+      },
+      {
+        "id": "tory-burch-digital",
+        "title": "Tory Burch: Digital Intervention Audit",
+        "context": "Parsons — Technology & Innovation",
+        "proof": "Audited Tory Burch's digital stack and named seven areas for intervention, from virtual try-on to AI demand forecasting.",
+        "problem": "a strong e-commerce early mover lagging tech-forward peers on personalisation and in-store technology.",
+        "approach": [
+          "reviewed e-commerce, supply chain, stores, product, social, sustainability and data.",
+          "benchmarked against tech-forward luxury peers.",
+          "prioritised AR try-on, AI personalisation and blockchain traceability."
+        ],
+        "impact": [
+          "a seven-area digital roadmap for a US luxury brand."
+        ],
+        "skills": "Digital retail strategy, e-commerce, luxury.",
+        "artifacts": []
       }
     ],
     "cred": [

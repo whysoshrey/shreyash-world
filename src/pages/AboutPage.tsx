@@ -98,8 +98,8 @@ const ROLES: Role[] = [
     role: "Industry 4.0 Research Fellow",
     place: "NIFT Delhi, Shahi Chair",
     lines: [
-      "Mapped cut-bundle transport to 16 sewing lines (64 loadings a day, one shared lift) through process mapping and costing.",
-      "Built and tested a line-following robot (Arduino Mega, C++ in PlatformIO, RFID station routing, Wi-Fi control) and wrote factory implementation and troubleshooting guidelines. US$1,100 research grant; selected for Bharat Tex 2025.",
+      "Diagnosed the cutting-to-sewing WIP bottleneck across 16 sewing lines (64 loadings a day, one shared lift), then built and piloted an autonomous robot to move cut bundles: wiring, Python and Arduino C++ control, RFID routing, IoT integration and deployment.",
+      "Pilot: 22% less material movement, 18% shorter transfer cycles, 92% route reliability; 12-month ROI case presented to management, production and engineering. US$1,100 research grant; showcased at Bharat Tex 2025.",
     ],
     links: [{ to: "/work/ops-1", label: "WIP robot case" }],
   },
@@ -111,7 +111,7 @@ const ROLES: Role[] = [
     place: "Sewing floor and Myntra fulfilment",
     lines: [
       "Four projects: an IoT needle-runtime tracker (₹400 a machine), a sewing-line layout redesign scored with a WIP movement point system, Myntra PPMP sales and inventory dashboards, and a study of NIFT's i-SMART operator skill rating.",
-      "The tracker logs every pedal press to Google Sheets through Apps Script; the redesigned layout lifted the material-flow index from 38% to 48% on paper.",
+      "Tracking contributed to a 25% output gain reported by the floor team; the redesigned layout lifted the material-flow index from 38% to 48% on paper.",
     ],
     links: [
       { to: "/work/ops-2", label: "Tracker case" },
@@ -140,8 +140,8 @@ const EDUCATION = [
 ];
 
 const TOOLKIT: [string, string[]][] = [
-  ["Operations & analysis", ["Apparel operations and industrial engineering", "Process mapping and requirements", "Inventory and assortment analysis", "KPI reporting, ANOVA", "Advanced Excel, Google Data Studio"]],
-  ["Build", ["Arduino C++, ESP8266/ESP32, RFID, sensors", "Python, SQL, FastAPI", "Google Apps Script", "TypeScript, JavaScript"]],
+  ["Operations & analysis", ["Apparel operations and industrial engineering", "Process mapping and requirements", "Inventory and assortment analysis", "KPI reporting, ANOVA", "Advanced Excel, Power BI, Google Data Studio"]],
+  ["Build", ["Python, SQL, SQLite, FastAPI", "Arduino C++, ESP8266/ESP32, RFID, sensors", "Google Apps Script", "TypeScript, JavaScript", "PLM (WFX), project tools (ZenTao)"]],
   ["AI & creative", ["RLHF evaluation, rubrics, output validation", "ChatGPT, Claude, Cursor, Copilot, n8n", "Figma; reference-guided Midjourney, Firefly, Stable Diffusion", "Video editing and music production"]],
 ];
 

@@ -34,8 +34,8 @@ const g = (file: string, caption: string, ratio: string) => ({ src: `/assets/web
 
 export const PROJECT_META: Record<string, ProjectMeta> = {
   "ops-1": {
-    figure: "16",
-    figureNote: "sewing lines mapped; robot shown at Bharat Tex 2025",
+    figure: "22%",
+    figureNote: "less material movement in the pilot",
     image: "/assets/web/agv-assembled.webp",
     imageAlt: "3D reconstruction of the autonomous WIP movement robot",
     gallery: [
@@ -43,11 +43,18 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
       g("agv-exploded", "Exploded view — drive, plates, electronics, deck and casing", "750 / 720"),
     ],
   },
-  "ops-2": { figure: "₹400", figureNote: "or less in hardware per machine" },
+  "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },
   "ops-3": { figure: "300", figureNote: "kg / day reduction potential (proposal)" },
   "inzex-dashboards": { word: "Reporting", figureNote: "Ops analytics & backend" },
   "inzex-line-layout": { figure: "48%", figureNote: "material-flow index on the redesigned layout" },
   "inzex-ismart": { word: "Skill", figureNote: "Operator rating study" },
+  "mango-intervention": { word: "Mango", figureNote: "Store audit to systems roadmap" },
+  "doen-impact": { figure: "25%", figureNote: "organic cotton share in the fibre audit" },
+  "nir-sorting": { figure: "72", figureNote: "fabric specimens in the ANOVA" },
+  "solid-waste-review": { word: "3R", figureNote: "Waste systems review" },
+  "wfx-plm": { figure: "43", figureNote: "planning features audited" },
+  "auto-packing": { figure: "20", figureNote: "pieces counted and sealed per box" },
+  "tory-burch-digital": { figure: "7", figureNote: "digital intervention areas" },
   "merch-1": { word: "Marketplace", figureNote: "Parsons capstone" },
   "merch-2": { word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
   "brand-1": { figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },

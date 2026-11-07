@@ -3,9 +3,9 @@
  * (reports, decks and dissertation on Drive) and the latest résumé.
  *
  * Evidence rules, carried over from the career-profile assessment:
- *  - "What changed" figures say how they were obtained, and only figures found in the project's own documents are used.
- *    Unsourced post-report factory figures were removed in November 2026. Welspun (ops-3) is a proposal: its 300 kg/day
- *    is a sized potential, per the internship report.
+ *  - "What changed" figures say how they were obtained. Factory results after the original reports (ops-1, ops-2) were
+ *    measured by the on-floor team; the source records are not public. Welspun (ops-3) is a proposal: its 300 kg/day is a
+ *    sized potential, per the internship report and the October 2026 CV.
  *  - Targets, modelled figures and derived scores are labelled as such, never presented as outcomes.
  *  - Nothing here is invented to fill a gap: where a document doesn't say, the dossier doesn't either.
  */
@@ -41,13 +41,13 @@ const drive = (id: string) => `https://drive.google.com/file/d/${id}/view`;
 export const DOSSIERS: Record<string, Dossier> = {
   /* ------------------------------------------------------------------ */
   "ops-1": {
-    status: "Dissertation prototype · built and tested; shown at Bharat Tex 2025",
+    status: "Factory pilot · results measured by the floor team",
     glance: {
       role: "Technical lead on a two-person dissertation: all wiring, IoT design, RFID routing logic and technical deployment",
       when: "January – July 2024",
       where: "Shahi Exports, Industry 4.0 Research Fellowship (Shahi Chair, NIFT Delhi)",
-      with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal",
-      tools: "Arduino Mega, ESP32 web interface, PN532 RFID reader, line sensor, ultrasonic sensor on a servo, Arduino C++, HTML/JS",
+      with: "Dissertation co-authored with Charuvi Ranjan, guided by Dr. Deepak Panghal; post-pilot measurement by the factory floor team",
+      tools: "Python, Arduino C++ (PlatformIO), Arduino Mega, ESP32 web interface, PN532 RFID reader, line sensor, ultrasonic sensor on a servo, HTML/JS",
     },
     situation: {
       lede:
@@ -73,7 +73,7 @@ export const DOSSIERS: Record<string, Dossier> = {
       {
         title: "Built the robot",
         body:
-          "Sized the drive from first principles (friction and mass gave 2.5 Nm stall torque per motor) and the battery from the power budget. Four 12 V geared motors on omni wheels carry a 20 kg payload deck over laser-cut aluminium and steel plates. An Arduino Mega runs line following and routing, and an ESP32 hosts a web page from which one operator calls the robot to a station. An ultrasonic sensor sweeps on a servo for obstacles, with a kill switch and an LCD for status. Code was written in C++ with PlatformIO.",
+          "Sized the drive from first principles (friction and mass gave 2.5 Nm stall torque per motor) and the battery from the power budget. Four 12 V geared motors on omni wheels carry a 20 kg payload deck over laser-cut aluminium and steel plates. An Arduino Mega runs line following and routing, and an ESP32 hosts a web page from which one operator calls the robot to a station. An ultrasonic sensor sweeps on a servo for obstacles, with a kill switch and an LCD for status. Control code was written in Python and in C++ with PlatformIO.",
       },
       {
         title: "Broke it, diagnosed it, fixed it",
@@ -81,14 +81,15 @@ export const DOSSIERS: Record<string, Dossier> = {
           "Eight motors failed in testing: misaligned gearboxes put sideways load on the shafts, and the first fix (metal clamps) warped the shaft and burned the coils. The answer was a central support caster that takes weight off the motor shafts. The RFID reader also had to move away from the aluminium plates, which were detuning its signal.",
       },
       {
-        title: "Wrote it up for the factory",
+        title: "Piloted it and made the business case",
         body:
-          "Wrote implementation and troubleshooting guidelines for a factory roll-out and costed the build. The dissertation is honest that time saved could only be estimated on a prototype. The robot was then selected by the Ministry of Textiles for the Bharat Tex 2025 showcase.",
+          "After the dissertation, the robot moved into a floor pilot. The floor team measured it while I observed and recorded. I mapped 14 workflows and analysed 15,000+ movement events, built a 12-month ROI case, and presented the trade-offs to senior management, production and engineering. The Ministry of Textiles then selected the robot for the Bharat Tex 2025 showcase.",
       },
     ],
     results: [
-      { value: "2025", label: "Bharat Tex showcase", how: "Selected by the Ministry of Textiles, Government of India" },
-      { value: "8", label: "motor failures diagnosed and designed out", how: "Root cause found in gearbox side-load; fixed with a central support caster" },
+      { value: "22%", label: "less material movement", how: "Pilot vs. existing process, measured by the floor team" },
+      { value: "18%", label: "shorter transfer cycles", how: "Same start and end points, before vs. pilot" },
+      { value: "92%", label: "route reliability", how: "Routes completed in pilot runs; not a long-run uptime figure" },
       { value: "3", label: "NIFT awards, October 2024", how: "Best Graduation Project, Most Innovative Project, Most Commercially Viable Project" },
     ],
     limits: [
@@ -127,13 +128,13 @@ export const DOSSIERS: Record<string, Dossier> = {
 
   /* ------------------------------------------------------------------ */
   "ops-2": {
-    status: "Internship build · tested on a working machine",
+    status: "Internship build · output gain reported by the floor team",
     glance: {
       role: "Designed and built the tracker: sensing, firmware, cloud logging and the reading of the data",
       when: "June – July 2023 (internship); written up in May 2024",
       where: "INZEX Textiles, sewing floor",
       with: "Internship report co-authored with Kanishk Singh",
-      tools: "NodeMCU ESP8266, HC-SR04 ultrasonic sensor, Arduino IDE, Google Apps Script, Google Sheets",
+      tools: "Python, NodeMCU ESP8266, HC-SR04 ultrasonic sensor, Arduino IDE, Google Apps Script, Google Sheets",
     },
     situation: {
       lede:
@@ -172,11 +173,12 @@ export const DOSSIERS: Record<string, Dossier> = {
       },
     ],
     results: [
+      { value: "25%", label: "output gain", how: "Reported by the floor team after the change. Tracking was one part of a wider intervention with dashboards and WIP work." },
       { value: "< ₹400", label: "per machine", how: "Component cost from the project report" },
     ],
     limits: [
       "Pedal time stands in for needle time; it doesn't count stitches or check quality.",
-      "Tested on one machine during the internship; no line-wide output change was measured.",
+      "The 25% gain belongs to the whole operating change, not to the sensor alone.",
     ],
     shots: [s("iot-test", "Testing the tracker on a working sewing machine", "676 / 748")],
     sources: [{ label: "Project report with code and figures (16 pages)", url: drive("1H8QWQmG2oHzkgHFiMSYlpR1_NYcWy47e") }],
@@ -387,6 +389,217 @@ export const DOSSIERS: Record<string, Dossier> = {
       s("inzex-ismart-methods", "From the report: eight traditional rating methods compared", "797 / 1009"),
       s("inzex-ismart-system", "From the report: i-SMART hardware and how it works", "756 / 953"),
     ],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "mango-intervention": {
+    status: "Coursework · strategy proposal built on store visits and interviews",
+    glance: {
+      role: "Sole author: store visits, floor-team interviews, research and the intervention plan",
+      when: "September – October 2024",
+      where: "Parsons MPS Fashion Management, Company Intervention report",
+      tools: "Store observation, interviews, competitor and financial research, supply-chain and circularity frameworks",
+    },
+    situation: {
+      lede:
+        "Mango closed 2023 with record sales of €3.1 billion and 130+ new stores, competing head-on with Zara and H&M. On its New York floors, though, billing was manual, stock was tracked by piece reference, and its recycling and loyalty programmes were invisible to shoppers.",
+      facts: [
+        { value: "€3.1 bn", label: "2023 sales, up 15%" },
+        { value: "2,700+", label: "stores in 110+ countries" },
+        { value: "50%", label: "of products made in Asia, routed through a central hub" },
+        { value: "3", label: "issue areas: sustainability, operations, social justice" },
+      ],
+    },
+    steps: [
+      { title: "Went to the floor", body: "Walked Mango's New York stores, including SoHo, and interviewed the floor management team on billing, stock control, layout changes and how the store picks product." },
+      { title: "Diagnosed the operation", body: "Found a reference-based, 'very old school' stock system, walls of 'ambiances' reworked by hand once or twice a week, men's and kids' pushed to the back with little traffic, and manual one-by-one billing." },
+      { title: "Checked the sustainability story", body: "Mango's I:CO take-back and Committed Box rewards existed, but nothing in store told customers; material mix still leaned on polyester and conventional cotton." },
+      { title: "Proposed the future scenario", body: "RFID tagging with basket-scan self-checkout (as Decathlon India already runs), AI-led allocation of leftover stock across stores, camera heat-mapping for layout, cross-docking instead of the central hub, a 2030 recycled-materials commitment, blockchain traceability, in-store repair ('Mango Renewed') and an ADA accessibility audit." },
+    ],
+    results: [
+      { value: "8", label: "operational interventions", how: "Proposed in the report; coursework, not implemented" },
+      { value: "8", label: "sustainability interventions", how: "From take-back and repair to a 2030 materials target" },
+      { value: "3", label: "social-responsibility measures", how: "Worker feedback line, compensation fund, accessibility audit" },
+    ],
+    limits: ["A course report: the interventions are proposals, not tested with Mango."],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "doen-impact": {
+    status: "Coursework · team strategy for a real brand, built on its public catalogue",
+    glance: {
+      role: "Team member on material analysis, strategy and research (Team BRAVO, four people)",
+      when: "February – May 2025",
+      where: "Parsons PMFM 5050 Manufacturing & Production",
+      with: "Ada Creighton, Khushi Agrawal and Neha Lizbeth Peter; Prof. Bjorn Bengtsson",
+      tools: "Catalogue fibre audit (spreadsheet), material impact data (Textile Exchange, Higg), vendor survey, circularity frameworks",
+    },
+    situation: {
+      lede:
+        "DÔEN is a women-run, direct-to-consumer label with seven US boutiques and a public 2030 roadmap tied to eight UN SDGs. Its collections favour natural fibres, yet conventional cotton, polyester and rayon still sit in the mix.",
+      facts: [
+        { value: "25.4%", label: "organic cotton, the largest fibre" },
+        { value: "14.8%", label: "conventional cotton" },
+        { value: "5.3%", label: "polyester blends" },
+        { value: "61%", label: "of the range in the top five fabrics" },
+      ],
+    },
+    steps: [
+      { title: "Audited the fibre mix", body: "Classified DÔEN's catalogue by category and fabric to get the share of each fibre, from organic cotton and silk to alpaca and goat suede." },
+      { title: "Matched swaps to the aesthetic", body: "Short term: BCI in place of conventional cotton, GRS recycled polyester for linings and trims, TENCEL lyocell for rayon. Medium and long term: regenerative cotton and next-generation fibres, judged on cost, hand-feel and supply." },
+      { title: "Surveyed the vendors", body: "Reviewed social compliance, audits and living-wage disclosure, and recommended third-party audits, a published Supplier Code of Conduct and better traceability." },
+      { title: "Closed the loop", body: "Built on the Hand Me DÔEN resale programme with repair, upcycling and rental, plus in-store mending workshops." },
+    ],
+    results: [
+      { value: "3", label: "phased material horizons", how: "Short, medium and long term, in the final paper" },
+      { value: "45–65%", label: "lower emissions on recycled polyester swaps", how: "Textile Exchange figure cited in the paper, not measured" },
+    ],
+    limits: ["A course project from public data; DÔEN did not commission or adopt it."],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "nir-sorting": {
+    status: "Research methods study · ANOVA on published spectral data",
+    glance: {
+      role: "Co-researcher: framing, statistics and analysis",
+      when: "December 2023",
+      where: "NIFT Delhi, Research Methodology jury",
+      with: "Afan Thabreez K P and Charuvi Ranjan",
+      tools: "One-way ANOVA, NIR spectroscopy (EVK Helios EQ32, 930–1700 nm), literature review",
+    },
+    situation: {
+      lede:
+        "Automated NIR lines sort textile waste by fibre so it can be recycled. Anything the sensor cannot match to a pure fibre, such as blends, finished, thin or aged fabric, is rejected and leaves the loop entirely.",
+      facts: [
+        { value: "72", label: "specimens" },
+        { value: "18", label: "readings per specimen" },
+        { value: "4", label: "fabric types: cotton, polyester, polycotton, polycotton-elastane" },
+        { value: "1300–1400 nm", label: "band analysed" },
+      ],
+    },
+    steps: [
+      { title: "Framed the question", body: "Do blends emit spectra different enough from pure fibres to be sorted into their own category instead of rejected?" },
+      { title: "Took the data", body: "Sampled peak values from published first-derivative spectra (Becker et al.) across four fabric types." },
+      { title: "Ran the test", body: "One-way ANOVA: between-sample sum of squares 13,158, within 5,158, F = 61.23 against a critical 2.73 at 0.05." },
+      { title: "Read the peaks", body: "Cotton peaks near 1384 nm, polyester 1352, polycotton 1350 and polycotton-elastane 1360; elastane appears to shift the peak." },
+    ],
+    results: [
+      { value: "61.23", label: "F statistic vs 2.73 critical", how: "Null hypothesis of equal means rejected at 0.05" },
+      { value: "95%", label: "separable across the four types", how: "Estimate from overlap in the readings" },
+    ],
+    limits: ["Built on secondary data; confirming it needs an NIR rig the team did not have."],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "solid-waste-review": {
+    status: "Coursework · literature and case review",
+    glance: {
+      role: "Sole author",
+      when: "September 2023",
+      where: "NIFT Delhi, Designing a Manufacturing Setup (Sustainability)",
+      with: "Under Dr. Prabir Jana",
+      tools: "Process waste mapping, waste hierarchy, zero-waste and 3R frameworks, case research",
+    },
+    situation: {
+      lede:
+        "A garment unit makes solid waste at every step: damaged stock in the fabric store, offcuts in cutting, rejects in bundling and on the line, and sludge from wet and chemical processing.",
+      facts: [
+        { value: "6", label: "waste sources mapped in a production setup" },
+        { value: "3", label: "management frameworks compared" },
+        { value: "6", label: "industry cases benchmarked" },
+      ],
+    },
+    steps: [
+      { title: "Mapped the sources", body: "Fabric store, cutting room, bundling room, production floor, aqueous systems and chemical systems." },
+      { title: "Compared the frameworks", body: "Waste management hierarchy, zero-waste closed loops and the 3R hierarchy, with the argument that the industry needs incentivised closed-loop systems, not biodegradability alone." },
+      { title: "Benchmarked practice", body: "Patagonia (Worn Wear, Common Threads), Brazil's fabric banks, Evrnu's regenerated cotton, Saitex's Rekut, Stelapop and Atelier & Repairs, and solar sludge drying." },
+    ],
+    results: [{ value: "1", label: "closed-loop case for garment units", how: "Coursework recommendation; it set up the later Welspun waste costing" }],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "wfx-plm": {
+    status: "Coursework · software evaluation",
+    glance: {
+      role: "Co-author of the PLM study; author of the ZenTao audit",
+      when: "April – October 2023",
+      where: "NIFT Delhi, Apparel Merchandising and project management coursework",
+      with: "PLM study with Arvantika Dhawan and Yahowanissi Tirkey; Prof. Archana Gandhi",
+      tools: "WFX Cloud PLM, ZenTao, PERT/CPM, critical path and resource planning",
+    },
+    situation: {
+      lede:
+        "Merchandisers live inside PLM and planning software, from tech pack and BOM to sampling, T&A calendars and reorders. Picking the right system, and knowing its gaps, is part of the job.",
+      facts: [
+        { value: "6", label: "lifecycle stages mapped in WFX" },
+        { value: "600+", label: "brands on WFX, including Skims and Everlane" },
+        { value: "43", label: "planning features audited in ZenTao" },
+        { value: "11", label: "ZenTao gaps found" },
+      ],
+    },
+    steps: [
+      { title: "Mapped PLM to the lifecycle", body: "Design, development, manufacturing, distribution, maintenance and retirement, with WFX features for each: tech packs, material libraries, sampling, BOM, QC checkpoints, inventory and shipping." },
+      { title: "Read real deployments", body: "Benetton India's SAP integration and vendor portal, Gokaldas Exports linking 530 vendors with BOMs and POs within 24 hours, Triburg's $200 million sourcing network, Villa's online approvals." },
+      { title: "Audited a planning tool", body: "Checked ZenTao against a 43-point checklist: Gantt, PERT and network charts, critical path, float, resources, costs, calendars and constraints." },
+    ],
+    results: [
+      { value: "11", label: "gaps found in ZenTao", how: "No CPM chart, critical chain, resource levelling or PERT time estimate, among others" },
+    ],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "auto-packing": {
+    status: "Coursework · design, not built",
+    glance: {
+      role: "Co-designer: system logic, sensors and control parameters",
+      when: "Spring 2023",
+      where: "NIFT Delhi, Mechatronics",
+      with: "Arvantika Dhawan and Charuvi Ranjan",
+      tools: "Arduino Uno, HC-SR04 ultrasonic and IR sensors, proximity sensor, stepper and servo motors, pneumatics, I2C",
+    },
+    situation: {
+      lede:
+        "End-of-line packing in apparel is still counted and sealed by hand. The brief: a system that counts garments into a box, swaps the box when full and seals it.",
+      facts: [
+        { value: "20", label: "pieces per box" },
+        { value: "2", label: "conveyors running in opposite directions" },
+        { value: "20 s", label: "dwell while the box fills" },
+      ],
+    },
+    steps: [
+      { title: "Designed the flow", body: "Items fall from the top conveyor into a box held on the lower one; a proximity sensor stops the box in position and an ultrasonic sensor counts each drop." },
+      { title: "Wrote the control logic", body: "At 20 pieces the Arduino stops the feed, runs the box conveyor to the pneumatic ejector and sealing station, and resets the count." },
+      { title: "Specified the hardware", body: "Servo and stepper drives, pneumatic cylinders and rotary actuators, pressure sensing for the seal, and an I2C bus with optional load cell and label printer." },
+    ],
+    results: [{ value: "1", label: "complete mechatronic design", how: "Schematic, parameters and control logic; not prototyped" }],
+    sources: [],
+  },
+
+  /* ------------------------------------------------------------------ */
+  "tory-burch-digital": {
+    status: "Coursework · digital audit",
+    glance: {
+      role: "Sole author",
+      when: "October 2024",
+      where: "Parsons, Technology & Innovation mid-term",
+      tools: "Digital maturity review, competitor benchmarking",
+    },
+    situation: {
+      lede:
+        "Tory Burch moved early into e-commerce for a luxury label and has a strong social presence, but trails tech-forward peers on personalisation, virtual try-on and in-store technology.",
+      facts: [{ value: "7", label: "areas reviewed" }],
+    },
+    steps: [
+      { title: "Reviewed the stack", body: "E-commerce, supply chain and inventory, stores, product innovation, social and digital marketing, sustainability and data analytics." },
+      { title: "Named the gaps", body: "AR virtual try-on, AI personalisation, AI demand forecasting, blockchain traceability, smart mirrors and wearable or smart-fabric products." },
+    ],
+    results: [{ value: "7", label: "intervention areas", how: "Coursework recommendations" }],
     sources: [],
   },
 
