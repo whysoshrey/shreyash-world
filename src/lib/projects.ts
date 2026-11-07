@@ -1,4 +1,5 @@
 import type { Artifact, Content, Door, DoorKey, Exhibit } from "./types";
+import type { GlyphKey } from "../components/site/Glyphs";
 
 /** Resolve a site-relative asset path against the Vite base (GitHub Pages sub-path). */
 export function asset(path: string) {
@@ -23,6 +24,9 @@ export type ProjectMeta = {
   figure?: string;
   figureNote?: string;
   word?: string; // typographic plate word when no metric/image exists
+  glyph?: GlyphKey; // custom illustration when there is no photography
+  logo?: string; // file stem in /assets/web/logos (logo-<stem>.png)
+  logoAlt?: string;
   image?: string;
   imageAlt?: string;
   imagePosition?: string;
@@ -43,23 +47,23 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
       g("agv-exploded", "Exploded view — drive, plates, electronics, deck and casing", "750 / 720"),
     ],
   },
-  "ops-2": { figure: "25%", figureNote: "output efficiency improvement" },
-  "ops-3": { figure: "300", figureNote: "kg / day reduction potential (proposal)" },
-  "inzex-dashboards": { word: "Reporting", figureNote: "Ops analytics & backend" },
-  "inzex-line-layout": { figure: "48%", figureNote: "material-flow index on the redesigned layout" },
-  "inzex-ismart": { word: "Skill", figureNote: "Operator rating study" },
-  "mango-intervention": { word: "Mango", figureNote: "Store audit to systems roadmap" },
-  "doen-impact": { figure: "25%", figureNote: "organic cotton share in the fibre audit" },
-  "nir-sorting": { figure: "72", figureNote: "fabric specimens in the ANOVA" },
-  "solid-waste-review": { word: "3R", figureNote: "Waste systems review" },
-  "wfx-plm": { figure: "43", figureNote: "planning features audited" },
-  "auto-packing": { figure: "20", figureNote: "pieces counted and sealed per box" },
-  "tory-burch-digital": { figure: "7", figureNote: "digital intervention areas" },
-  "merch-1": { word: "Marketplace", figureNote: "Parsons capstone" },
-  "merch-2": { word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
-  "brand-1": { figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },
-  "brand-3": { figure: "10", figureNote: "UX laws, two platforms" },
-  "offwhite-human": { word: "HUMAN", figureNote: "Off-White campaign concepts" },
+  "ops-2": { glyph: "needle", logo: "inzex", logoAlt: "INZEX", figure: "25%", figureNote: "output efficiency improvement" },
+  "ops-3": { glyph: "loom", logo: "welspun", logoAlt: "Welspun", figure: "300", figureNote: "kg / day reduction potential (proposal)" },
+  "inzex-dashboards": { glyph: "dashboard", logo: "inzex", logoAlt: "INZEX", word: "Reporting", figureNote: "Ops analytics & backend" },
+  "inzex-line-layout": { glyph: "layout", logo: "inzex", logoAlt: "INZEX", figure: "48%", figureNote: "material-flow index on the redesigned layout" },
+  "inzex-ismart": { glyph: "gauge", logo: "inzex", logoAlt: "INZEX", word: "Skill", figureNote: "Operator rating study" },
+  "mango-intervention": { glyph: "storefront", word: "Mango", figureNote: "Store audit to systems roadmap" },
+  "doen-impact": { glyph: "fibres", figure: "25%", figureNote: "organic cotton share in the fibre audit" },
+  "nir-sorting": { glyph: "spectrum", figure: "72", figureNote: "fabric specimens in the ANOVA" },
+  "solid-waste-review": { glyph: "cycle", word: "3R", figureNote: "Waste systems review" },
+  "wfx-plm": { glyph: "gantt", figure: "43", figureNote: "planning features audited" },
+  "auto-packing": { glyph: "conveyor", figure: "20", figureNote: "pieces counted and sealed per box" },
+  "tory-burch-digital": { glyph: "phone", figure: "7", figureNote: "digital intervention areas" },
+  "merch-1": { glyph: "market", word: "Marketplace", figureNote: "Parsons capstone" },
+  "merch-2": { glyph: "hanger", logo: "bloomingdales", logoAlt: "Bloomingdale's", word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
+  "brand-1": { glyph: "ticket", figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },
+  "brand-3": { glyph: "screens", figure: "10", figureNote: "UX laws, two platforms" },
+  "offwhite-human": { glyph: "human", word: "HUMAN", figureNote: "Off-White campaign concepts" },
   "cartier-gtm-redirection": {
     word: "Cartier",
     figureNote: "Rogue · Maybach",

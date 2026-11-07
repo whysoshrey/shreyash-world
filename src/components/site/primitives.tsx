@@ -1,5 +1,6 @@
 import { animate, motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { PlateGlyph } from "./Glyphs";
 import { easeOutExpo } from "../../lib/motion";
 import { asset, type ProjectMeta } from "../../lib/projects";
 import type { DoorKey } from "../../lib/types";
@@ -123,11 +124,25 @@ export function ProjectPlate(props: {
           decoding="async"
           style={meta.imagePosition ? { objectPosition: meta.imagePosition } : undefined}
         />
+      ) : meta.glyph ? (
+        <>
+          <div className="plate__art" aria-hidden="true">
+            <PlateGlyph name={meta.glyph} />
+          </div>
+          <div className="plate__stamp" aria-hidden="true">
+            {meta.figure ? <span className="plate__stampFigure">{meta.figure}</span> : <span className="plate__stampWord">{meta.word}</span>}
+          </div>
+        </>
       ) : (
         <div className="plate__type" aria-hidden="true">
           {meta.figure ? <span className="plate__figure">{meta.figure}</span> : <span className="plate__word">{meta.word}</span>}
         </div>
       )}
+      {meta.logo && !meta.image ? (
+        <div className="plate__logo">
+          <img src={asset(`/assets/web/logos/logo-${meta.logo}.png`)} alt={meta.logoAlt ?? ""} loading="lazy" decoding="async" />
+        </div>
+      ) : null}
       {meta.image && meta.figure ? (
         <div className="plate__chip" aria-hidden="true">
           <strong>{meta.figure}</strong> {meta.figureNote}
