@@ -128,3 +128,36 @@ export function sentence(s: string) {
 export function isExternal(url: string) {
   return /^https?:\/\//.test(url);
 }
+
+/** Sub-headings on the Work page: each discipline is split into themed groups, listed in this order. */
+export type WorkGroup = { key: string; title: string; ids: string[] };
+
+export const WORK_GROUPS: Partial<Record<DoorKey, WorkGroup[]>> = {
+  ops: [
+    { key: "circularity", title: "Circularity & Waste", ids: ["nir-sorting", "ops-3", "solid-waste-review"] },
+    { key: "automation", title: "Automation & Robotics", ids: ["ops-1", "auto-packing"] },
+    { key: "data", title: "IoT, Data & Dashboards", ids: ["ops-2", "inzex-dashboards"] },
+    { key: "ie", title: "Industrial Engineering & Planning", ids: ["inzex-line-layout", "inzex-ismart", "wfx-plm"] },
+  ],
+  merch: [
+    { key: "strategy", title: "Strategy & Company Interventions", ids: ["merch-1", "mango-intervention", "doen-impact"] },
+    { key: "retail", title: "Retail Floor", ids: ["merch-2"] },
+  ],
+  brand: [
+    { key: "campaigns", title: "Campaigns & Go-to-Market", ids: ["cartier-gtm-redirection", "offwhite-human", "brand-1"] },
+    { key: "digital", title: "Digital Experience & UX", ids: ["tory-burch-digital", "brand-3"] },
+  ],
+};
+
+/** Splits work items into sub-headed groups; anything unassigned lands in a final "More" group so nothing disappears. */
+export function groupWork(items: WorkItem[], door: DoorKey, label = "More"): (WorkGroup & { items: WorkItem[] })[] {
+  const used = new Set<string>();
+  const out = (WORK_GROUPS[door] ?? []).map((g) => {
+    const its = g.ids.map((id) => items.find((w) => w.exhibit.id === id)).filter(Boolean) as WorkItem[];
+    its.forEach((w) => used.add(w.exhibit.id));
+    return { ...g, key: `${door}-${g.key}`, items: its };
+  });
+  const rest = items.filter((w) => !used.has(w.exhibit.id));
+  if (rest.length) out.push({ key: `${door}-more`, title: label, ids: [], items: rest });
+  return out.filter((g) => g.items.length);
+}
