@@ -346,21 +346,68 @@
       {
         "id": "agent-workflows",
         "title": "Fashion Workflows for AI Agents",
-        "subtitle": "Agentic AI benchmarks · Mercor",
-        "context": "Agentic AI benchmarks · Mercor · Sep–Oct 2026",
+        "subtitle": "Project Odex · agentic AI benchmarks · Mercor",
+        "context": "Project Odex · Agentic AI benchmarks · Mercor · Sep–Oct 2026",
         "proof": "Real fashion processes turned into executable benchmarks for autonomous computer-use agents, graded step by step.",
         "problem": "Computer-use agents can click, type and open files, but they don't know how a merchandiser, sourcing manager or store planner actually works. To test them, fashion work had to be broken into tasks an agent can execute and an evaluator can check at every step, not just at the final file.",
         "approach": [
-          "Architected multi-stage desktop-automation benchmarks that turn real fashion processes into executable workflows, spanning merchandising, product development, sourcing, inventory management and retail operations.",
-          "Decomposed those processes into granular task specifications: product-data extraction, SKU and assortment management, spreadsheet modelling, digital documentation, browser research and cross-application data orchestration.",
-          "Wrote application-level execution protocols covering GUI navigation, visual interface recognition, state-transition tracking, structured data handling, file handling and multi-step automation.",
-          "Built realistic, industry-contextualised scenarios that test whether an agent can interpret a fashion business requirement, work an operational dataset and deliver an end-to-end result across different software."
+          "Translated real fashion processes into executable desktop scenarios for autonomous computer-use agents: merchandising and assortment operations, product development and product intelligence, sourcing coordination, inventory and sales analysis, and retail reporting.",
+          "Specified every scenario in six parts: the role and business function, the goal and its completion conditions, the starting files and data, the applications required, the ordered sequence of observable actions, and the deliverables with the criteria for checking them.",
+          "Wrote application-level execution protocols covering GUI navigation, visual interface recognition, browser research, spreadsheet transformation and formula-driven analysis, document and presentation authoring, file handling and export, and state tracking across applications.",
+          "A representative workflow: a 24-SKU retail sales dataset analysed in Apple Numbers into five commercial metrics and two charts, turned into a three-slide Keynote presentation, then assembled into a two-page PDF brief in Preview, all inside a roughly 20-minute task window."
         ],
         "impact": [
-          "Agents evaluated on step-level execution, instruction adherence, contextual accuracy, exception handling, data integrity and final deliverable validation.",
-          "Benchmarks span five areas of the fashion value chain: merchandising, product development, sourcing, inventory and retail operations."
+          "Agents graded on task completion, action-sequence fidelity, instruction adherence, data integrity, contextual accuracy, exception handling, recovery from execution errors and the usability of the final deliverable.",
+          "Benchmarks span five areas of the fashion value chain: merchandising, product development, sourcing, inventory and retail operations, each ending in a verifiable business deliverable rather than a single app action."
         ],
         "skills": "Agent evaluation · task decomposition · GUI workflow specification · spreadsheet modelling · merchandising and inventory logic",
+        "artifacts": [],
+        "also": [
+          "ops"
+        ]
+      },
+      {
+        "id": "handshake-setra",
+        "title": "Multimodal Fashion AI Evaluation",
+        "subtitle": "Project Setra · Handshake AI",
+        "context": "Project Setra · Human-in-the-loop evaluation · Handshake AI",
+        "proof": "Domain-grounded evaluation of a 1.76-trillion-parameter mixture-of-experts model on fashion product understanding, across 35+ apparel taxonomies.",
+        "problem": "A multimodal model can describe a garment fluently and still get it wrong: the wrong category, an invented attribute, a fit claim the image doesn't support, a sustainability claim with no evidence behind it. Catching that takes someone who knows how garments are built, classified and sold, not general-purpose response rating.",
+        "approach": [
+          "Evaluated multimodal outputs from a 1.76-trillion-parameter mixture-of-experts model in fashion contexts, applying apparel technology, garment construction, product development and merchandising knowledge.",
+          "Checked product taxonomy and classification: category assignment and hierarchical consistency across product types and subcategories.",
+          "Checked attribute extraction and normalisation, product detail page copy (grounding, attribute fidelity, completeness, commercial relevance), and fit and sizing reasoning against garment proportions.",
+          "Checked visual garment realism (construction, materials, silhouette, proportion) and whether sustainability claims were specific and supported, flagging overstated or unsupported ones.",
+          "Cross-checked visual evidence against textual product information, and turned tacit fashion knowledge into explicit, repeatable evaluation judgements."
+        ],
+        "impact": [
+          "Review consistency raised to 96%; repeat errors cut 22% across 35+ apparel taxonomies.",
+          "Systematic detection of hallucinations, attribute mismatches, unsupported claims and fashion-specific failure modes."
+        ],
+        "skills": "Multimodal model evaluation · human-in-the-loop QA · apparel taxonomy · attribute hierarchies · PDP content · fit and sizing · sustainability-claim review",
+        "artifacts": [],
+        "also": [
+          "brand"
+        ]
+      },
+      {
+        "id": "handshake-candor",
+        "title": "Enterprise AI Artifact Evaluation",
+        "subtitle": "Project Candor · Handshake AI",
+        "context": "Project Candor · AI-generated decks, documents and spreadsheets · Handshake AI",
+        "proof": "Judged AI-generated presentations, documents and spreadsheets as complete professional deliverables, not just answers to a prompt.",
+        "problem": "An AI-generated deck or spreadsheet can look finished and still be unusable: a figure that isn't in the source, a missed requirement, a chart that misleads, a file nobody can edit. The question was whether each artifact would survive a real professional workflow.",
+        "approach": [
+          "Evaluated AI-generated presentations, documents and spreadsheets for enterprise knowledge work, treating each one as a complete work product.",
+          "Scored factual grounding, instruction and prompt adherence (requirements, constraints, structure, audience), and narrative coherence.",
+          "Scored visual communication (layout, hierarchy, chart and table choices, legibility), editability and structural integrity, functional usability and cross-format consistency.",
+          "Ran comparative assessments and classified recurring failure modes for quality benchmarking."
+        ],
+        "impact": [
+          "Failure classes caught: hallucinated or unsupported content, omitted requirements, numerical, textual or structural inconsistencies, weak narrative, poor information hierarchy, formatting defects and loss of editability.",
+          "A consistent read on the gap that matters most in enterprise AI: outputs that look polished but fail practical use."
+        ],
+        "skills": "Enterprise AI QA · factual-consistency checks · instruction compliance · comparative benchmarking · failure-mode classification · document, deck and spreadsheet quality",
         "artifacts": [],
         "also": [
           "ops"

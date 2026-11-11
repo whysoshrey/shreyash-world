@@ -58,7 +58,7 @@ const ROLES: Role[] = [
   {
     when: "Sep – Oct 2026",
     org: "Mercor",
-    role: "Agentic AI Workflow Architect, Fashion & Retail Operations",
+    role: "Agentic AI Workflow Architect, Fashion & Retail Operations (Project Odex)",
     anchor: "agent-workflows",
     kind: "Agentic AI",
     place: "Remote",
@@ -78,9 +78,13 @@ const ROLES: Role[] = [
     kind: "AI evaluation",
     place: "Remote",
     lines: [
-      "Write fashion-retail prompts and evaluate and revise frontier-model output across 35+ taxonomies: garment attributes, product-page copy, size and fit, claims, merchandising logic.",
-      "Turn reviewer feedback into labels, rubrics and issue logs; built repeatable human-in-the-loop QA workflows. Also evaluate generated business documents: decks, documents and spreadsheets.",
-      "Review consistency raised to 96%; repeat classification errors down 22%.",
+      "Project Setra: human-in-the-loop evaluation of a 1.76-trillion-parameter mixture-of-experts model on fashion product understanding across 35+ taxonomies: classification, attributes, product-page copy, fit and sizing, garment realism and sustainability claims.",
+      "Project Candor: evaluated AI-generated decks, documents and spreadsheets as professional deliverables, for factual grounding, instruction adherence, narrative, visual communication, editability and usability.",
+      "Turned reviewer feedback into labels, rubrics and issue logs. Review consistency raised to 96%; repeat classification errors down 22%.",
+    ],
+    links: [
+      { to: "/work/handshake-setra", label: "Project Setra" },
+      { to: "/work/handshake-candor", label: "Project Candor" },
     ],
   },
   {
