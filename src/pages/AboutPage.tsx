@@ -10,10 +10,10 @@ const BASE = import.meta.env.BASE_URL;
 
 /* ---------- the journey: dates from the latest résumé ---------- */
 type Kind = "edu" | "role" | "ny";
-type Ev = { at: number; kind: Kind; side: "up" | "down"; lane: 0 | 1; title: string; note: string; to?: string };
+type Ev = { at: number; kind: Kind; side: "up" | "down"; lane: 0 | 1; title: string; note: string; to?: string; end?: boolean };
 const START = 2020;
 const END = 2027;
-const NOW = 2026 + 9.5 / 12;
+const NOW = 2026 + 10.4 / 12;
 /** Recent years carry more events, so the axis gives them more room: a piecewise scale, years marked as they fall. */
 const STOPS: [number, number][] = [
   [2020, 0],
@@ -44,6 +44,7 @@ const EVENTS: Ev[] = [
   { at: 2025.45, kind: "edu", side: "down", lane: 1, title: "Nava Collective", note: "capstone, featured by Parsons · '25", to: "/work/merch-1" },
   { at: 2025.67, kind: "ny", side: "up", lane: 0, title: "Handshake AI", note: "research fellow, fashion & retail · Sep '25–Oct '26" },
   { at: 2025.72, kind: "ny", side: "down", lane: 0, title: "Bloomingdale's", note: "59th Street · Sep '25–Jan '26", to: "/work/merch-2" },
+  { at: 2026.75, kind: "ny", side: "up", lane: 1, title: "Mercor", note: "agentic AI workflows · Sep–Oct '26", to: "/work/agent-workflows", end: true },
 ];
 
 const PIVOTS = [
@@ -54,6 +55,20 @@ const PIVOTS = [
 /* ---------- the work: reverse chronological, with what was actually done ---------- */
 type Role = { when: string; org: string; role: string; place: string; lines: string[]; links?: { to: string; label: string }[]; anchor?: string; kind?: string; logo?: string };
 const ROLES: Role[] = [
+  {
+    when: "Sep – Oct 2026",
+    org: "Mercor",
+    role: "Agentic AI Workflow Architect, Fashion & Retail Operations",
+    anchor: "agent-workflows",
+    kind: "Agentic AI",
+    place: "Remote",
+    lines: [
+      "Architected multi-stage desktop-automation benchmarks that turn real fashion processes (merchandising, product development, sourcing, inventory, retail operations) into executable workflows for autonomous computer-use agents.",
+      "Decomposed them into granular task specifications: product-data extraction, SKU and assortment management, spreadsheet modelling, browser research and cross-application data orchestration, with GUI-level execution protocols and state tracking.",
+      "Evaluated agents on step-level execution, instruction adherence, exception handling, data integrity and final-deliverable validation in realistic, industry-contextualised scenarios.",
+    ],
+    links: [{ to: "/work/agent-workflows", label: "Play: grade the agent" }],
+  },
   {
     when: "Sep 2025 – Oct 2026",
     org: "Handshake AI",
@@ -221,7 +236,7 @@ export function AboutPage() {
             </div>
           ))}
           {EVENTS.map((e) => (
-            <div key={e.title} className={`track__ev track__ev--${e.side} track__ev--l${e.lane}`} style={{ left: `${pct(e.at)}%` }}>
+            <div key={e.title} className={`track__ev track__ev--${e.side} track__ev--l${e.lane}${e.end ? " track__ev--end" : ""}`} style={{ left: `${pct(e.at)}%` }}>
               <span className={`jm jm--${e.kind}`} />
               <span className="track__stem" />
               <span className="track__label">

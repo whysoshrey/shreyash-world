@@ -61,6 +61,7 @@ export const PROJECT_META: Record<string, ProjectMeta> = {
   "auto-packing": { glyph: "conveyor", figure: "20", figureNote: "pieces counted and sealed per box" },
   "tory-burch-digital": { glyph: "phone", figure: "3 + 3", figureNote: "interventions + product concepts", image: "/assets/web/tb-aurora.webp", imageAlt: "Render of the Aurora high-tech sneaker concept for Tory Burch" },
   "merch-1": { glyph: "market", word: "Marketplace", figureNote: "Parsons capstone" },
+  "agent-workflows": { glyph: "screens", word: "Agents", figureNote: "Fashion workflows as agent benchmarks · Mercor" },
   "merch-2": { glyph: "hanger", logo: "bloomingdales", logoAlt: "Bloomingdale's", word: "Clienteling", figureNote: "Bloomingdale’s, 59th Street" },
   "brand-1": { glyph: "ticket", figure: "30s", figureNote: "early-bird sellout · 150+ attendees" },
   "brand-3": { glyph: "screens", figure: "10", figureNote: "UX laws, two platforms" },
@@ -142,6 +143,7 @@ export const WORK_GROUPS: Partial<Record<DoorKey, WorkGroup[]>> = {
   merch: [
     { key: "strategy", title: "Strategy & Company Interventions", ids: ["merch-1", "mango-intervention", "doen-impact"] },
     { key: "retail", title: "Retail Floor", ids: ["merch-2"] },
+    { key: "ai", title: "AI & Agentic Workflows", ids: ["agent-workflows"] },
   ],
   brand: [
     { key: "campaigns", title: "Campaigns & Go-to-Market", ids: ["cartier-gtm-redirection", "offwhite-human", "brand-1"] },

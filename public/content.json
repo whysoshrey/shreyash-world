@@ -342,6 +342,29 @@
         ],
         "skills": "Fibre and material strategy, sourcing, social compliance, circularity.",
         "artifacts": []
+      },
+      {
+        "id": "agent-workflows",
+        "title": "Fashion Workflows for AI Agents",
+        "subtitle": "Agentic AI benchmarks · Mercor",
+        "context": "Agentic AI benchmarks · Mercor · Sep–Oct 2026",
+        "proof": "Real fashion processes turned into executable benchmarks for autonomous computer-use agents, graded step by step.",
+        "problem": "Computer-use agents can click, type and open files, but they don't know how a merchandiser, sourcing manager or store planner actually works. To test them, fashion work had to be broken into tasks an agent can execute and an evaluator can check at every step, not just at the final file.",
+        "approach": [
+          "Architected multi-stage desktop-automation benchmarks that turn real fashion processes into executable workflows, spanning merchandising, product development, sourcing, inventory management and retail operations.",
+          "Decomposed those processes into granular task specifications: product-data extraction, SKU and assortment management, spreadsheet modelling, digital documentation, browser research and cross-application data orchestration.",
+          "Wrote application-level execution protocols covering GUI navigation, visual interface recognition, state-transition tracking, structured data handling, file handling and multi-step automation.",
+          "Built realistic, industry-contextualised scenarios that test whether an agent can interpret a fashion business requirement, work an operational dataset and deliver an end-to-end result across different software."
+        ],
+        "impact": [
+          "Agents evaluated on step-level execution, instruction adherence, contextual accuracy, exception handling, data integrity and final deliverable validation.",
+          "Benchmarks span five areas of the fashion value chain: merchandising, product development, sourcing, inventory and retail operations."
+        ],
+        "skills": "Agent evaluation · task decomposition · GUI workflow specification · spreadsheet modelling · merchandising and inventory logic",
+        "artifacts": [],
+        "also": [
+          "ops"
+        ]
       }
     ],
     "brand": [

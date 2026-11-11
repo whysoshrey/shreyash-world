@@ -3929,6 +3929,8 @@ a { text-underline-offset: 0.18em; }
 .track__label { background: var(--paper); padding: 2px 6px; }
 .track__ev--up.track__ev--l0 .track__label, .track__ev--down.track__ev--l0 .track__label { z-index: 3; }
 .track__label { max-width: none; } .track__note { white-space: nowrap; }
+/* events near the right edge: label sits to the left of its stem */
+.track__ev--end .track__label { transform: translateX(calc(-100% + 14px)); align-items: flex-end; text-align: right; }
 @media (max-width: 900px) { .portrait { max-width: min(360px, calc(100% - 20px)); } }
 /* v7 fixes from the inspector */
 .role__when, .glance__row dt { color: #a12f2c; }

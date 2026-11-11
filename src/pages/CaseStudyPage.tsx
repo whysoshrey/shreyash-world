@@ -18,6 +18,7 @@ import { ACTION_ROUTES, asset, DOOR_SHORT, getWork, isExternal, liveArtifacts, p
 import type { Artifact } from "../lib/types";
 
 const AgvModel = lazy(() => import("../components/agv/AgvModel"));
+const AgentEvalGame = lazy(() => import("../components/agent/AgentEvalGame"));
 
 export function CaseStudyPage() {
   const { id } = useParams();
@@ -141,6 +142,19 @@ function CaseStudy(props: { item: WorkItem; work: WorkItem[]; total: number; pre
       title: "From the work",
       wide: true,
       body: <Gallery shots={meta.gallery} />,
+    });
+
+  if (exhibit.id === "agent-workflows")
+    sections.push({
+      id: "play",
+      label: "Play",
+      title: "Grade the agent",
+      wide: true,
+      body: (
+        <Suspense fallback={<div className="ag" aria-hidden="true" style={{ minHeight: 320 }} />}>
+          <AgentEvalGame />
+        </Suspense>
+      ),
     });
 
   if (!dossier && !isRetail && exhibit.impact.some((a) => a.trim()))
