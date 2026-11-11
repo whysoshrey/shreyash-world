@@ -7,7 +7,7 @@
     "links": [
       {
         "label": "CV",
-        "href": "./Shreyash_Ojha_CV.pdf"
+        "href": "./resume/"
       },
       {
         "label": "LinkedIn",
@@ -467,7 +467,7 @@
       {
         "id": "cred-1",
         "title": "Résumé",
-        "context": "One-page PDF",
+        "context": "One page",
         "proof": "",
         "problem": "",
         "approach": [],
@@ -476,7 +476,7 @@
         "artifacts": [
           {
             "label": "Open CV",
-            "url": "./Shreyash_Ojha_CV.pdf"
+            "url": "./resume/"
           }
         ]
       },
